@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grademe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 23:50:00 by inaki             #+#    #+#             */
-/*   Updated: 2024/05/29 00:14:19 by inaki            ###   ########.fr       */
+/*   Updated: 2024/05/29 09:41:10 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,31 +50,20 @@ const char* get_color(int value)
 int	main(void)
 {
 	const char *color;
-		
+
+	printf("\033[H\033[J");
+	printf("%s******************************************************\n", CYAN);
+	printf("%s***************GRADEMEZIP*****************************\n", CYAN);
+	printf("%s******************************************************\n", CYAN);		
 	color = get_color(2);
-	printf("%s1-1 aff_a.c\t1-2 aff_z.c\n", color);
-	printf("%s2-1 aff_first.c\t2-2 aff_z.c\n", color);
-	printf("%s3-1 aff_a.c\t3-2 aff_z.c\n", color);
-	printf("%s4-1 aff_a.c\t4-2 aff_z.c\n", color);
-	printf("%s5-1 aff_a.c\t5-2 aff_z.c\n", color);
-	printf("%s6-1 aff_a.c\t6-2 aff_z.c\n", color);
-	printf("%s7-1 aff_a.c\t7-2 aff_z.c\n", color);
-	printf("%s8-1 ft_itoa.c\t8-2 ft_split.c\n", color);
+	printf("%s1-1 aff_a.c\t\t1-2 aff_z.c\t\t1-3 ft_putstr.c\n", color);
+	printf("%s2-1 aff_first_param.c\t2-2 aff_last_param.c\t2-3 ft_strlen.c\n", color);
+	printf("%s3-1 rotone.c\t\t3-2 rot_13.c\t\t3-3 rev_print.c\n", color);
+	printf("%s4-1 first_word.c\t4-2 last_word.c\n", color);
+	printf("%s5-1 union.c\t\t5-2 inter.c\n", color);
+	printf("%s6-1 expand_str.c\t6-2 fizzbuzz.c\n", color);
+	printf("%s7-1 ft_range.c\t\t7-2 ft_rrange_z.c\n", color);
+	printf("%s8-1 ft_itoa.c\t\t8-2 ft_split.c\n", color);
 	printf("%sgrademe\n", color);
 	return (0);
 }
-
-/* aff_first_param.c
-aff_last_param.c
-last_word.c
-expand_str.c
-fizzbuzz.c
-ft_putstr.c
-ft_range.c
-ft_revprint.c
-ft_rrange.c
-ft_strlen.c
-inter.c
-rot_13.c
-rotone.c
-union.c */
