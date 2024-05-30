@@ -6,9 +6,11 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:53:40 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/05/29 12:03:04 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/05/30 13:01:03 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "control.h"
 
 static int	n_dig(int n)
 {
