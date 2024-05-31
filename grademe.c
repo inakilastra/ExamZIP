@@ -6,7 +6,7 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 23:50:00 by inaki             #+#    #+#             */
-/*   Updated: 2024/05/30 16:49:37 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/05/31 12:58:27 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,6 +257,68 @@ int new_folder(const char *dir)
     }
 */
 
+int ctr_txt(const char *sfile_txt, const char *sfile_c, const char get_write, int question) 
+{
+    char	line[MAX_LINE_LENGTH];
+    char	*line_g = NULL;
+    int     i = 0;
+    int     penal = 0;
+    
+    FILE *control_fp = fopen(sfile_txt, "r");
+
+    if (!control_fp)
+    {
+        perror("Error opening file");
+        return (0);
+    }
+    while (fgets(line, sizeof(line), control_fp))
+    {
+        line_g = strdup(line); 
+    }
+    fclose(control_fp);
+    //printf("%s%s sfile %s get_write %c question %d\n", YELLOW, line_g, sfile, get_write, question);
+    
+    if (strcmp(sfile_txt, "control/ctrl_mode.txt") == 0)
+    {
+		if (strcmp(line_g, "P") == 0)
+			return (1);
+		else
+			return (2);   
+    }
+	if (strcmp(sfile_txt, "control/ctrl_penal.txt") == 0)
+    {
+        i = ctr_txt("control/ctrl_question.txt", "", 'G', 0);
+		if (i > 0)
+		{
+			printf("%s\n Please be patient, this CAN take several minutes...\n (10 seconds is fast, 30 seconds is expected, 3 minutes is a maximum)\n\n", WHITE);
+			printf("%s waiting...\n\n", YELLOW);
+			i = ctr_txt("control/ctrl_mode.txt", "", 'G', 0);
+        	if (i == 1)
+			{
+				if (strcmp(sfile_c, "") != 0)
+					printf("%s No existe o no se encuentra \"%s\".\n", RED, sfile_c);
+			}
+			else
+			{
+				penal = 2;
+			}
+			printf("%s >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n", RED, WHITE);
+			i = penal;
+		}
+    }
+	if (strcmp(sfile_txt, "control/ctrl_question.txt") == 0)
+    {
+		return (atoi(line_g));   
+    }
+	if (get_write == 'W')
+    {
+		(void)get_write;
+	}
+	(void)question;
+    return (0);
+}
+
+
 int control(const char get_write, int question) 
 {
     time_t      current_time;
@@ -434,8 +496,6 @@ char *control_date(void)
 
 char *control_penal(void) 
 {
-	printf("%s\n Please be patient, this CAN take several minutes...\n (10 seconds is fast, 30 seconds is expected, 3 minutes is a maximum)\n\n", WHITE);
-	printf("%s waiting...\n\n", YELLOW);
 	FILE *control_fp = fopen("control/control.txt", "r");
 
     if (!control_fp)
@@ -499,7 +559,9 @@ void    print_msg (const char *str1, const char *sfile)
 	char        *username = getlogin();
     char        currentPath[MAX_PATH];
     char        *currentDirPath = getcwd(currentPath, MAX_PATH);
-		
+    int         i;
+
+    i = ctr_txt("control/ctrl_mode.txt", "", 'G', 0);
 	if (strncmp(str1, "start", 5) == 0)
 		printf("%s\n Prueba a poner: ./grademe \"start\" para empezar\n\n", RED);
 	if (strncmp(str1, "empezamos", 9) == 0)
@@ -508,12 +570,20 @@ void    print_msg (const char *str1, const char *sfile)
 		printf("%s You can log out at any time.", WHITE); 
 		printf("%s If this program tells you you earned points\n", WHITE);
 		printf("%s then they will be counted whatever happens.\n\n", WHITE);
-		printf("%s You are about to start the project %sExam ZIP%s, in %sPRACTICE%s mode, at level.\n", WHITE, GREEN, WHITE, MAGENTA, WHITE);
+		printf("%s You are about to start the project %sExam ZIP%s, in", WHITE, GREEN, WHITE);
+        if (i == 1)
+            printf("%s PRACTICE%s mode, at level.\n", MAGENTA, WHITE);
+        else
+            printf("%s REAL%s mode, at level.\n", MAGENTA, WHITE);
 		printf("%s You would have 3hrs to complete this project.\n", WHITE);
 		printf("%s Start exam ZIP --> ", WHITE);     
 		printf("%s %s\n\n", GREEN, control_date() + 2);
 		printf("%s =====================================================================================\n", WHITE);
-		printf("%s Mode: %sPRACTICE ZIP\n\n", WHITE, MAGENTA);
+		printf("%s Mode:", WHITE);
+        if (i == 1)
+            printf("%s PRACTICE ZIP\n\n", MAGENTA);
+        else
+            printf("%s REAL ZIP\n\n", MAGENTA);
 	}
 	if (strncmp(str1, "questionX", 9) == 0)
 	{
@@ -534,6 +604,7 @@ int	check_norminette(const char *filename)
 	FILE		*pipe;
 	int			error_count;
 	char		command[256];
+	int			i;
 
 	error_count = 0;
 	snprintf(command, sizeof(command), "norminette %s", filename);
@@ -543,14 +614,20 @@ int	check_norminette(const char *filename)
 		fprintf(stderr, "Error al ejecutar norminette.\n");
 		return (-1);
 	}
+	i = ctr_txt("control/ctrl_question.txt", "", 'G', 0);
+	if (i > 0)
+		printf("\n NORMINETTE:\n\n");
 	while (fgets(buffer, sizeof(buffer), pipe) != NULL)
 	{
-		if (strstr(buffer, ".c: OK!") != NULL)
-			printf("%s%s", GREEN, buffer);
-		else
-			printf("%s%s", RED, buffer);
-		if (strstr(buffer, "Error") != NULL)
-			error_count++;
+		if (i > 0)
+		{
+			if (strstr(buffer, ".c: OK!") != NULL)
+				printf("%s %s", GREEN, buffer);
+			else
+				printf("%s %s", RED, buffer);
+			if (strstr(buffer, "Error") != NULL)
+				error_count++;
+		}
 	}
 	if (pclose(pipe) == -1) 
 	{
@@ -638,6 +715,44 @@ void remove_directory(const char *path)
     if (rmdir(path) != 0) {
         perror("rmdir");
     }
+}
+
+
+
+
+void	ft_start(void)
+{
+	printf("%s\n ft_start\n\n", WHITE);
+}
+
+void	ft_help(void)
+{
+	int	i;
+	
+	i = ctr_txt("control/ctrl_question.txt", "", 'G', 0);
+	printf("%s\n ExamZIP v1.0\n\n", WHITE);
+	if (i > 0)
+		printf("%s CABECERA\n", GREEN);
+	printf("%s Instruccciones:\n\n", WHITE);
+	printf("%s Copia todo en la carpeta que quieras.\n\n", WHITE);
+	printf("%s Compila %sgcc -o grademe grademe.c -Wall -Wextra -Werror\n\n", WHITE, CYAN);
+	printf("%s Para comenzar una simulación ejecuta %s./grademe start R%s o %s./grademe start P\n", WHITE, CYAN, WHITE, CYAN);
+	printf("%s  ./grademe start R %sModo REAL te penaliza más tiempo y no ves el motivo del fallo\n", CYAN, WHITE);
+	printf("%s  ./grademe start P %sModo PRACTICE te penaliza menos tiempo y ves el motivo del fallo:\n", CYAN, WHITE);
+	printf("%s    Tanto Norminette como lo que se esperaba recibir vs lo que devuelve tu cógigo\n\n", WHITE);
+	printf("%s Para evaluar cada ejercicio ejecuta %s./grademe\n\n", WHITE, CYAN);
+	printf("%s Para reiniciar una simulación ejecuta %s./grademe reset R%s o %s./grademe reset P\n", WHITE, CYAN, WHITE, CYAN);
+	printf("%s  (OJO ESTO BORRA LA CARPETA %s\"rendu\"%s, si quieres conservar tus ficheros muevelos antes)\n\n", WHITE, RED, WHITE);
+	printf("%s Para ver la ayuda ejecuta %s./grademe help\n\n", WHITE, CYAN);
+}
+
+void	ft_reset(void)
+{
+	printf("%s\n ft_reset\n\n", WHITE);
+/* 	remove_directory("rendu");
+	remove_directory("subjects");
+	control('W', 0); */
+	printf("%s\n Reinicializado, para comenzar prueba con ./grademe \"start\"\n\n", WHITE);
 }
 
 int	main(int argc, char **argv)
