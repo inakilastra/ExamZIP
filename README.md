@@ -4,7 +4,7 @@
 
 <ul>
 <li><p>Copia todo en la carpeta que quieras.</p></li>
-<li><p>Compila <strong>gcc -o grademe grademe.c -Wall -Wextra -Werror</strong></p></li>
+<li><p>Compila <font color="#1589F0"><strong>gcc -o grademe grademe.c -Wall -Wextra -Werror</strong></font></p></li>
 <li><p>Para comenzar una simulación ejecuta **./grademe start R** o **./grademe start P**"</p></li>
 <li><p><ul>
         <li><p>"**./grademe start R**" Modo **REAL** te penaliza más tiempo y no ves el motivo del fallo</p></li>
