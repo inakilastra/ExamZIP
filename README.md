@@ -22,3 +22,5 @@
         </ul></p></li>
 </p></li>
 </ul>
+#rgb[Text using 3 chars notation (red = f00)]
+#rrggbb[Text using 6 chars notation (red = ff0000)]
