@@ -121,10 +121,8 @@ char *ctr_txt(const char *sfile_txt, const char get_write, char mode, int questi
             else
                 line_new = strdup(ft_itoa(question));
         }
-        if (strcmp(sfile_txt, "control/ctrl_question.txt") == 0)
-        {
- if (strcmp(sfile_txt, "control/ctrl_time.txt") != 0)
- {       
+if (strcmp(sfile_txt, "control/ctrl_time.txt") != 0)
+{       
         FILE *final_fp = fopen(sfile_txt, "w");
         if (!final_fp)
         {
@@ -139,7 +137,7 @@ char *ctr_txt(const char *sfile_txt, const char get_write, char mode, int questi
         fclose(final_fp); 
         (void)question;
         return (line_new); 
- }      
+}      
     }
     return (line_get);
 }
