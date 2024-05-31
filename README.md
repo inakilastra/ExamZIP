@@ -5,7 +5,7 @@
 <ul>
 <li><p>Copia todo en la carpeta que quieras.</p></li>
 <li><p>Compila <code style="color : blue"><strong>gcc -o grademe grademe.c -Wall -Wextra -Werror</strong></code></p></li>
-<li><p>$${\color{red}Para comenzar una simulación ejecuta **./grademe start R** o **./grademe start P**"</p></li>
+<li><p>$${\color{red}Para comenzar \space }$$ una simulación ejecuta **./grademe start R** o **./grademe start P**"</p></li>
 <li><p><ul>
         <li><p>"**./grademe start R**" Modo **REAL** te penaliza más tiempo y no ves el motivo del fallo</p></li>
         <li><p>"**./grademe start P**" Modo **PRACTICE** te penaliza menosás tiempo y ves el motivo del fallo:</p></li>
