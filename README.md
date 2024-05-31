@@ -22,10 +22,30 @@
         </ul></p></li>
 </p></li>
 </ul>
-:::red
-Some red text
-::::
-other text
+<span style="color:blue">some *blue* text</span>.
 
-::red[some red text]
-other text
+none	\text	$\text{lorem ipsum}$	
+\rm	\textrm	$\textrm{lorem ipsum}$	
+\sf	\textsf	$\textsf{lorem ipsum}$	
+\bf	\textbf	$\textbf{lorem ipsum}$	
+\up	\textup	$\textup{lorem ipsum}$	
+\tt	\texttt	$\texttt{lorem ipsum}$	
+\it	\textit	$\textit{lorem ipsum}$
+
+$\color{red}{\textsf{lorem ipsum}}$	
+$\color{#f00}{\textsf{lorem ipsum}}$	
+$\color{rgb(255,0,0)}{\textsf{lorem ipsum}}$	
+$\color{rgba(255,0,0, 0.4)}{\textsf{lorem ipsum}}$	
+$\color{hsl(0,100%,50%)}{\textsf{lorem ipsum}}$	
+$\color{hsla(0,100%,50%, 0.4)}{\textsf{lorem ipsum}}$	
+$\textcolor{red}{\textsf{lorem ipsum}}$
+
+$\Huge{\textsf{lorem ipsum}}$	
+$\huge{\textsf{lorem ipsum}}$	
+$\LARGE{\textsf{lorem ipsum}}$	
+$\Large{\textsf{lorem ipsum}}$	
+$\large{\textsf{lorem ipsum}}$	
+$\normalsize{\textsf{lorem ipsum}}$	
+$\small{\textsf{lorem ipsum}}$	
+$\scriptsize{\textsf{lorem ipsum}}$	
+$\tiny{\textsf{lorem ipsum}}$
