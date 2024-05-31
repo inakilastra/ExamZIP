@@ -18,7 +18,7 @@
     <ul>
         <li><p><strong><code>./grademe start R</code></strong> Modo <strong>REAL</strong> te penaliza más tiempo y no ves el motivo del fallo</p></li>
         <li><p><strong><code>./grademe start P</code></strong> Modo <strong>PRACTICE</strong> te penaliza menos tiempo y ves el motivo del fallo:</p></li>
-        <li><p>(<strong>OJO ESTO BORRA LA CARPETA "rendu"</strong>, si quieres conservar tus ficheros muevelos antes)</p></li>
+        <li><p><strong>OJO ESTO BORRA LA CARPETA "rendu"</strong>, si quieres conservar tus ficheros muevelos antes</p></li>
     </ul>
 <li><p>Para ver la ayuda ejecuta <strong><code>./grademe help</code></strong></p></li>   
 </ul>
