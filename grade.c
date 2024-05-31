@@ -209,7 +209,7 @@ void	ft_help(void)
 	printf("%s    Tanto Norminette como lo que se esperaba recibir vs lo que devuelve tu cógigo\n\n", WHITE);
 	printf("%s Para evaluar cada ejercicio ejecuta %s./grademe\n\n", WHITE, CYAN);
 	printf("%s Para reiniciar una simulación ejecuta %s./grademe reset R%s o %s./grademe reset P\n", WHITE, CYAN, WHITE, CYAN);
-	printf("%s  (OJO ESTO BORRA LA CARPETA %s\"rendu\"%s, si quieres conservar tus ficheros muevelos antes)\n\n", WHITE, RED, WHITE);
+	printf("%s  OJO ESTO BORRA LA CARPETA %s\"rendu\"%s, si quieres conservar tus ficheros muevelos antes\n\n", WHITE, RED, WHITE);
 	printf("%s Para ver la ayuda ejecuta %s./grademe help\n\n", WHITE, CYAN);
 }
 
@@ -233,9 +233,12 @@ int	main(int argc, char **argv)
 { 
 	printf("\033[H\033[J");
 	if (argc == 2 && (strncmp(argv[1], "help", 5) == 0) )  
+    {
     	if (strncmp(argv[1], "help", 5) == 0) 
-			ft_help();  
-	if (argc == 3 
+			ft_help();
+        return(0);  
+    }
+    if (argc == 3 
         && ((strncmp(argv[1], "start", 5) == 0) || (strncmp(argv[1], "reset", 5) == 0))
         && (argv[2][0] == 'P' || argv[2][0] == 'R' || argv[2][0] == 'p' || argv[2][0] == 'r'))
     {
