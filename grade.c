@@ -67,6 +67,84 @@ char	*ft_itoa(int n)// ft_itoa
 	return (str);
 }
 
+void remove_directory(const char *path) 
+{
+    struct dirent *entry;
+    DIR *dir = opendir(path);
+
+    if (dir == NULL)
+    {
+        perror("opendir");
+        return;
+    }
+    while ((entry = readdir(dir)) != NULL)
+    {
+        char file_path[1024];
+        struct stat statbuf;
+
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+            continue;
+        snprintf(file_path, sizeof(file_path), "%s/%s", path, entry->d_name);
+        if (stat(file_path, &statbuf) == 0) 
+        {
+            if (S_ISDIR(statbuf.st_mode))
+                remove_directory(file_path);
+            else
+                if (unlink(file_path) != 0)
+                    perror("unlink");
+        }
+    }
+    closedir(dir);
+    if (rmdir(path) != 0)
+        perror("rmdir");
+}
+
+int new_folder(const char *dir)
+{
+	if (mkdir(dir, 0755) == -1)
+		if (errno != EEXIST)
+			return (1);
+	return (0);
+}
+
+int	check_file(const char *str)
+{
+    char check_path[256];
+
+    snprintf(check_path, sizeof(check_path), "%s", str);  
+    if (access(check_path, F_OK) != 0)
+        return (1);
+    return (0);
+}
+
+int copy_file(const char *src, const char *dst)
+{
+    FILE *source, *destination;
+    char buffer[1024];
+    size_t bytes;
+
+    source = fopen(src, "rb");
+    if (source == NULL) 
+	{
+        perror("Error al abrir el archivo de origen");
+        return 1;
+    }
+    destination = fopen(dst, "wb");
+    if (destination == NULL)
+	{
+        perror("Error al abrir el archivo de destino");
+        fclose(source);
+        return 1;
+    }
+    while ((bytes = fread(buffer, 1, sizeof(buffer), source)) > 0)
+	{
+        fwrite(buffer, 1, bytes, destination);
+    }
+    fclose(source);
+    fclose(destination);
+    return 0;
+}
+
 char *ctr_txt(const char *sfile_txt, const char get_write, char mode, int question) 
 {
     char	line[MAX_LINE_LENGTH];
@@ -142,6 +220,99 @@ if (strcmp(sfile_txt, "control/ctrl_time.txt") != 0)
     return (line_get);
 }
 
+char *get_date(void) 
+{
+    struct tm start_tm = {0};
+	FILE *control_fp = fopen("control/ctrl_time.txt", "r");
+
+    if (!control_fp)
+    {
+        perror("Error opening file control/ctrl_time.txt");
+        return ("");
+    }
+
+    char	line[MAX_LINE_LENGTH];
+    char	*line_t = NULL;
+    
+    while (fgets(line, sizeof(line), control_fp))
+    {
+        line_t = strdup(line);
+    }
+    fclose(control_fp);
+	    if (sscanf(line_t, "%d/%d/%d %d:%d:%d",
+               &start_tm.tm_mday, &start_tm.tm_mon, &start_tm.tm_year,
+               &start_tm.tm_hour, &start_tm.tm_min, &start_tm.tm_sec) != 6)
+	{
+        fprintf(stderr, "Error parsing date string\n");
+        return ("");
+    }
+    return (line_t);
+}
+
+void    print_msg (const char *str1, const char *sfile)
+{
+	char        *username = getlogin();
+    char        currentPath[MAX_PATH];
+    char        *currentDirPath = getcwd(currentPath, MAX_PATH);
+    char         *mode;
+
+    mode = ctr_txt("control/ctrl_mode.txt", 'G', 'P', 0);
+	if (strncmp(str1, "start", 5) == 0)
+		printf("%s\n Prueba a poner: ./grademe \"start\" para empezar\n\n", RED);
+	if (strncmp(str1, "empezamos", 9) == 0)
+	{
+		printf("%s\n You're connected: %s%s\n", WHITE, GREEN, username); 
+		printf("%s You can log out at any time.", WHITE); 
+		printf("%s If this program tells you you earned points\n", WHITE);
+		printf("%s then they will be counted whatever happens.\n\n", WHITE);
+		printf("%s You are about to start the project %sExam ZIP%s, in", WHITE, GREEN, WHITE);
+        if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+            printf("%s PRACTICE%s mode, at level.\n", MAGENTA, WHITE);
+        else
+            printf("%s REAL%s mode, at level.\n", MAGENTA, WHITE);
+		printf("%s You would have 3hrs to complete this project.\n", WHITE);
+		printf("%s Start exam ZIP --> ", WHITE);     
+		printf("%s %s\n\n", GREEN, get_date());
+		printf("%s =====================================================================================\n", WHITE);
+		printf("%s Mode:", WHITE);
+        if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+            printf("%s PRACTICE ZIP\n\n", MAGENTA);
+        else
+            printf("%s REAL ZIP\n\n", MAGENTA);
+	}
+	if (strncmp(str1, "questionX", 9) == 0)
+	{
+		print_msg ("empezamos", "");
+		printf("%s Assignement: %s%s.c\n\n", WHITE, GREEN, sfile);
+		printf("%s Subject location: %s%s/subjects/%s.txt\n", WHITE, GREEN, currentDirPath, sfile); 
+		printf("%s Exercice location: %s%s/rendu/%s/\n", WHITE, RED, currentDirPath, sfile); 
+		printf("%s Here you %sdon't need%s to use git.\n\n", WHITE, RED, WHITE); 
+		//calculate_time_difference(control_date());
+		printf("%s =====================================================================================\n", WHITE);
+		printf("%s You can work on your assignesent.\n When you are sure you're done with it, use the \"./grademe\" command to be graded.\n", WHITE);
+	}
+}
+
+
+void ft_file(const char *sfile)
+{
+    char 	*questions_txt = strdup("questions/");
+    char 	*subjects_txt = strdup("subjects/");
+    char 	*rendu_txt = strdup("rendu/");
+
+	strcat(questions_txt, sfile);
+	strcat(questions_txt, ".txt");
+    strcat(subjects_txt, sfile);
+	strcat(subjects_txt, ".txt");
+    strcat(rendu_txt, sfile);
+    
+    copy_file(questions_txt, subjects_txt);//11
+    if (check_file(rendu_txt) != 0)
+        new_folder(rendu_txt);
+    print_msg ("questionX", sfile);
+}
+
+
 void    ctrl_txt_show(const char c)
 {
     char	*line_g = NULL;
@@ -173,6 +344,11 @@ void    ctrl_txt_reset(const char c)
     ctr_txt("control/ctrl_mode.txt", 'W', c, 0);// Mode P
     ctr_txt("control/ctrl_penal.txt", 'W', c, 0);// Penal 0 reinicia 1 en P 5 en R
     ctr_txt("control/ctrl_question.txt", 'W', c, 0);// Mode P
+}
+
+void    ctrl_txt_start(const char c)
+{
+    ft_file("aff_a");
     ctr_txt("control/ctrl_time.txt", 'W', c, 0);// Mode P
 }
 
@@ -180,6 +356,9 @@ void	ft_start(const char c)
 {
 	//printf("%s\n ft_start %c\n\n", WHITE, c);
     ctrl_txt_reset(c);
+    ctrl_txt_start(c);
+    new_folder("subjects");
+    new_folder("rendu");
     ctrl_txt_show(c);
 }
 
@@ -195,10 +374,6 @@ void	ft_help(void)
 	if (i > 0)
     {
 		printf("%s\n CABECERA\n\n", GREEN);
-    }
-    else
-    {
-        printf("%s\n ExamZIP v1.0\n\n", WHITE);
     }
 	printf("%s Instruccciones:\n\n", WHITE);
 	printf("%s Copia todo en la carpeta que quieras.\n\n", WHITE);
@@ -216,9 +391,9 @@ void	ft_help(void)
 void	ft_reset(const char c)
 {
 	ctrl_txt_reset(c);
-/* 	remove_directory("rendu");
+    remove_directory("rendu");
 	remove_directory("subjects");
-	control('W', 0); */
+	/* control('W', 0); */
 	printf("%s\n Reinicializado, para comenzar prueba con ./grademe \"start\" %c\n\n", WHITE , c);
     ctrl_txt_show(c);
 }
@@ -231,7 +406,10 @@ void	ft_grademe(void)
 
 int	main(int argc, char **argv)
 { 
-	printf("\033[H\033[J");
+	int i;
+
+    printf("\033[H\033[J");
+    printf("%s\n ExamZIP v1.0\n\n", WHITE);
 	if (argc == 2 && (strncmp(argv[1], "help", 5) == 0) )  
     {
     	if (strncmp(argv[1], "help", 5) == 0) 
@@ -249,6 +427,10 @@ int	main(int argc, char **argv)
 			ft_reset(argv[2][0]);	
 		return(0);
 	}
-	ft_grademe();  
+    i = atoi(ctr_txt("control/ctrl_question.txt", 'G', 'P', 0));
+    if (i == 0)
+        print_msg ("start", "");
+    else
+	    ft_grademe();  
 	return (0);
 }
