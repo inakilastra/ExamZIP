@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/28 23:50:00 by inaki             #+#    #+#             */
-/*   Updated: 2024/05/31 12:58:27 by ilastra-         ###   ########.fr       */
+/*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
+/*   Updated: 2024/06/03 15:37:12 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 #include <time.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <errno.h>
 #include <dirent.h>
-
 
 #define DEF_COLOR "\033[0;39m"
 #define GRAY "\033[0;90m"
@@ -32,31 +32,7 @@
 #define WHITE "\033[0;97m"
 #define MAX_PATH 4096
 #define MAX_LINE_LENGTH 256
-
-const char* get_color(int value)
-{
-    switch (value) 
-	{
-        case 0:
-            return GRAY;
-        case 1:
-            return RED;
-        case 2:
-            return GREEN;
-        case 3:
-            return YELLOW;
-        case 4:
-            return BLUE;
-        case 5:
-            return MAGENTA;
-        case 6:
-            return CYAN;
-        case 7:
-            return WHITE;												
-        default:
-            return DEF_COLOR;
-    }
-}
+#define BUFFER_SIZE 128
 
 static int	n_dig(int n)// ft_itoa
 {
@@ -105,6 +81,46 @@ char	*ft_itoa(int n)// ft_itoa
 	return (str);
 }
 
+void remove_directory(const char *path) 
+{
+    struct dirent *entry;
+    DIR *dir = opendir(path);
+
+    if (dir == NULL)
+    {
+        perror("opendir");
+        return;
+    }
+    while ((entry = readdir(dir)) != NULL)
+    {
+        char file_path[1024];
+        struct stat statbuf;
+
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+            continue;
+        snprintf(file_path, sizeof(file_path), "%s/%s", path, entry->d_name);
+        if (stat(file_path, &statbuf) == 0) 
+        {
+            if (S_ISDIR(statbuf.st_mode))
+                remove_directory(file_path);
+            else
+                if (unlink(file_path) != 0)
+                    perror("unlink");
+        }
+    }
+    closedir(dir);
+    if (rmdir(path) != 0)
+        perror("rmdir");
+}
+
+int new_folder(const char *dir)
+{
+	if (mkdir(dir, 0755) == -1)
+		if (errno != EEXIST)
+			return (1);
+	return (0);
+}
+
 int	check_file(const char *str)
 {
     char check_path[256];
@@ -114,18 +130,6 @@ int	check_file(const char *str)
         return (1);
     return (0);
 }
-/** int	check_file(const char *str)
-    {
-        char check_path[256]; // Ajusta el tamaño según sea necesario
-
-        // Construir la ruta del archivo actual
-        snprintf(check_path, sizeof(check_path), "%s", str);  
-        // Verificar si el archivo existe en la ruta original
-        if (access(check_path, F_OK) != 0)
-            return (1);
-        return (0);
-    }
-*/
 
 int copy_file(const char *src, const char *dst)
 {
@@ -155,115 +159,16 @@ int copy_file(const char *src, const char *dst)
     return 0;
 }
 
-/** int copy_file(const char *src, const char *dst)
-	{
-		FILE *source, *destination;
-		char buffer[1024];
-		size_t bytes;
-
-		// Abrir el archivo de origen
-		source = fopen(src, "rb");
-		if (source == NULL) {
-			perror("Error al abrir el archivo de origen XX");
-			return 1;
-		}
-
-		// Abrir el archivo de destino
-		destination = fopen(dst, "wb");
-		if (destination == NULL) {
-			perror("Error al abrir el archivo de destino");
-			fclose(source);
-			return 1;
-		}
-
-		// Leer del archivo de origen y escribir en el archivo de destino
-		while ((bytes = fread(buffer, 1, sizeof(buffer), source)) > 0) {
-			fwrite(buffer, 1, bytes, destination);
-		}
-
-		// Cerrar los archivos
-		fclose(source);
-		fclose(destination);
-
-		//printf("Archivo copiado correctamente de %s a %s\n", src, dst);
-		return 0;
-	}
-*/
-
-int	move_file(const char *src, const char *dst)
-{
-    char old_path[256];
-    char new_path[256];
-
-    snprintf(old_path, sizeof(old_path), "%s", src);
-    snprintf(new_path, sizeof(new_path), "%s", dst);
-    if (access(old_path, F_OK) != 0)
-        return 1;
-    if (rename(old_path, new_path) != 0)
-        perror("Error moviendo el archivo");
-    return (0);
-}
-
-/** int	move_file(const char *src, const char *dst)
-    {
-        char old_path[256]; // Ajusta el tamaño según sea necesario
-        char new_path[256]; // Ajusta el tamaño según sea necesario
-
-
-        // Construir la ruta del archivo actual
-        snprintf(old_path, sizeof(old_path), "%s", src);
-    //printf("old_path %s\n",old_path);    
-        // Construir la nueva ruta del archivo
-        snprintf(new_path, sizeof(new_path), "%s", dst);
-    //printf("new_path %s\n",new_path);     
-        // Verificar si el archivo existe en la ruta original
-        if (access(old_path, F_OK) != 0)
-        {
-            //perror("El archivo no existe en la ruta especificada");
-            return 1;
-        }
-        // Mover el archivo
-        if (rename(old_path, new_path) != 0)
-            //printf("El archivo se movió correctamente de %s a %s\n", old_path, new_path);
-        //else
-            perror("Error moviendo el archivo");
-        return (0);
-    }
-*/
-
-int new_folder(const char *dir)
-{
-	if (mkdir(dir, 0755) == -1)
-		if (errno != EEXIST)
-			return (1);
-	return (0);
-}
-
-/** int new_folder(const char *dir)
-    {
-        // Crear la carpeta con permisos 0755 (rwxr-xr-x)
-        if (mkdir(dir, 0755) == -1)
-            // Verificar si hubo un error al crear la carpeta
-            if (errno == EEXIST)
-                printf(" "); //printf("La carpeta ya existe.\n");
-            else
-            {
-                //perror("Error al crear la carpeta");
-                return (1);
-            }
-        else
-            printf(" "); //printf("Carpeta creada correctamente: %s\n", dir);
-        return (0);
-    }
-*/
-
-int ctr_txt(const char *sfile_txt, const char *sfile_c, const char get_write, int question) 
+char *ctr_txt(const char *sfile_txt, const char get_write, char mode, int question , const char *question_name) 
 {
     char	line[MAX_LINE_LENGTH];
-    char	*line_g = NULL;
+    char	*line_get = NULL;
+    char    *line_new = NULL;
     int     i = 0;
-    int     penal = 0;
-    
+    time_t      current_time;
+    struct tm   *time_info;
+    char        date_start[256];
+
     FILE *control_fp = fopen(sfile_txt, "r");
 
     if (!control_fp)
@@ -273,143 +178,111 @@ int ctr_txt(const char *sfile_txt, const char *sfile_c, const char get_write, in
     }
     while (fgets(line, sizeof(line), control_fp))
     {
-        line_g = strdup(line); 
+        line_get = strdup(line); 
+    }
+    if (strcmp(sfile_txt, "control/ctrl_penal.txt") == 0
+        || strcmp(sfile_txt, "control/ctrl_question.txt") == 0)
+    {
+        i = atoi(line_get);
     }
     fclose(control_fp);
-    //printf("%s%s sfile %s get_write %c question %d\n", YELLOW, line_g, sfile, get_write, question);
-    
-    if (strcmp(sfile_txt, "control/ctrl_mode.txt") == 0)
+    if (get_write == 'W')
     {
-		if (strcmp(line_g, "P") == 0)
-			return (1);
-		else
-			return (2);   
+       	if (strcmp(sfile_txt, "control/ctrl_mode.txt") == 0)
+        {
+            if (mode == 'P' || mode == 'p')
+                line_new = strdup("P");
+            else
+                line_new = strdup("R");
+        }
+        if (strcmp(sfile_txt, "control/ctrl_penal.txt") == 0)
+        {
+            i += i;
+            if (mode == 'P' || mode == 'p')
+                if (question == 0)
+                    line_new = strdup(ft_itoa(1));
+                else
+                    line_new = strdup(ft_itoa(i));
+            else
+                if (question == 0)
+                    line_new = strdup(ft_itoa(5));
+                else
+                    line_new = strdup(ft_itoa(i)); 
+        }
+        if (strcmp(sfile_txt, "control/ctrl_question.txt") == 0)
+        {
+            if (question == i)
+                line_new = strdup(ft_itoa(i));
+            else
+                line_new = strdup(ft_itoa(question));
+        }
+        if (strcmp(sfile_txt, "control/ctrl_question_name.txt") == 0)
+        {
+            line_new = strdup(question_name);
+        }        
+        if (strcmp(sfile_txt, "control/ctrl_time.txt") == 0)
+        {   
+            if (question == 0)
+            {
+                time(&current_time);
+                time_info = localtime(&current_time);
+                snprintf(date_start, sizeof(date_start), "%d/%d/%d %d:%d:%d\n", 
+                         time_info->tm_mday, time_info->tm_mon + 1, time_info->tm_year + 1900, 
+                         time_info->tm_hour, time_info->tm_min, time_info->tm_sec);
+                if (line_new)
+                    free(line_new);
+                line_new = strdup(date_start);
+            } 
+        }   
+        FILE *final_fp = fopen(sfile_txt, "w");
+        if (!final_fp)
+        {
+            perror("Error opening files for final writing");
+            return ("X");
+        }
+        if (line_new)
+        {
+            fputs(line_new, final_fp);
+            free(line_new);
+        }
+        fclose(final_fp); 
+        (void)question;
+        return (line_new);      
     }
-	if (strcmp(sfile_txt, "control/ctrl_penal.txt") == 0)
-    {
-        i = ctr_txt("control/ctrl_question.txt", "", 'G', 0);
-		if (i > 0)
-		{
-			printf("%s\n Please be patient, this CAN take several minutes...\n (10 seconds is fast, 30 seconds is expected, 3 minutes is a maximum)\n\n", WHITE);
-			printf("%s waiting...\n\n", YELLOW);
-			i = ctr_txt("control/ctrl_mode.txt", "", 'G', 0);
-        	if (i == 1)
-			{
-				if (strcmp(sfile_c, "") != 0)
-					printf("%s No existe o no se encuentra \"%s\".\n", RED, sfile_c);
-			}
-			else
-			{
-				penal = 2;
-			}
-			printf("%s >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n", RED, WHITE);
-			i = penal;
-		}
-    }
-	if (strcmp(sfile_txt, "control/ctrl_question.txt") == 0)
-    {
-		return (atoi(line_g));   
-    }
-	if (get_write == 'W')
-    {
-		(void)get_write;
-	}
-	(void)question;
-    return (0);
+    return (line_get);
 }
 
-
-int control(const char get_write, int question) 
+char *get_date(void) 
 {
-    time_t      current_time;
-    struct tm   *time_info;
-    char        date_start[256];
-    FILE *control_fp = fopen("control/control.txt", "r");
+    struct tm start_tm = {0};
+	FILE *control_fp = fopen("control/ctrl_time.txt", "r");
 
     if (!control_fp)
     {
-        perror("Error opening file control/control.txt");
-        return (2);
+        perror("Error opening file control/ctrl_time.txt");
+        return ("");
     }
 
     char	line[MAX_LINE_LENGTH];
     char	*line_t = NULL;
-	char	*line_p = NULL;
-	char	*line_q = NULL;
-    int		i_q = 0;
     
-    while (fgets(line, sizeof(line), control_fp)) // Leer y procesar el archivo original
+    while (fgets(line, sizeof(line), control_fp))
     {
-        if (strncmp(line, "T:", 2) == 0)
-            line_t = strdup(line);  // Guardar línea T:
-        if (strncmp(line, "P:", 2) == 0)
-            line_p = strdup(line);  // Guardar línea T:			
-        else
-		{
-			line_q = strdup(line); 
-            i_q = atoi(strdup(line));
-		}
+        line_t = strdup(line);
     }
     fclose(control_fp);
-
-    if (get_write == 'W')
-    {
-        if (i_q == 0)
-        {
-            time(&current_time);
-            time_info = localtime(&current_time);
-            snprintf(date_start, sizeof(date_start), "T:%d/%d/%d %d:%d:%d\n", 
-                     time_info->tm_mday, time_info->tm_mon + 1, time_info->tm_year + 1900, 
-                     time_info->tm_hour, time_info->tm_min, time_info->tm_sec);
-            
-            if (line_t)
-                free(line_t);
-            line_t = strdup(date_start);
-        }
-        if (question == 0)
-			line_p = strdup("P:1\n");
-		else
-			line_p = strdup(line_p);
-		
-        if (question != i_q)
-            line_q = strdup(ft_itoa(question));
-
-        FILE *final_fp = fopen("control/control.txt", "w");
-
-        if (!final_fp)
-        {
-            perror("Error opening files for final writing");
-            return (2);
-        }
-
-        // Escribir las líneas T: y Q: en el archivo final primero
-        if (line_t) {
-            fputs(line_t, final_fp);
-            free(line_t);
-        }
-        if (line_p) {
-            fputs(line_p, final_fp);
-            free(line_p);
-        }		
-        if (line_q) {
-            fputs(line_q, final_fp);
-            free(line_q);
-        }
-
-        fclose(final_fp);
-		return (question);
-    }
-	else
+	    if (sscanf(line_t, "%d/%d/%d %d:%d:%d",
+               &start_tm.tm_mday, &start_tm.tm_mon, &start_tm.tm_year,
+               &start_tm.tm_hour, &start_tm.tm_min, &start_tm.tm_sec) != 6)
 	{
-		//printf("Processing complete %d.\n", i_q);
-		return (i_q);
-	}
-
-    //printf("Processing complete.\n");
-    return (0);
+        fprintf(stderr, "Error parsing date string\n");
+        return ("");
+    }
+    return (line_t);
 }
 
-void calculate_time_difference(const char *start_str) {
+void calculate_time_difference(const char *start_str) 
+{
     struct tm start_tm = {0};
     struct tm end_tm = {0};
     time_t start_time, end_time;
@@ -417,7 +290,7 @@ void calculate_time_difference(const char *start_str) {
     int hours, minutes, seconds;
 
     // Extract date and time components from the string
-    if (sscanf(start_str, "T:%d/%d/%d %d:%d:%d",
+    if (sscanf(start_str, "%d/%d/%d %d:%d:%d",
                &start_tm.tm_mday, &start_tm.tm_mon, &start_tm.tm_year,
                &start_tm.tm_hour, &start_tm.tm_min, &start_tm.tm_sec) != 6)
 	{
@@ -464,141 +337,7 @@ void calculate_time_difference(const char *start_str) {
 	printf("%s Left time: %s%d hrs, %d min, and %d sec\n\n", WHITE, GREEN, hours, minutes, seconds);
 }
 
-char *control_date(void) 
-{
-    struct tm start_tm = {0};
-	FILE *control_fp = fopen("control/control.txt", "r");
-
-    if (!control_fp)
-    {
-        perror("Error opening file control/control.txt");
-        return ("");
-    }
-
-    char	line[MAX_LINE_LENGTH];
-    char	*line_t = NULL;
-    
-    while (fgets(line, sizeof(line), control_fp))
-    {
-        if (strncmp(line, "T:", 2) == 0)
-            line_t = strdup(line);
-    }
-    fclose(control_fp);
-	    if (sscanf(line_t, "T:%d/%d/%d %d:%d:%d",
-               &start_tm.tm_mday, &start_tm.tm_mon, &start_tm.tm_year,
-               &start_tm.tm_hour, &start_tm.tm_min, &start_tm.tm_sec) != 6)
-	{
-        fprintf(stderr, "Error parsing date string\n");
-        return ("");
-    }
-    return (line_t);
-}
-
-char *control_penal(void) 
-{
-	FILE *control_fp = fopen("control/control.txt", "r");
-
-    if (!control_fp)
-    {
-        perror("Error opening file control/control.txt");
-        return ("");
-    }
-
-    char	line[MAX_LINE_LENGTH];
-	char	*line_t = NULL;
-    char	*line_p = NULL;
-	char	*line_q = NULL;
-	char	*str_p = NULL;
-	char 	*new_line_p = strdup("P:");
-	int		penal = 0;
-	
-    while (fgets(line, sizeof(line), control_fp))
-    {
-        if (strncmp(line, "T:", 2) == 0)
-            line_t = strdup(line);
-        if (strncmp(line, "P:", 2) == 0)
-            line_p = strdup(line);		
-        else
-			line_q = strdup(line); 		
-    }
-    fclose(control_fp);
-	penal = atoi(line_p + 2);
-	penal += penal;
-	if (penal > 180)
-		penal = 10;
-	str_p = ft_itoa(penal);
-	strcat(new_line_p, str_p);
-	strcat(new_line_p, "\n");
-	line_p = new_line_p;
-	FILE *final_fp = fopen("control/control.txt", "w");
-	if (!final_fp)
-	{
-		perror("Error opening files for final writing");
-		return ("");
-	}
-	if (line_t) {
-		fputs(line_t, final_fp);
-		free(line_t);
-	}
-	if (line_p) {
-		fputs(line_p, final_fp);
-		free(line_p);
-	}
-	if (line_q) {
-		fputs(line_q, final_fp);
-		free(line_q);
-	}		
-	fclose(final_fp);
-	
-	sleep(penal);
-	return ("");
-}
-
-void    print_msg (const char *str1, const char *sfile)
-{
-	char        *username = getlogin();
-    char        currentPath[MAX_PATH];
-    char        *currentDirPath = getcwd(currentPath, MAX_PATH);
-    int         i;
-
-    i = ctr_txt("control/ctrl_mode.txt", "", 'G', 0);
-	if (strncmp(str1, "start", 5) == 0)
-		printf("%s\n Prueba a poner: ./grademe \"start\" para empezar\n\n", RED);
-	if (strncmp(str1, "empezamos", 9) == 0)
-	{
-		printf("%s\n You're connected: %s%s\n", WHITE, GREEN, username); 
-		printf("%s You can log out at any time.", WHITE); 
-		printf("%s If this program tells you you earned points\n", WHITE);
-		printf("%s then they will be counted whatever happens.\n\n", WHITE);
-		printf("%s You are about to start the project %sExam ZIP%s, in", WHITE, GREEN, WHITE);
-        if (i == 1)
-            printf("%s PRACTICE%s mode, at level.\n", MAGENTA, WHITE);
-        else
-            printf("%s REAL%s mode, at level.\n", MAGENTA, WHITE);
-		printf("%s You would have 3hrs to complete this project.\n", WHITE);
-		printf("%s Start exam ZIP --> ", WHITE);     
-		printf("%s %s\n\n", GREEN, control_date() + 2);
-		printf("%s =====================================================================================\n", WHITE);
-		printf("%s Mode:", WHITE);
-        if (i == 1)
-            printf("%s PRACTICE ZIP\n\n", MAGENTA);
-        else
-            printf("%s REAL ZIP\n\n", MAGENTA);
-	}
-	if (strncmp(str1, "questionX", 9) == 0)
-	{
-		print_msg ("empezamos", "");
-		printf("%s Assignement: %s%s.c\n\n", WHITE, GREEN, sfile);
-		printf("%s Subject location: %s%s/subjects/%s.txt\n", WHITE, GREEN, currentDirPath, sfile); 
-		printf("%s Exercice location: %s%s/rendu/%s/\n", WHITE, RED, currentDirPath, sfile); 
-		printf("%s Here you %sdon't need%s to use git.\n\n", WHITE, RED, WHITE); 
-		calculate_time_difference(control_date());
-		printf("%s =====================================================================================\n", WHITE);
-		printf("%s You can work on your assignesent.\n When you are sure you're done with it, use the \"./grademe\" command to be graded.\n", WHITE);
-	}
-}
-
-int	check_norminette(const char *filename)
+int	check_norminette(const char *filename, char mode)
 {
 	char		buffer[128];
 	FILE		*pipe;
@@ -614,17 +353,20 @@ int	check_norminette(const char *filename)
 		fprintf(stderr, "Error al ejecutar norminette.\n");
 		return (-1);
 	}
-	i = ctr_txt("control/ctrl_question.txt", "", 'G', 0);
-	if (i > 0)
+	i = atoi(ctr_txt("control/ctrl_question.txt", 'G', 'P', 0, ""));
+	if (i > 0 && (mode == 'P' ||  mode == 'p'))
 		printf("\n NORMINETTE:\n\n");
 	while (fgets(buffer, sizeof(buffer), pipe) != NULL)
 	{
 		if (i > 0)
 		{
-			if (strstr(buffer, ".c: OK!") != NULL)
-				printf("%s %s", GREEN, buffer);
-			else
-				printf("%s %s", RED, buffer);
+			if(mode == 'P' ||  mode == 'p')
+            {
+                if (strstr(buffer, ".c: OK!") != NULL)
+				    printf("%s %s", GREEN, buffer);
+			    else
+				    printf("%s %s", RED, buffer);
+            }
 			if (strstr(buffer, "Error") != NULL)
 				error_count++;
 		}
@@ -635,104 +377,207 @@ int	check_norminette(const char *filename)
 		return (-1);
 	}
 	if (error_count > 1)
-		error_count--;	
-	if (error_count > 0)
-		control_penal();
+		error_count--;
 	return (error_count);
 }
 
-/*** Ejecuta norminette y abre una tubería para leer su salida
- * int	check_norminette(const char *filename)
- * Lee la salida de norminette línea por línea
- * Imprime la salida de norminette para depuración
- * Cuenta los errores (esto es una simplificación; deberías ajustar esto 
-   según la salida real de norminette)
- * Cierra la tubería
-*/
-
-int mynorminette(const char *sfile)
+int mypaco_write(char *name, char *argv1, char *argv2, char *argv3)
 {
-    int         norminette;
-    int         result;
-    const char 	*color;
+    FILE    *fp;
+    char    buffer[BUFFER_SIZE];
+    char    result[BUFFER_SIZE] = "";
+    int     ret;
+    //int     pruebas = 0;
 
-    printf("%s\n*********************NORMINETTE***********************\n", WHITE);
-	norminette = 0;
-		result = check_norminette(sfile);
-		if (result == -1)
-			printf("%sHubo un error al ejecutar norminette. ft_lstmap_bonus.c\n", RED);
-		else
-			norminette = norminette + result;
-	if (norminette == 0)
-        color = get_color(2);
-	else
-        color = get_color(1);
-	if (norminette == 0)
-		printf("%s\tNorminette: OK!\n", color);
-	else
-		printf("%sErrores Norminette: %d\n", color, norminette);
-	printf("%s******************************************************\n", color);
+    // Construir el comando de compilación
+    char compile_c[256];
+    snprintf(compile_c, sizeof(compile_c), "gcc -o rendu/%s/%s rendu/%s/%s.c", name, name, name, name);
+    //printf("\n compile_c: %s\n\n", compile_c);
+
+    // Compilar aff_z.c
+    //  ret = system("gcc -o aff_z aff_z.c");
+    ret = system(compile_c);
+    if (ret != 0) {
+        fprintf(stderr, "Error compiling %s.c\n", name);
+        return 1;
+    }
+
+    // Construir el comando de ejecución
+    char rendu_c[256];
+    if (strncmp(name, "aff_a", 5) == 0)
+        snprintf(rendu_c, sizeof(rendu_c), "rendu/%s/./%s %s", name, name, argv1);
+    snprintf(rendu_c, sizeof(rendu_c), "rendu/%s/./%s", name, name);
+    //printf("\n rendu_c: %s\n\n", rendu_c);   
+    // Ejecutar el comando y abrir un pipe para leer su salida
+    fp = popen(rendu_c, "r");
+    if (fp == NULL) {
+        perror("popen");
+        return 1;
+    }
+
+    // Leer la salida del comando y guardarla en el buffer
+    while (fgets(buffer, sizeof(buffer), fp) != NULL) {
+        strcat(result, buffer);
+    }
+
+    // Cerrar el pipe
+    if (pclose(fp) == -1) {
+        perror("pclose");
+        return 1;
+    }
+    
+
+    // Imprimir la salida capturada
+    //printf("Captured : %s", result);
+    if ((strncmp(name, "aff_a", 5) == 0) 
+        && ((strncmp(argv1, "", 0) == 0) || (strncmp(argv1, "zz sent le poney", 16) == 0))
+        && (strncmp(result, "", 0) == 0))
+    {
+        return (1);
+    } 
+    if ((strncmp(name, "aff_a", 5) == 0) 
+        && ((strncmp(argv1, "abc", 3) == 0) || (strncmp(argv1, "dubO a POIL", 11) == 0))
+        && (strncmp(result, "a", 0) == 0))
+    {
+        return (1);
+    }      
+    (void)argv1;
+    (void)argv2;
+    (void)argv3;
+    if ((strncmp(name, "aff_z", 5) == 0) && (strncmp(result, "z", 1) == 0))
+    {
+        return (1);
+    }
     return (0);
 }
 
-void remove_directory(const char *path) 
+void    print_msg (const char *str1, const char *sfile)
 {
-    struct dirent *entry;
-    DIR *dir = opendir(path);
+	char        *username = getlogin();
+    char        currentPath[MAX_PATH];
+    char        *currentDirPath = getcwd(currentPath, MAX_PATH);
+    char         *mode;
 
-    if (dir == NULL) {
-        perror("opendir");
-        return;
+    mode = ctr_txt("control/ctrl_mode.txt", 'G', 'P', 0, "");
+	if (strncmp(str1, "start", 5) == 0)
+    {
+		printf("%s\n Para empezar prueba con cualquiera de estos comandos:\n\n", RED);
+        printf("%s ./grademe start P%s --> MODE PRACTICE\n", CYAN, WHITE);
+        printf("%s ./grademe start R%s --> MODE REAL\n\n", CYAN, WHITE);
     }
-
-    while ((entry = readdir(dir)) != NULL) {
-        char file_path[1024];
-        struct stat statbuf;
-
-        // Omitir las entradas "." y ".."
-        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
-            continue;
-        }
-
-        snprintf(file_path, sizeof(file_path), "%s/%s", path, entry->d_name);
-
-        if (stat(file_path, &statbuf) == 0) {
-            if (S_ISDIR(statbuf.st_mode)) {
-                // Recursivamente eliminar subdirectorio
-                remove_directory(file_path);
-            } else {
-                // Eliminar archivo
-                if (unlink(file_path) != 0) {
-                    perror("unlink");
-                }
-            }
-        }
-    }
-
-    closedir(dir);
-
-    // Eliminar el directorio en sí
-    if (rmdir(path) != 0) {
-        perror("rmdir");
-    }
+    if (strncmp(str1, "empezamos", 9) == 0)
+	{
+		printf("%s\n You're connected: %s%s\n", WHITE, GREEN, username); 
+		printf("%s You can log out at any time.", WHITE); 
+		printf("%s If this program tells you you earned points\n", WHITE);
+		printf("%s then they will be counted whatever happens.\n\n", WHITE);
+		printf("%s You are about to start the project %sExam ZIP%s, in", WHITE, GREEN, WHITE);
+        if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+            printf("%s PRACTICE%s mode, at level.\n", MAGENTA, WHITE);
+        else
+            printf("%s REAL%s mode, at level.\n", MAGENTA, WHITE);
+		printf("%s You would have 3hrs to complete this project.\n", WHITE);
+		printf("%s Start exam ZIP --> ", WHITE);     
+		printf("%s %s\n\n", GREEN, get_date());
+		printf("%s =====================================================================================\n", WHITE);
+		printf("%s Mode:", WHITE);
+        if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+            printf("%s PRACTICE ZIP\n\n", MAGENTA);
+        else
+            printf("%s REAL ZIP\n\n", MAGENTA);
+	}
+	if (strncmp(str1, "questionX", 9) == 0)
+	{
+		print_msg ("empezamos", "");
+		printf("%s Assignement: %s%s.c\n\n", WHITE, GREEN, sfile);
+		printf("%s Subject location: %s%s/subjects/%s.txt\n", WHITE, GREEN, currentDirPath, sfile); 
+		printf("%s Exercice location: %s%s/rendu/%s/\n", WHITE, RED, currentDirPath, sfile); 
+		printf("%s Here you %sdon't need%s to use git.\n\n", WHITE, RED, WHITE); 
+		calculate_time_difference(get_date());
+		printf("%s =====================================================================================\n", WHITE);
+		printf("%s You can work on your assignesent.\n When you are sure you're done with it, use the \"./grademe\" command to be graded.\n\n\n", WHITE);
+	}
 }
 
-
-
-
-void	ft_start(void)
+void ft_file(const char *sfile)
 {
-	printf("%s\n ft_start\n\n", WHITE);
+    char 	*questions_txt = strdup("questions/");
+    char 	*subjects_txt = strdup("subjects/");
+    char 	*rendu_txt = strdup("rendu/");
+
+	strcat(questions_txt, sfile);
+	strcat(questions_txt, ".txt");
+    strcat(subjects_txt, sfile);
+	strcat(subjects_txt, ".txt");
+    strcat(rendu_txt, sfile);
+    
+    copy_file(questions_txt, subjects_txt);//11
+    if (check_file(rendu_txt) != 0)
+        new_folder(rendu_txt);
+    print_msg ("questionX", sfile);
+}
+
+void    ctrl_txt_show(const char c)
+{
+    char	*line_g = NULL;
+
+    line_g = ctr_txt("control/ctrl_mode.txt", 'G', c, 0, "");
+    if (line_g)
+        printf("%s %s\n", line_g, WHITE);
+    if (line_g)        
+        free(line_g);
+    line_g = ctr_txt("control/ctrl_penal.txt", 'G', c, 0, "");
+    if (line_g)
+        printf("%s %s\n", line_g, WHITE);
+    if (line_g)        
+        free(line_g);
+    line_g = ctr_txt("control/ctrl_question.txt", 'G', c, 0, "");
+    if (line_g)
+        printf("%s %s\n", line_g, WHITE);
+    if (line_g)        
+        free(line_g);
+    line_g = ctr_txt("control/ctrl_time.txt", 'G', c, 0, "");
+    if (line_g)
+        printf("%s %s\n", line_g, WHITE);
+    if (line_g)        
+        free(line_g);
+}
+
+void    ctrl_txt_reset(const char c)
+{
+    ctr_txt("control/ctrl_mode.txt", 'W', c, 0, "");// Mode P
+    ctr_txt("control/ctrl_penal.txt", 'W', c, 0, "");// Penal 0 reinicia 1 en P 5 en R
+    ctr_txt("control/ctrl_question.txt", 'W', c, 0, "");// Mode P
+}
+
+void    ctrl_txt_start(const char c)
+{
+    int i;
+    i = atoi(ctr_txt("control/ctrl_question.txt", 'G', 'P', 0, ""));
+    ctr_txt("control/ctrl_time.txt", 'W', c, i, "");// Mode P
+}
+
+void	ft_start(const char c)
+{
+    ctrl_txt_reset(c);
+    ctrl_txt_start(c);
+    new_folder("subjects");
+    new_folder("rendu");
 }
 
 void	ft_help(void)
 {
-	int	i;
-	
-	i = ctr_txt("control/ctrl_question.txt", "", 'G', 0);
-	printf("%s\n ExamZIP v1.0\n\n", WHITE);
+	int	    i = 0;
+	char    *q_text = ctr_txt("control/ctrl_question.txt", 'G', 'X', 0, "");
+    if (q_text)
+    {
+        i = atoi(q_text);
+        free(q_text);
+    }
 	if (i > 0)
-		printf("%s CABECERA\n", GREEN);
+    {
+		printf("%s\n CABECERA\n\n", GREEN);
+    }
 	printf("%s Instruccciones:\n\n", WHITE);
 	printf("%s Copia todo en la carpeta que quieras.\n\n", WHITE);
 	printf("%s Compila %sgcc -o grademe grademe.c -Wall -Wextra -Werror\n\n", WHITE, CYAN);
@@ -742,73 +587,127 @@ void	ft_help(void)
 	printf("%s    Tanto Norminette como lo que se esperaba recibir vs lo que devuelve tu cógigo\n\n", WHITE);
 	printf("%s Para evaluar cada ejercicio ejecuta %s./grademe\n\n", WHITE, CYAN);
 	printf("%s Para reiniciar una simulación ejecuta %s./grademe reset R%s o %s./grademe reset P\n", WHITE, CYAN, WHITE, CYAN);
-	printf("%s  (OJO ESTO BORRA LA CARPETA %s\"rendu\"%s, si quieres conservar tus ficheros muevelos antes)\n\n", WHITE, RED, WHITE);
+	printf("%s  OJO ESTO BORRA LA CARPETA %s\"rendu\"%s, si quieres conservar tus ficheros muevelos antes\n\n", WHITE, RED, WHITE);
 	printf("%s Para ver la ayuda ejecuta %s./grademe help\n\n", WHITE, CYAN);
 }
 
-void	ft_reset(void)
+void	ft_reset(const char c)
 {
-	printf("%s\n ft_reset\n\n", WHITE);
-/* 	remove_directory("rendu");
-	remove_directory("subjects");
-	control('W', 0); */
-	printf("%s\n Reinicializado, para comenzar prueba con ./grademe \"start\"\n\n", WHITE);
+	ctrl_txt_reset(c);
+    if (check_file("rendu") == 0)
+    {
+        remove_directory("rendu");
+    }
+    if (check_file("subjects") == 0)
+    {
+        remove_directory("subjects");
+    }
+	/* control('W', 0); */
+	printf("%s\n Reinicializado, para comenzar prueba con ./grademe \"start\" %c\n\n", WHITE , c);
+    //ctrl_txt_show(c);
 }
 
-int	main(int argc, char **argv)
-{ 
-    const char *color;
-    int         i;
-    int         second;
+int get_second(void)
+{
     time_t      current_time;
     struct tm   *time_info;
+    int         second;
 
-	printf("\033[H\033[J");
-    color = get_color(7);
-	printf("%s\n EXAM ZIP v1.0\n", WHITE);		
     time(&current_time);
     time_info = localtime(&current_time);
-	i = control('G', 0);
     second = time_info->tm_sec;	
 	second = second % 10;
-	if (argc == 2 && (strncmp(argv[1], "reset", 5) == 0))
-    {
-		remove_directory("rendu");
-		remove_directory("subjects");
-		control('W', 0);
-		printf("%s\n Inicializado, para comenzar prueba con ./grademe \"start\"\n\n", WHITE);
-		return(0);
-	}   
-    if (argc == 2 && i == 0)
-    {
-        if (strncmp(argv[1], "start", 5) == 0)
-        {
-            if (second > 0 && second <= 5)
-                control('W', 11);
-            else
-                control('W', 12);     
-            new_folder("subjects");
-            new_folder("rendu");
-        }
-        else
-		{
-            printf("%s\n El tiempo corre, prueba con ./grademe \"start\"\n\n", RED);
-			return(0);
-		}
-    }
-    i = control('G', 0);
+    return (second);
+}
+
+void	ft_grademe(void)
+{
+	char        *name;
+    char        *mode;
+    char 	    *rendu_c = strdup("rendu/");
+    int         penal=0;
+    int         second;
+    int         i = 0;
+
+    second = get_second();
+    i = atoi(ctr_txt("control/ctrl_question.txt", 'G', 'P', 0, ""));
+    name = ctr_txt("control/ctrl_question_name.txt", 'G', 'P', 0, "");
+    mode = ctr_txt("control/ctrl_mode.txt", 'G', 'P', 0, "");
+    penal = atoi(ctr_txt("control/ctrl_penal.txt", 'G', 'P', 0, ""));
+    print_msg ("questionX", name);
+    strcat(rendu_c, name);
+    strcat(rendu_c, "/");
+    strcat(rendu_c, name);
+	strcat(rendu_c, ".c");
+    printf("%s\n Please be patient, this CAN take several minutes...\n (10 seconds is fast, 30 seconds is expected, 3 minutes is a maximum)\n\n", WHITE);
+    printf("%s waiting...\n\n", YELLOW);
+    sleep(penal);
     if (i > 0)
     {
         if (i > 0 && i < 14)
-            if ((second > 0 && second <= 5) || i == 11)
+        {
+            if (((second > 0 && second <= 5) || (i == 11)) &&  (i != 12))
             {
-                if (check_file("subjects/aff_a.txt") == 0)
+                if (check_file(rendu_c) == 0)
                 {
-                    print_msg ("questionX", "aff_a");
-                    if (check_file("rendu/aff_a/aff_a.c") == 0)
-                        check_norminette("rendu/aff_a/aff_a.c");
+                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    {    
+                        if (strncmp(name, "aff_a", 5) == 0)
+                        {
+                            if (mypaco_write(name, "abc", "", "") == 1)
+                            {
+                                if (mypaco_write(name, "dubO a POIL", "", "") == 1)
+                                {   
+                                    if (mypaco_write(name, "zz sent le poney", "", "") == 1)
+                                    {
+                                        if (mypaco_write(name, "", "", "") == 1)
+                                        {
+                                            printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN); 
+                                            if (check_file("subjects/aff_a.txt") == 0)
+                                            {
+                                                if (remove("subjects/aff_a.txt") == 0) 
+                                                {
+                                                    //printf("File %s deleted successfully.\n", "subjects/aff_a.txt");
+                                                }
+                                                else
+                                                {
+                                                    perror("Error deleting the file");
+                                                }
+                                            }
+                                            i = 20;
+                                        }
+                                        else
+                                        {
+                                            if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+                                            {
+                                                ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
+                                            }
+                                            else
+                                            {
+                                                ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
+                                            }
+                                            printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
+
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+
+                    }
                     else
-						control_penal();
+                    {
+                        if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+                        {
+                            ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
+                        }
+                        else
+                        {
+                            ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
+                        }
+                        printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
+                    }
                 }
                 else
                 {
@@ -820,48 +719,152 @@ int	main(int argc, char **argv)
             }
             else
             {
-                if (check_file("subjects/aff_z.txt") == 0)
+                if (check_file(rendu_c) == 0)
                 {
-                    print_msg ("questionX", "aff_z");
-                    if (check_file("rendu/aff_z/aff_z.c") == 0)
-                        check_norminette("rendu/aff_z/aff_z.c");
-                    else
-						control_penal();
-                }
-                else
-                {
-                    copy_file("questions/aff_z.txt", "subjects/aff_z.txt");//12
-                    if (check_file("rendu/aff_z") != 0)
-                        new_folder("rendu/aff_z");
-                    print_msg ("questionX", "aff_z");
+                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    { 
+                        if (strncmp(name, "aff_z", 5) == 0)
+                        {
+                            if (mypaco_write(name, "", "", "") == 1)
+                            {
+                                printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN); 
+                                if (check_file("subjects/aff_z.txt") == 0)
+                                {
+                                    if (remove("subjects/aff_z.txt") == 0) 
+                                    {
+                                        //printf("File %s deleted successfully.\n", "subjects/aff_a.txt");
+                                    }
+                                    else
+                                    {
+                                        perror("Error deleting the file");
+                                    }
+                                }                                
+                                i = 20;
+                            }
+                            else
+                            {
+                                if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+                                {
+                                    ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
+                                }
+                                else
+                                {
+                                    ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
+                                }
+                                printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
+                            }
+                        }
+                        else
+                        {
+                            copy_file("questions/aff_z.txt", "subjects/aff_z.txt");//12
+                            if (check_file("rendu/aff_z") != 0)
+                                new_folder("rendu/aff_z");
+                            print_msg ("questionX", "aff_z");
+                        }
+                    }
                 }
             }
-        else if (i > 20 && i < 24)
-            if (second > 0 && second <= 3)
-                printf("%s23 rev_print.c\n", color);//23
-            else if (second >= 4 && second <= 6)
-                printf("%s21 ft_putstr.c\n", color);//21
+        }
+        
+        second = get_second();
+        printf("%sAQUI %d i %d\n", WHITE, second, i);
+        if (i >= 20 && i < 24)
+        {
+            if ((second >= 0 && second <= 3) || i == 23)
+                printf("%s23 rev_print.c\n", WHITE);//23
+            else if ((second >= 4 && second <= 6) || i == 21)
+                printf("%s21 ft_putstr.c\n", WHITE);//21
             else
-                printf("%s22 ft_strlen.c\n", color);//22
-        else if (i > 30 && i < 34)
-            printf("%s31 fizzbuzz.c\t\t32 buzzfizz.c\n", color);
-        else if (i > 40 && i < 44)
-            printf("%s41 aff_first_param.c\t42 aff_last_param.c\n", color);
-        else if (i > 50 && i < 54)
-            printf("%s51 first_word.c\t\t52 rot_13.c\t\t53 rotone.c\n", color);
-        else if (i > 60 && i < 64)
-            printf("%s61 inter.c\t\t62 union.c\t\t62 last_word.c\n", color);
-        else if (i > 70 && i < 74)
-            printf("%s71 ft_itoa.c\t\t72 ft_range.c\t\t73 ft_rrange_z.c\n", color);
-        else if (i > 80 && i < 84)
-            printf("%s81 expand_str.c\t\t82 ft_split.c\n", color);
-        else
+                printf("%s22 ft_strlen.c\n", WHITE);//22
+        }
+        if (i >= 30 && i < 34)
+            printf("%s31 fizzbuzz.c\t\t32 buzzfizz.c\n", WHITE);
+        if (i >= 40 && i < 44)
+            printf("%s41 aff_first_param.c\t42 aff_last_param.c\n", WHITE);
+        if (i >= 50 && i < 54)
+            printf("%s51 first_word.c\t\t52 rot_13.c\t\t53 rotone.c\n", WHITE);
+        if (i >= 60 && i < 64)
+           printf("%s61 inter.c\t\t62 union.c\t\t62 last_word.c\n", WHITE);
+        if (i >= 70 && i < 74)
+            printf("%s71 ft_itoa.c\t\t72 ft_range.c\t\t73 ft_rrange_z.c\n", WHITE);
+        if (i >= 80 && i < 84)
+            printf("%s81 expand_str.c\t\t82 ft_split.c\n", WHITE);
+        if (i >= 90)
             printf("%s SUCCESS\n\n", GREEN);
     }
     else
-	    print_msg ("start", "");
-    printf("\n");
-    //(void)currentDirPath;
-    //printf("Current path: %s\n", currentDirPath);
+    {
+        if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+        {
+            ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
+            printf(" No existe: %s\n\n", rendu_c);
+        }
+        else
+        {
+            ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
+        }
+        printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
+    }
+}
+
+
+int	main(int argc, char **argv)
+{ 
+	int i;
+    int         second;
+    time_t      current_time;
+    struct tm   *time_info;
+
+    time(&current_time);
+    time_info = localtime(&current_time);
+    second = time_info->tm_sec;	
+	second = second % 10;
+    printf("\033[H\033[J");
+    printf("%s\n ExamZIP v1.0\n\n", WHITE);
+	if (argc >= 2 && (strncmp(argv[1], "help", 5) == 0) )  
+    {
+    	if (strncmp(argv[1], "help", 5) == 0) 
+			ft_help();
+        return(0);  
+    }
+    i = atoi(ctr_txt("control/ctrl_question.txt", 'G', 'P', 0, ""));
+    if (argc == 3 
+        && ((strncmp(argv[1], "start", 5) == 0) || (strncmp(argv[1], "reset", 5) == 0))
+        && (argv[2][0] == 'P' || argv[2][0] == 'R' || argv[2][0] == 'p' || argv[2][0] == 'r'))
+    {
+		if (strncmp(argv[1], "start", 5) == 0)
+        {
+            if (i == 0)
+            {
+                ft_start(argv[2][0]);
+                if (second > 0 && second <= 5)
+                {
+                    ft_file("aff_a");//11
+                    ctr_txt("control/ctrl_question.txt", 'W', argv[2][0], 11, "");
+                    ctr_txt("control/ctrl_question_name.txt", 'W', argv[2][0], 11, "aff_a");
+                }
+                else
+                {
+                    ft_file("aff_z");//12
+                    ctr_txt("control/ctrl_question.txt", 'W', argv[2][0], 12, "");
+                    ctr_txt("control/ctrl_question_name.txt", 'W', argv[2][0], 11, "aff_z");
+                }
+            }
+            else
+            {
+		        printf("%s\n Para empezar de nuevo prueba con cualquiera de estos comandos:\n\n", RED);
+                printf("%s ./grademe reset P%s --> MODE PRACTICE\n", CYAN, WHITE);
+                printf("%s ./grademe reset R%s --> MODE REAL\n\n", CYAN, WHITE);
+            }
+        }
+		if (strncmp(argv[1], "reset", 5) == 0)
+			ft_reset(argv[2][0]);	
+		return(0);
+	}
+    
+    if (i == 0)
+        print_msg ("start", "");
+    else
+	    ft_grademe();  
 	return (0);
 }
