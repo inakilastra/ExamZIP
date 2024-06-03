@@ -6,7 +6,7 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/03 15:37:12 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:46:00 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -767,7 +767,6 @@ void	ft_grademe(void)
         }
         
         second = get_second();
-        printf("%sAQUI %d i %d\n", WHITE, second, i);
         if (i >= 20 && i < 24)
         {
             if ((second >= 0 && second <= 3) || i == 23)
