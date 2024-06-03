@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grademe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/03 15:46:00 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/04 00:05:58 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*ft_itoa(int n)// ft_itoa
 	return (str);
 }
 
-void remove_directory(const char *path) 
+void	remove_directory(const char *path)
 {
     struct dirent *entry;
     DIR *dir = opendir(path);
@@ -355,7 +355,7 @@ int	check_norminette(const char *filename, char mode)
 	}
 	i = atoi(ctr_txt("control/ctrl_question.txt", 'G', 'P', 0, ""));
 	if (i > 0 && (mode == 'P' ||  mode == 'p'))
-		printf("\n NORMINETTE:\n\n");
+		printf("%s\n NORMINETTE:\n\n", CYAN);
 	while (fgets(buffer, sizeof(buffer), pipe) != NULL)
 	{
 		if (i > 0)
@@ -628,6 +628,7 @@ void	ft_grademe(void)
     int         penal=0;
     int         second;
     int         i = 0;
+	int			k = 0;
 
     second = get_second();
     i = atoi(ctr_txt("control/ctrl_question.txt", 'G', 'P', 0, ""));
@@ -654,45 +655,60 @@ void	ft_grademe(void)
                     {    
                         if (strncmp(name, "aff_a", 5) == 0)
                         {
+							k = 0;
+							printf("%s\n PACO:\n\n", CYAN);
                             if (mypaco_write(name, "abc", "", "") == 1)
-                            {
-                                if (mypaco_write(name, "dubO a POIL", "", "") == 1)
-                                {   
-                                    if (mypaco_write(name, "zz sent le poney", "", "") == 1)
-                                    {
-                                        if (mypaco_write(name, "", "", "") == 1)
-                                        {
-                                            printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN); 
-                                            if (check_file("subjects/aff_a.txt") == 0)
-                                            {
-                                                if (remove("subjects/aff_a.txt") == 0) 
-                                                {
-                                                    //printf("File %s deleted successfully.\n", "subjects/aff_a.txt");
-                                                }
-                                                else
-                                                {
-                                                    perror("Error deleting the file");
-                                                }
-                                            }
-                                            i = 20;
-                                        }
-                                        else
-                                        {
-                                            if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
-                                            {
-                                                ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
-                                            }
-                                            else
-                                            {
-                                                ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
-                                            }
-                                            printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
-
-                                        }
-                                    }
-                                }
-                            }
-
+							{
+                            	if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+									printf("%s ./aff_a abc\n", GREEN);
+								k++;
+							}
+							else
+								printf("%s ./aff_a abc\n", RED);
+							if (mypaco_write(name, "dubO a POIL", "", "") == 1)
+							{
+                            	if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+									printf("%s ./aff_a \"dubO a POIL\"\n", GREEN);
+								k++;
+							}
+							else
+								printf("%s ./aff_a \"dubO a POIL\"\n", RED);  
+							if (mypaco_write(name, "zz sent le poney", "", "") == 1)
+							{
+                            	if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+									printf("%s ./aff_a \"zz sent le poney\"\n", GREEN);
+								k++;
+							}
+							else
+								printf("%s ./aff_a \"zz sent le poney\"\n", RED);
+							if (mypaco_write(name, "", "", "") == 1)
+							{
+                            	if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+									printf("%s ./aff_a \n", GREEN);
+								k++;
+							}
+							else
+								printf("%s ./aff_a \n", RED);
+							if (k == 4)
+							{
+								printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN);
+								if (check_file("subjects/aff_a.txt") == 0)
+								{
+									if (remove("subjects/aff_a.txt") == 0)
+										printf(" ");
+									else
+										perror("Error deleting the file");
+								}
+								i = 20;
+							}
+							else
+							{
+								if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+									ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
+								else
+									ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
+								printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE);
+							}
                         }
 
                     }
@@ -725,8 +741,18 @@ void	ft_grademe(void)
                     { 
                         if (strncmp(name, "aff_z", 5) == 0)
                         {
-                            if (mypaco_write(name, "", "", "") == 1)
-                            {
+                            k = 0;
+							printf("%s\n PACO:\n\n", CYAN);
+							if (mypaco_write(name, "", "", "") == 1)
+							{
+                            	if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+									printf("%s ./aff_z \n", GREEN);
+								k++;
+							}
+							else
+								printf("%s ./aff_z \n", RED);
+							if (k == 1)
+							{
                                 printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN); 
                                 if (check_file("subjects/aff_z.txt") == 0)
                                 {

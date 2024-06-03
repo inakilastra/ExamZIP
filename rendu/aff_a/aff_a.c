@@ -1,19 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   aff_z.c                                            :+:      :+:    :+:   */
+/*   aff_a.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/03 16:19:59 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/03 16:22:39 by ilastra-         ###   ########.fr       */
+/*   Created: 2024/06/03 23:56:32 by inaki             #+#    #+#             */
+/*   Updated: 2024/06/03 23:59:25 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-	write(1, "z", 1);
+	int	i;
+
+	i = 0;
+	if (argc != 2)
+		write(1, "a", 1);
+	else
+	{
+		while (argv[1][i])
+		{
+			if (argv[1][i] == 'a')
+			{
+				write(1, "a", 1);
+				break ;
+			}
+			i++;
+		}
+	}
+	write(1, "\n", 1);
 	return (0);
 }
