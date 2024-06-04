@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grademe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/04 17:09:11 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/05 00:14:32 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -570,11 +570,11 @@ void    ctrl_txt_show(const char c)
         free(line_g);
 }
 
-void    ctrl_txt_reset(const char c)
+void    ctrl_txt_reset()
 {
-    ctr_txt("control/ctrl_mode.txt", 'W', c, 0, "");// Mode P
-    ctr_txt("control/ctrl_penal.txt", 'W', c, 0, "");// Penal 0 reinicia 1 en P 5 en R
-    ctr_txt("control/ctrl_question.txt", 'W', c, 0, "");// Mode P
+    ctr_txt("control/ctrl_mode.txt", 'W', 'P', 0, "");// Mode P
+    ctr_txt("control/ctrl_penal.txt", 'W', 'P', 0, "");// Penal 0 reinicia 1 en P 5 en R
+    ctr_txt("control/ctrl_question.txt", 'W', 'P', 0, "");// Mode P
 }
 
 void    ctrl_txt_start(const char c)
@@ -586,7 +586,7 @@ void    ctrl_txt_start(const char c)
 
 void	ft_start(const char c)
 {
-    ctrl_txt_reset(c);
+    //ctrl_txt_reset();
     ctrl_txt_start(c);
     new_folder("subjects");
     new_folder("rendu");
@@ -619,9 +619,9 @@ void	ft_help(void)
 	printf("%s Para ver la ayuda ejecuta %s./grademe help\n\n", WHITE, CYAN);
 }
 
-void	ft_reset(const char c)
+void	ft_reset()
 {
-	ctrl_txt_reset(c);
+	ctrl_txt_reset();
     if (check_file("rendu") == 0)
     {
         remove_directory("rendu");
@@ -870,6 +870,7 @@ void	ft_grademe(void)
         if (i == 20)
         {
             input_ok();
+second = 1;
             if (second >= 0 && second <= 3)
             {
                 ft_file("rev_print");//23
@@ -888,19 +889,25 @@ void	ft_grademe(void)
                 ctr_txt("control/ctrl_question.txt", 'W', mode[0], 22, "");
                 ctr_txt("control/ctrl_question_name.txt", 'W', mode[0], 22, "ft_strlen");                
             }
+            i = atoi(ctr_txt("control/ctrl_question.txt", 'G', 'P', 0, ""));
+            name = ctr_txt("control/ctrl_question_name.txt", 'G', 'P', 0, "");
+            mode = ctr_txt("control/ctrl_mode.txt", 'G', 'P', 0, "");
+            rendu_c = strdup("");
+            rendu_c = get_rendu_c(name);
             printf("\033[H\033[J");
-            printf("%s\n ExamZIP v1.0\n\n", WHITE);          
+            printf("%s\n ExamZIP v1.0\n\n", WHITE);
+            print_msg ("questionX", name);         
         }
 
        
         if (i > 20 && i < 24)
-        {
+        {printf("%s\n AQUI 1 %s\n\n", WHITE, rendu_c);
             if (i == 23)
-            {
+            {printf("%s\n AQUI 2 %s\n\n", WHITE, rendu_c);
                 if (check_file(rendu_c) == 0)
                 {printf("%s\n AQUI 3 %s\n\n", WHITE, rendu_c);
                     if (check_norminette(rendu_c,mode[0]) == 0)
-                    {    
+                    {   printf("%s\n AQUI 4 %s\n\n", WHITE, rendu_c); 
                         if (strncmp(name, "rev_print", 5) == 0)
                         {
                             k = 0;
@@ -1056,9 +1063,15 @@ int	main(int argc, char **argv)
 			ft_help();
         return(0);  
     }
+    if (argc >= 2 && (strncmp(argv[1], "reset", 5) == 0) )  
+    {
+		if (strncmp(argv[1], "reset", 5) == 0)
+			ft_reset();	
+		return(0); 
+    }
     i = atoi(ctr_txt("control/ctrl_question.txt", 'G', 'P', 0, ""));
     if (argc == 3 
-        && ((strncmp(argv[1], "start", 5) == 0) || (strncmp(argv[1], "reset", 5) == 0))
+        && (strncmp(argv[1], "start", 5) == 0)
         && (argv[2][0] == 'P' || argv[2][0] == 'R' || argv[2][0] == 'p' || argv[2][0] == 'r'))
     {
 		if (strncmp(argv[1], "start", 5) == 0)
@@ -1082,13 +1095,11 @@ int	main(int argc, char **argv)
             else
 		        ft_grademe(); 
         }
-		if (strncmp(argv[1], "reset", 5) == 0)
-			ft_reset(argv[2][0]);	
-		return(0);
 	}
     
     if (i == 0)
-        print_msg ("start", "");
+        //print_msg ("start", "");
+        printf(" ");
     else
 	    ft_grademe();  
 	return (0);
