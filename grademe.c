@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grademe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/04 00:05:58 by inaki            ###   ########.fr       */
+/*   Updated: 2024/06/04 09:26:39 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,12 +200,12 @@ char *ctr_txt(const char *sfile_txt, const char get_write, char mode, int questi
             i += i;
             if (mode == 'P' || mode == 'p')
                 if (question == 0)
-                    line_new = strdup(ft_itoa(1));
+                    line_new = strdup(ft_itoa(15));
                 else
                     line_new = strdup(ft_itoa(i));
             else
                 if (question == 0)
-                    line_new = strdup(ft_itoa(5));
+                    line_new = strdup(ft_itoa(60));
                 else
                     line_new = strdup(ft_itoa(i)); 
         }
@@ -576,9 +576,10 @@ void	ft_help(void)
     }
 	if (i > 0)
     {
-		printf("%s\n CABECERA\n\n", GREEN);
+		print_msg ("questionX", "");
     }
-	printf("%s Instruccciones:\n\n", WHITE);
+	printf("%s ./grademe help\n\n", CYAN);
+    printf("%s Instruccciones:\n\n", WHITE);
 	printf("%s Copia todo en la carpeta que quieras.\n\n", WHITE);
 	printf("%s Compila %sgcc -o grademe grademe.c -Wall -Wextra -Werror\n\n", WHITE, CYAN);
 	printf("%s Para comenzar una simulación ejecuta %s./grademe start R%s o %s./grademe start P\n", WHITE, CYAN, WHITE, CYAN);
@@ -602,9 +603,8 @@ void	ft_reset(const char c)
     {
         remove_directory("subjects");
     }
-	/* control('W', 0); */
-	printf("%s\n Reinicializado, para comenzar prueba con ./grademe \"start\" %c\n\n", WHITE , c);
-    //ctrl_txt_show(c);
+    printf("%s Reinicializado.\n", GREEN);
+    print_msg ("start", "");
 }
 
 int get_second(void)
@@ -629,12 +629,15 @@ void	ft_grademe(void)
     int         second;
     int         i = 0;
 	int			k = 0;
+    int         show = 0;
 
     second = get_second();
     i = atoi(ctr_txt("control/ctrl_question.txt", 'G', 'P', 0, ""));
     name = ctr_txt("control/ctrl_question_name.txt", 'G', 'P', 0, "");
     mode = ctr_txt("control/ctrl_mode.txt", 'G', 'P', 0, "");
     penal = atoi(ctr_txt("control/ctrl_penal.txt", 'G', 'P', 0, ""));
+    if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+        show = 1;
     print_msg ("questionX", name);
     strcat(rendu_c, name);
     strcat(rendu_c, "/");
@@ -659,7 +662,7 @@ void	ft_grademe(void)
 							printf("%s\n PACO:\n\n", CYAN);
                             if (mypaco_write(name, "abc", "", "") == 1)
 							{
-                            	if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+                            	if (show == 1)
 									printf("%s ./aff_a abc\n", GREEN);
 								k++;
 							}
@@ -667,7 +670,7 @@ void	ft_grademe(void)
 								printf("%s ./aff_a abc\n", RED);
 							if (mypaco_write(name, "dubO a POIL", "", "") == 1)
 							{
-                            	if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+                            	if (show == 1)
 									printf("%s ./aff_a \"dubO a POIL\"\n", GREEN);
 								k++;
 							}
@@ -675,7 +678,7 @@ void	ft_grademe(void)
 								printf("%s ./aff_a \"dubO a POIL\"\n", RED);  
 							if (mypaco_write(name, "zz sent le poney", "", "") == 1)
 							{
-                            	if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+                            	if (show == 1)
 									printf("%s ./aff_a \"zz sent le poney\"\n", GREEN);
 								k++;
 							}
@@ -683,7 +686,7 @@ void	ft_grademe(void)
 								printf("%s ./aff_a \"zz sent le poney\"\n", RED);
 							if (mypaco_write(name, "", "", "") == 1)
 							{
-                            	if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+                            	if (show == 1)
 									printf("%s ./aff_a \n", GREEN);
 								k++;
 							}
@@ -700,10 +703,11 @@ void	ft_grademe(void)
 										perror("Error deleting the file");
 								}
 								i = 20;
+                                ctr_txt("control/ctrl_penal.txt", 'W', 'P', 0, ""); 
 							}
 							else
 							{
-								if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+								if (show == 1)
 									ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
 								else
 									ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
@@ -714,7 +718,7 @@ void	ft_grademe(void)
                     }
                     else
                     {
-                        if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+                        if (show == 1)
                         {
                             ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
                         }
@@ -727,10 +731,25 @@ void	ft_grademe(void)
                 }
                 else
                 {
-                    copy_file("questions/aff_a.txt", "subjects/aff_a.txt");//11
+                    if ((check_file("subjects/aff_a.txt") == 0)
+                        && (check_file("rendu/aff_a") == 0) 
+                        && (check_file("rendu/aff_a/aff_a.c") != 0))
+                    {
+                        if (show == 1)
+                            {
+                                ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
+                                printf(" No existe: %s\n\n", rendu_c);
+                            }
+                            else
+                            {
+                                ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
+                            }
+                            printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
+                    }           
+                    if (check_file("subjects/aff_a.txt") != 0)
+                        copy_file("questions/aff_a.txt", "subjects/aff_a.txt");//11
                     if (check_file("rendu/aff_a") != 0)
                         new_folder("rendu/aff_a");
-                    print_msg ("questionX", "aff_a");
                 }
             }
             else
@@ -738,14 +757,14 @@ void	ft_grademe(void)
                 if (check_file(rendu_c) == 0)
                 {
                     if (check_norminette(rendu_c,mode[0]) == 0)
-                    { 
+                    {    
                         if (strncmp(name, "aff_z", 5) == 0)
                         {
                             k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
 							if (mypaco_write(name, "", "", "") == 1)
 							{
-                            	if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+                            	if (show == 1)
 									printf("%s ./aff_z \n", GREEN);
 								k++;
 							}
@@ -753,41 +772,62 @@ void	ft_grademe(void)
 								printf("%s ./aff_z \n", RED);
 							if (k == 1)
 							{
-                                printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN); 
-                                if (check_file("subjects/aff_z.txt") == 0)
-                                {
-                                    if (remove("subjects/aff_z.txt") == 0) 
-                                    {
-                                        //printf("File %s deleted successfully.\n", "subjects/aff_a.txt");
-                                    }
-                                    else
-                                    {
-                                        perror("Error deleting the file");
-                                    }
-                                }                                
-                                i = 20;
-                            }
-                            else
-                            {
-                                if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
-                                {
-                                    ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
-                                }
-                                else
-                                {
-                                    ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
-                                }
-                                printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
-                            }
+								printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN);
+								if (check_file("subjects/aff_z.txt") == 0)
+								{
+									if (remove("subjects/aff_z.txt") == 0)
+										printf(" ");
+									else
+										perror("Error deleting the file");
+								}
+								i = 20;
+                                ctr_txt("control/ctrl_penal.txt", 'W', 'P', 0, ""); 
+							}
+							else
+							{
+								if (show == 1)
+									ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
+								else
+									ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
+								printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE);
+							}
+                        }
+
+                    }
+                    else
+                    {
+                        if (show == 1)
+                        {
+                            ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
                         }
                         else
                         {
-                            copy_file("questions/aff_z.txt", "subjects/aff_z.txt");//12
-                            if (check_file("rendu/aff_z") != 0)
-                                new_folder("rendu/aff_z");
-                            print_msg ("questionX", "aff_z");
+                            ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
                         }
+                        printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
                     }
+                }
+                else
+                {
+                    if ((check_file("subjects/aff_z.txt") == 0)
+                        && (check_file("rendu/aff_z") == 0) 
+                        && (check_file("rendu/aff_z/aff_z.c") != 0))
+                    {
+                        if (show == 1)
+                            {
+                                ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
+                                printf(" No existe: %s\n\n", rendu_c);
+                            }
+                            else
+                            {
+                                ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
+                            }
+                            printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
+                    }           
+                    if (check_file("subjects/aff_z.txt") != 0)
+                        copy_file("questions/aff_z.txt", "subjects/aff_a.txt");//11
+                    if (check_file("rendu/aff_z") != 0)
+                        new_folder("rendu/aff_z");
                 }
             }
         }
@@ -819,7 +859,7 @@ void	ft_grademe(void)
     }
     else
     {
-        if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+        if (show == 1)
         {
             ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
             printf(" No existe: %s\n\n", rendu_c);
@@ -876,11 +916,7 @@ int	main(int argc, char **argv)
                 }
             }
             else
-            {
-		        printf("%s\n Para empezar de nuevo prueba con cualquiera de estos comandos:\n\n", RED);
-                printf("%s ./grademe reset P%s --> MODE PRACTICE\n", CYAN, WHITE);
-                printf("%s ./grademe reset R%s --> MODE REAL\n\n", CYAN, WHITE);
-            }
+		        ft_grademe(); 
         }
 		if (strncmp(argv[1], "reset", 5) == 0)
 			ft_reset(argv[2][0]);	
