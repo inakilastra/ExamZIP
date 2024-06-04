@@ -6,7 +6,7 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/04 15:00:00 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:06:30 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -891,6 +891,7 @@ void	ft_grademe(void)
         }
         input_ok();
         if (i >= 70 && i < 74)
+        {
             printf("%s71 ft_itoa.c\t\t72 ft_range.c\t\t73 ft_rrange_z.c\n", WHITE);
         }
         input_ok();
