@@ -6,7 +6,7 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/04 15:53:45 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/04 17:09:11 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ int new_folder(const char *dir)
 
 int	check_file(const char *str)
 {
-    char check_path[256];
+    char check_path[1024];
 
     snprintf(check_path, sizeof(check_path), "%s", str);  
     if (access(check_path, F_OK) != 0)
@@ -647,11 +647,22 @@ int get_second(void)
     return (second);
 }
 
+char *get_rendu_c(const char *name)
+{
+    char    *rendu_c = strdup("rendu/");
+    
+    strcat(rendu_c, name);
+    strcat(rendu_c, "/");
+    strcat(rendu_c, name);
+	strcat(rendu_c, ".c"); 
+    return (rendu_c);
+}
+
 void	ft_grademe(void)
 {
 	char        *name;
     char        *mode;
-    char 	    *rendu_c = strdup("rendu/");
+    char 	    *rendu_c;
     int         penal=0;
     int         second;
     int         i = 0;
@@ -666,10 +677,7 @@ void	ft_grademe(void)
     if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
         show = 1;
     print_msg ("questionX", name);
-    strcat(rendu_c, name);
-    strcat(rendu_c, "/");
-    strcat(rendu_c, name);
-	strcat(rendu_c, ".c");
+    rendu_c = get_rendu_c(name);
     printf("%s\n Please be patient, this CAN take several minutes...\n (10 seconds is fast, 30 seconds is expected, 3 minutes is a maximum)\n\n", WHITE);
     printf("%s waiting...\n\n", YELLOW);
     sleep(penal);
@@ -858,15 +866,39 @@ void	ft_grademe(void)
                 }
             }
         }
-        if (i >= 20 && i < 24)
+        
+        if (i == 20)
         {
             input_ok();
-            second = get_second();
-            if ((second >= 0 && second <= 3) || ((i == 23) && ((i != 21) || (i != 22))))
+            if (second >= 0 && second <= 3)
             {
-                printf("%s23 rev_print.c\n", WHITE);//23
+                ft_file("rev_print");//23
+                ctr_txt("control/ctrl_question.txt", 'W', mode[0], 23, "");
+                ctr_txt("control/ctrl_question_name.txt", 'W', mode[0], 23, "rev_print");
+            }
+            else if (second >= 4 && second <= 6)
+            {
+                ft_file("ft_putstr");//21
+                ctr_txt("control/ctrl_question.txt", 'W', mode[0], 21, "");
+                ctr_txt("control/ctrl_question_name.txt", 'W', mode[0], 21, "ft_putstr");              
+            }
+            else
+            {
+                ft_file("ft_strlen");//22
+                ctr_txt("control/ctrl_question.txt", 'W', mode[0], 22, "");
+                ctr_txt("control/ctrl_question_name.txt", 'W', mode[0], 22, "ft_strlen");                
+            }
+            printf("\033[H\033[J");
+            printf("%s\n ExamZIP v1.0\n\n", WHITE);          
+        }
+
+       
+        if (i > 20 && i < 24)
+        {
+            if (i == 23)
+            {
                 if (check_file(rendu_c) == 0)
-                {
+                {printf("%s\n AQUI 3 %s\n\n", WHITE, rendu_c);
                     if (check_norminette(rendu_c,mode[0]) == 0)
                     {    
                         if (strncmp(name, "rev_print", 5) == 0)
@@ -941,11 +973,11 @@ void	ft_grademe(void)
                         new_folder("rendu/rev_print");
                 }                
             }
-            else if ((second >= 4 && second <= 6) || ((i == 21) && ((i != 22) || (i != 23))))
+            else if (i == 21)
             {
                 printf("%s21 ft_putstr.c\n", WHITE);//21
             }
-            else if ((i == 22) && ((i != 21) || (i != 23)))
+            else if (i == 22)
             {
                 printf("%s22 ft_strlen.c\n", WHITE);//22
             }
