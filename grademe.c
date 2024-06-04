@@ -6,7 +6,7 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/04 15:06:30 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:17:12 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -857,10 +857,11 @@ void	ft_grademe(void)
                 }
             }
         }
-        input_ok();
+        
         second = get_second();
         if (i >= 20 && i < 24)
         {
+            input_ok();
             if ((second >= 0 && second <= 3) || i == 23)
                 printf("%s23 rev_print.c\n", WHITE);//23
             else if ((second >= 4 && second <= 6) || i == 21)
@@ -868,38 +869,42 @@ void	ft_grademe(void)
             else
                 printf("%s22 ft_strlen.c\n", WHITE);//22
         }
-        input_ok();
         
         if (i >= 30 && i < 34)
         {
+            input_ok();
             printf("%s31 fizzbuzz.c\t\t32 buzzfizz.c\n", WHITE);
         }
-        input_ok();
+
         if (i >= 40 && i < 44)
         {
+            input_ok();
             printf("%s41 aff_first_param.c\t42 aff_last_param.c\n", WHITE);
         }
-        input_ok();
+
         if (i >= 50 && i < 54)
         {
+            input_ok();
             printf("%s51 first_word.c\t\t52 rot_13.c\t\t53 rotone.c\n", WHITE);
         }
-        input_ok();
+
         if (i >= 60 && i < 64)
         {
+            input_ok();
            printf("%s61 inter.c\t\t62 union.c\t\t62 last_word.c\n", WHITE);
         }
-        input_ok();
+
         if (i >= 70 && i < 74)
         {
+            input_ok();
             printf("%s71 ft_itoa.c\t\t72 ft_range.c\t\t73 ft_rrange_z.c\n", WHITE);
         }
-        input_ok();
+        
         if (i >= 80 && i < 84)
         {
+            input_ok();
             printf("%s81 expand_str.c\t\t82 ft_split.c\n", WHITE);
         }
-        input_ok();
         if (i >= 90)
             printf("%s SUCCESS\n\n", GREEN);
     }
