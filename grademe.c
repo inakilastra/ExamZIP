@@ -6,7 +6,7 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/04 13:58:40 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:00:00 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,31 @@
 #define MAX_PATH 4096
 #define MAX_LINE_LENGTH 256
 #define BUFFER_SIZE 128
+
+
+int input_ok() {
+    char input[100];
+
+    printf("Escribe 'ok' para continuar:\n");
+
+    // Leer la entrada del usuario
+    while (1) {
+        // Limpiar el buffer de entrada
+        fgets(input, sizeof(input), stdin);
+
+        // Eliminar el carácter de nueva línea que fgets agrega
+        input[strcspn(input, "\n")] = 0;
+
+        // Comparar la entrada con "ok"
+        if (strcmp(input, "ok") == 0) {
+            printf("Has escrito 'ok'. Continuando...\n");
+            break;
+        } else {
+            printf("Entrada no válida. Por favor, escribe 'ok':\n");
+        }
+    }
+    return (0);
+}
 
 static int	n_dig(int n)// ft_itoa
 {
@@ -832,7 +857,7 @@ void	ft_grademe(void)
                 }
             }
         }
-        
+        input_ok();
         second = get_second();
         if (i >= 20 && i < 24)
         {
@@ -843,18 +868,37 @@ void	ft_grademe(void)
             else
                 printf("%s22 ft_strlen.c\n", WHITE);//22
         }
+        input_ok();
+        
         if (i >= 30 && i < 34)
+        {
             printf("%s31 fizzbuzz.c\t\t32 buzzfizz.c\n", WHITE);
+        }
+        input_ok();
         if (i >= 40 && i < 44)
+        {
             printf("%s41 aff_first_param.c\t42 aff_last_param.c\n", WHITE);
+        }
+        input_ok();
         if (i >= 50 && i < 54)
+        {
             printf("%s51 first_word.c\t\t52 rot_13.c\t\t53 rotone.c\n", WHITE);
+        }
+        input_ok();
         if (i >= 60 && i < 64)
+        {
            printf("%s61 inter.c\t\t62 union.c\t\t62 last_word.c\n", WHITE);
+        }
+        input_ok();
         if (i >= 70 && i < 74)
             printf("%s71 ft_itoa.c\t\t72 ft_range.c\t\t73 ft_rrange_z.c\n", WHITE);
+        }
+        input_ok();
         if (i >= 80 && i < 84)
+        {
             printf("%s81 expand_str.c\t\t82 ft_split.c\n", WHITE);
+        }
+        input_ok();
         if (i >= 90)
             printf("%s SUCCESS\n\n", GREEN);
     }
