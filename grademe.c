@@ -6,7 +6,7 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/04 15:17:12 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:53:45 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -429,10 +429,11 @@ int mypaco_write(char *name, char *argv1, char *argv2, char *argv3)
 
     // Construir el comando de ejecución
     char rendu_c[256];
-    if (strncmp(name, "aff_a", 5) == 0)
+    if (strncmp(name, "aff_a", 5) == 0
+        || strncmp(name, "rev_print", 9) == 0)
         snprintf(rendu_c, sizeof(rendu_c), "rendu/%s/./%s %s", name, name, argv1);
     snprintf(rendu_c, sizeof(rendu_c), "rendu/%s/./%s", name, name);
-    printf("\n rendu_c: %s\n\n", rendu_c);  
+    //rev_print
     //printf("\n rendu_c: %s\n\n", rendu_c);   
     // Ejecutar el comando y abrir un pipe para leer su salida
     fp = popen(rendu_c, "r");
@@ -851,23 +852,103 @@ void	ft_grademe(void)
                             printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
                     }           
                     if (check_file("subjects/aff_z.txt") != 0)
-                        copy_file("questions/aff_z.txt", "subjects/aff_a.txt");//11
+                        copy_file("questions/aff_z.txt", "subjects/aff_z.txt");//11
                     if (check_file("rendu/aff_z") != 0)
                         new_folder("rendu/aff_z");
                 }
             }
         }
-        
-        second = get_second();
         if (i >= 20 && i < 24)
         {
             input_ok();
-            if ((second >= 0 && second <= 3) || i == 23)
+            second = get_second();
+            if ((second >= 0 && second <= 3) || ((i == 23) && ((i != 21) || (i != 22))))
+            {
                 printf("%s23 rev_print.c\n", WHITE);//23
-            else if ((second >= 4 && second <= 6) || i == 21)
+                if (check_file(rendu_c) == 0)
+                {
+                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    {    
+                        if (strncmp(name, "rev_print", 5) == 0)
+                        {
+                            k = 0;
+							printf("%s\n PACO:\n\n", CYAN);
+							if (mypaco_write(name, "", "", "") == 1)
+							{
+                            	if (show == 1)
+									printf("%s ./rev_print \n", GREEN);
+								k++;
+							}
+							else
+								printf("%s ./rev_print \n", RED);
+							if (k == 1)
+							{
+								printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN);
+								if (check_file("subjects/rev_print.txt") == 0)
+								{
+									if (remove("subjects/rev_print.txt") == 0)
+										printf(" ");
+									else
+										perror("Error deleting the file");
+								}
+								i = 20;
+                                ctr_txt("control/ctrl_penal.txt", 'W', 'P', 0, ""); 
+							}
+							else
+							{
+								if (show == 1)
+									ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
+								else
+									ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
+								printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE);
+							}
+                        }
+
+                    }
+                    else
+                    {
+                        if (show == 1)
+                        {
+                            ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
+                        }
+                        else
+                        {
+                            ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
+                        }
+                        printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
+                    }
+                }
+                else
+                {
+                    if ((check_file("subjects/rev_print.txt") == 0)
+                        && (check_file("rendu/rev_print") == 0) 
+                        && (check_file("rendu/rev_print/rev_print.c") != 0))
+                    {
+                        if (show == 1)
+                            {
+                                ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
+                                printf(" No existe: %s\n\n", rendu_c);
+                            }
+                            else
+                            {
+                                ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
+                            }
+                            printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
+                    }           
+                    if (check_file("subjects/rev_print.txt") != 0)
+                        copy_file("questions/rev_print.txt", "subjects/rev_print.txt");//11
+                    if (check_file("rendu/rev_print") != 0)
+                        new_folder("rendu/rev_print");
+                }                
+            }
+            else if ((second >= 4 && second <= 6) || ((i == 21) && ((i != 22) || (i != 23))))
+            {
                 printf("%s21 ft_putstr.c\n", WHITE);//21
-            else
+            }
+            else if ((i == 22) && ((i != 21) || (i != 23)))
+            {
                 printf("%s22 ft_strlen.c\n", WHITE);//22
+            }
         }
         
         if (i >= 30 && i < 34)
