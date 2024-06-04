@@ -6,7 +6,7 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/04 09:26:39 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/04 13:58:40 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -391,7 +391,7 @@ int mypaco_write(char *name, char *argv1, char *argv2, char *argv3)
 
     // Construir el comando de compilación
     char compile_c[256];
-    snprintf(compile_c, sizeof(compile_c), "gcc -o rendu/%s/%s rendu/%s/%s.c", name, name, name, name);
+    snprintf(compile_c, sizeof(compile_c), "gcc -o rendu/%s/%s rendu/%s/%s.c -Wall -Wextra -Werror", name, name, name, name);
     //printf("\n compile_c: %s\n\n", compile_c);
 
     // Compilar aff_z.c
@@ -407,6 +407,7 @@ int mypaco_write(char *name, char *argv1, char *argv2, char *argv3)
     if (strncmp(name, "aff_a", 5) == 0)
         snprintf(rendu_c, sizeof(rendu_c), "rendu/%s/./%s %s", name, name, argv1);
     snprintf(rendu_c, sizeof(rendu_c), "rendu/%s/./%s", name, name);
+    printf("\n rendu_c: %s\n\n", rendu_c);  
     //printf("\n rendu_c: %s\n\n", rendu_c);   
     // Ejecutar el comando y abrir un pipe para leer su salida
     fp = popen(rendu_c, "r");
