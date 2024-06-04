@@ -21,6 +21,6 @@
         <li><p><strong>OJO ESTO BORRA LA CARPETA "rendu"</strong>, si quieres conservar tus ficheros muevelos antes</p></li>
     </ul>
 <li><p>Para ver la ayuda ejecuta <strong><code>./grademe help</code></strong></p></li>   
-<li><p>@nbsp;</p></li>   
+<li><p>&nbsp;</p></li>   
 <li><p>Para ver bien los textos el fondo de la terminal tiene que ser negro</p></li>   
 </ul>
