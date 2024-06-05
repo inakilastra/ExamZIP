@@ -4,6 +4,8 @@
         "wait.h": "c",
         "types.h": "c",
         "stdio.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "stat.h": "c",
+        "dirent.h": "c"
     }
 }

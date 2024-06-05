@@ -6,11 +6,11 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/05 15:54:08 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/05 16:58:02 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mylib.h"
+
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,6 +21,7 @@
 #include <sys/wait.h>
 #include <errno.h>
 #include <dirent.h>
+#include "mylib.h"
 
 #define DEF_COLOR "\033[0;39m"
 #define GRAY "\033[0;90m"
@@ -1052,8 +1053,7 @@ second = 5;
             }
             else if (i == 21)
             {
-                input_ok();
-                ft_putstr("hola que tal");
+                ft_input_ok();
                 input_ok();
 				if (check_file(rendu_c) == 0)
                 {
