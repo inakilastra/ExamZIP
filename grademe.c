@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grademe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/05 00:14:32 by inaki            ###   ########.fr       */
+/*   Updated: 2024/06/05 11:25:03 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,29 +35,49 @@
 #define BUFFER_SIZE 128
 
 
-int input_ok() {
-    char input[100];
+int	input_ok(void)
+{
+	char	input[100];
 
-    printf("Escribe 'ok' para continuar:\n");
+	printf("Escribe \"ok\" para continuar:\n");
+	while (1)
+	{
+		fgets(input, sizeof(input), stdin);
+		input[strcspn(input, "\n")] = 0;
+		if (strcmp(input, "ok") == 0)
+		{
+			printf("Has escrito \"ok\". Continuando...\n");
+			break ;
+		}
+		else
+			printf("Entrada no válida. Por favor, escribe \"ok\":\n\n");
+	}
+	return (0);
+}
+/** int	input_ok(void)
+{
+	char	input[100];
 
-    // Leer la entrada del usuario
-    while (1) {
+	printf("Escribe 'ok' para continuar:\n");
+	// Leer la entrada del usuario
+    while (1) 
+	{
         // Limpiar el buffer de entrada
-        fgets(input, sizeof(input), stdin);
-
+		fgets(input, sizeof(input), stdin);
         // Eliminar el carácter de nueva línea que fgets agrega
-        input[strcspn(input, "\n")] = 0;
-
+		input[strcspn(input, "\n")] = 0;
         // Comparar la entrada con "ok"
-        if (strcmp(input, "ok") == 0) {
-            printf("Has escrito 'ok'. Continuando...\n");
-            break;
-        } else {
-            printf("Entrada no válida. Por favor, escribe 'ok':\n");
+		if (strcmp(input, "ok") == 0)
+		{
+			printf("Has escrito 'ok'. Continuando...\n");
+			break ;
         }
+		else
+			printf("Entrada no válida. Por favor, escribe 'ok':\n");
     }
     return (0);
 }
+*/
 
 static int	n_dig(int n)// ft_itoa
 {
@@ -203,7 +223,7 @@ char *ctr_txt(const char *sfile_txt, const char get_write, char mode, int questi
     }
     while (fgets(line, sizeof(line), control_fp))
     {
-        line_get = strdup(line); 
+		line_get = strdup(line); 
     }
     if (strcmp(sfile_txt, "control/ctrl_penal.txt") == 0
         || strcmp(sfile_txt, "control/ctrl_question.txt") == 0)
@@ -432,7 +452,8 @@ int mypaco_write(char *name, char *argv1, char *argv2, char *argv3)
     if (strncmp(name, "aff_a", 5) == 0
         || strncmp(name, "rev_print", 9) == 0)
         snprintf(rendu_c, sizeof(rendu_c), "rendu/%s/./%s %s", name, name, argv1);
-    snprintf(rendu_c, sizeof(rendu_c), "rendu/%s/./%s", name, name);
+	else
+    	snprintf(rendu_c, sizeof(rendu_c), "rendu/%s/./%s", name, name);
     //rev_print
     //printf("\n rendu_c: %s\n\n", rendu_c);   
     // Ejecutar el comando y abrir un pipe para leer su salida
@@ -443,10 +464,11 @@ int mypaco_write(char *name, char *argv1, char *argv2, char *argv3)
     }
 
     // Leer la salida del comando y guardarla en el buffer
-    while (fgets(buffer, sizeof(buffer), fp) != NULL) {
-        strcat(result, buffer);
+    while (fgets(buffer, sizeof(buffer), fp) != NULL)
+	{
+		strcat(result, buffer);
     }
-
+	//printf("argv1 --> %s result --> %s\n", argv1, result);
     // Cerrar el pipe
     if (pclose(fp) == -1) {
         perror("pclose");
@@ -457,21 +479,42 @@ int mypaco_write(char *name, char *argv1, char *argv2, char *argv3)
     // Imprimir la salida capturada
     //printf("Captured : %s", result);
     if ((strncmp(name, "aff_a", 5) == 0) 
-        && ((strncmp(argv1, "", 0) == 0) || (strncmp(argv1, "zz sent le poney", 16) == 0))
-        && (strncmp(result, "", 0) == 0))
+        && (strncmp(argv1, "zz sent le poney", 16) == 0)
+        && (strncmp(result, "\n", 1) == 0))
     {
         return (1);
     } 
     if ((strncmp(name, "aff_a", 5) == 0) 
-        && ((strncmp(argv1, "abc", 3) == 0) || (strncmp(argv1, "dubO a POIL", 11) == 0))
-        && (strncmp(result, "a", 0) == 0))
+        && ((strncmp(argv1, "abc", 3) == 0) 
+			|| (strncmp(argv1, "dubO a POIL", 11) == 0)
+			|| (strncmp(argv1, "", 0) == 0))
+        && (strncmp(result, "a", 1) == 0))
     {
         return (1);
-    }      
+    }
+    if ((strncmp(name, "rev_print", 9) == 0) 
+        && (strncmp(argv1, "zaz", 3) == 0)
+        && (strncmp(result, "zaz", 3) == 0))
+    {
+		return (1);
+    }
+    if ((strncmp(name, "rev_print", 9) == 0) 
+        && (strncmp(argv1, "dub0 a POIL", 11) == 0)
+        && (strncmp(result, "LIOP a 0bud", 11) == 0))
+    {
+		return (1);
+	}
+    if ((strncmp(name, "rev_print", 9) == 0) 
+        && (strncmp(argv1, "", 0) == 0)
+        && (strncmp(result, "", 0) == 0))
+    {
+		return (1);
+    } 	
     (void)argv1;
     (void)argv2;
     (void)argv3;
-    if ((strncmp(name, "aff_z", 5) == 0) && (strncmp(result, "z", 1) == 0))
+    if ((strncmp(name, "aff_z", 5) == 0) 
+		&& (strncmp(result, "z", 1) == 0))
     {
         return (1);
     }
@@ -649,12 +692,24 @@ int get_second(void)
 
 char *get_rendu_c(const char *name)
 {
-    char    *rendu_c = strdup("rendu/");
-    
-    strcat(rendu_c, name);
-    strcat(rendu_c, "/");
-    strcat(rendu_c, name);
-	strcat(rendu_c, ".c"); 
+    if (name == NULL)
+	{
+        return NULL; // Verifica que el nombre no sea NULL
+    }
+
+    // Calcula el tamaño necesario para la cadena resultante
+    size_t total_length = strlen("rendu/") + strlen(name) + strlen("/") + strlen(name) + strlen(".c") + 1;
+
+    // Asigna memoria suficiente
+    char *rendu_c = (char *)malloc(total_length * sizeof(char));
+    if (rendu_c == NULL)
+	{
+        perror("Error asignando memoria");
+        exit(EXIT_FAILURE);
+    }
+
+    // Construye la cadena completa usando snprintf
+    snprintf(rendu_c, total_length, "rendu/%s/%s.c", name, name);
     return (rendu_c);
 }
 
@@ -703,7 +758,7 @@ void	ft_grademe(void)
 							}
 							else
 								printf("%s ./aff_a abc\n", RED);
-							if (mypaco_write(name, "dubO a POIL", "", "") == 1)
+							if (mypaco_write(name, "\"dubO a POIL\"", "", "") == 1)
 							{
                             	if (show == 1)
 									printf("%s ./aff_a \"dubO a POIL\"\n", GREEN);
@@ -711,7 +766,7 @@ void	ft_grademe(void)
 							}
 							else
 								printf("%s ./aff_a \"dubO a POIL\"\n", RED);  
-							if (mypaco_write(name, "zz sent le poney", "", "") == 1)
+							if (mypaco_write(name, "\"zz sent le poney\"", "", "") == 1)
 							{
                             	if (show == 1)
 									printf("%s ./aff_a \"zz sent le poney\"\n", GREEN);
@@ -733,7 +788,7 @@ void	ft_grademe(void)
 								if (check_file("subjects/aff_a.txt") == 0)
 								{
 									if (remove("subjects/aff_a.txt") == 0)
-										printf(" ");
+										printf("\n");
 									else
 										perror("Error deleting the file");
 								}
@@ -889,29 +944,43 @@ second = 1;
                 ctr_txt("control/ctrl_question.txt", 'W', mode[0], 22, "");
                 ctr_txt("control/ctrl_question_name.txt", 'W', mode[0], 22, "ft_strlen");                
             }
-            i = atoi(ctr_txt("control/ctrl_question.txt", 'G', 'P', 0, ""));
             name = ctr_txt("control/ctrl_question_name.txt", 'G', 'P', 0, "");
             mode = ctr_txt("control/ctrl_mode.txt", 'G', 'P', 0, "");
-            rendu_c = strdup("");
-            rendu_c = get_rendu_c(name);
+
+    		rendu_c = strdup(get_rendu_c(name));		
             printf("\033[H\033[J");
-            printf("%s\n ExamZIP v1.0\n\n", WHITE);
+            printf("%s\n ExamZIP v1.03\n\n", WHITE);		
             print_msg ("questionX", name);         
         }
 
-       
         if (i > 20 && i < 24)
-        {printf("%s\n AQUI 1 %s\n\n", WHITE, rendu_c);
+        {
             if (i == 23)
-            {printf("%s\n AQUI 2 %s\n\n", WHITE, rendu_c);
+            {
                 if (check_file(rendu_c) == 0)
-                {printf("%s\n AQUI 3 %s\n\n", WHITE, rendu_c);
+                {
                     if (check_norminette(rendu_c,mode[0]) == 0)
-                    {   printf("%s\n AQUI 4 %s\n\n", WHITE, rendu_c); 
-                        if (strncmp(name, "rev_print", 5) == 0)
+                    {
+                        if (strncmp(name, "rev_print", 9) == 0)
                         {
                             k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
+							if (mypaco_write(name, "zaz", "", "") == 1)
+							{
+                            	if (show == 1)
+									printf("%s ./rev_print \"zaz\"\n", GREEN);
+								k++;
+							}
+							else
+								printf("%s ./rev_print \"zaz\"\n", RED);
+							if (mypaco_write(name, "\"dub0 a POIL\"", "", "") == 1)
+							{
+                            	if (show == 1)
+									printf("%s ./rev_print \"dub0 a POIL\"\n", GREEN);
+								k++;
+							}
+							else
+								printf("%s ./rev_print \"dub0 a POIL\"\n", RED);
 							if (mypaco_write(name, "", "", "") == 1)
 							{
                             	if (show == 1)
@@ -919,14 +988,14 @@ second = 1;
 								k++;
 							}
 							else
-								printf("%s ./rev_print \n", RED);
-							if (k == 1)
+								printf("%s ./rev_print \n", RED);																
+							if (k == 3)
 							{
 								printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN);
 								if (check_file("subjects/rev_print.txt") == 0)
 								{
 									if (remove("subjects/rev_print.txt") == 0)
-										printf(" ");
+										printf("\n");
 									else
 										perror("Error deleting the file");
 								}
@@ -1041,6 +1110,7 @@ second = 1;
         }
         printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
     }
+		free(rendu_c);
 }
 
 
