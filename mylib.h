@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mylib.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 13:42:57 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/05 17:20:07 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/05 23:49:03 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,36 +33,34 @@
 #define BUFFER_SIZE 128
 
 
-#ifndef _FILE_FT_INPUT_OK_H
-#define _FILE_FT_INPUT_OK_H
-
 # ifdef _FILE_FT_INPUT_OK_C
-#  define FT_INPUT_OK_C_PATH __FILE__ "/control/lib/ft_input_ok.c"
-#  include FT_INPUT_OK_C_PATH
+#  include "control/lib/ft_input_ok.c"
 # else
 	int	ft_input_ok_fallback(void)
 	{
 		char	input[100];
 
-		printf("%s Sheldon Cooper dice:\n", CYAN);
-		printf("%s Escribe \"ok\" para continuar... o te explicaré la", CYAN);
-		printf("%s  teoría de la relatividad en detalle.\n", CYAN);
+		printf("%s Escribe \"ok\" para que Molintte te deje", CYAN);
+		printf("%s pasar al siguiente nivel.\n", CYAN);
 		while (1)
 		{
 			fgets(input, sizeof(input), stdin);
 			input[strcspn(input, "\n")] = 0;
 			if (strcmp(input, "ok") == 0)
 			{
-				printf("Perfecto Has escrito \"ok\".\n");
+				printf("%s Excelente deducción. Al parecer, posees la ", GREEN);
+				printf("%s capacidad básica de seguir instrucciones.\n", GREEN);
 				break ;
 			}
 			else
-				printf("Sólo escribe \"ok\":\n\n");
+			{
+				printf("%s \"%s\" no cumple Norminette\n", YELLOW, input);
+				printf("%s Escribe \"ok\" el tiempo corre...\n", YELLOW);
+			}
 		}
 		return (0);
 	}
     #define ft_input_ok ft_input_ok_fallback
-# endif
 # endif
 
 int ft_input_ok(void);

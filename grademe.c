@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   grademe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/05 16:58:02 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/05 23:51:22 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
+#define _FILE_FT_INPUT_OK_C
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,6 +22,7 @@
 #include <errno.h>
 #include <dirent.h>
 #include "mylib.h"
+
 
 #define DEF_COLOR "\033[0;39m"
 #define GRAY "\033[0;90m"
@@ -926,7 +927,7 @@ void	ft_grademe(void)
         
         if (i == 20)
         {
-            input_ok();
+            ft_input_ok();
 second = 5;
             if (second >= 0 && second <= 3)
             {
@@ -1053,8 +1054,6 @@ second = 5;
             }
             else if (i == 21)
             {
-                ft_input_ok();
-                input_ok();
 				if (check_file(rendu_c) == 0)
                 {
                     if (check_norminette(rendu_c,mode[0]) == 0)
@@ -1139,37 +1138,37 @@ second = 5;
         
         if (i >= 30 && i < 34)
         {
-            input_ok();
+            ft_input_ok();
             printf("%s31 fizzbuzz.c\t\t32 buzzfizz.c\n", WHITE);
         }
 
         if (i >= 40 && i < 44)
         {
-            input_ok();
+            ft_input_ok();
             printf("%s41 aff_first_param.c\t42 aff_last_param.c\n", WHITE);
         }
 
         if (i >= 50 && i < 54)
         {
-            input_ok();
+            ft_input_ok();
             printf("%s51 first_word.c\t\t52 rot_13.c\t\t53 rotone.c\n", WHITE);
         }
 
         if (i >= 60 && i < 64)
         {
-            input_ok();
+            ft_input_ok();
            printf("%s61 inter.c\t\t62 union.c\t\t62 last_word.c\n", WHITE);
         }
 
         if (i >= 70 && i < 74)
         {
-            input_ok();
+            ft_input_ok();
             printf("%s71 ft_itoa.c\t\t72 ft_range.c\t\t73 ft_rrange_z.c\n", WHITE);
         }
         
         if (i >= 80 && i < 84)
         {
-            input_ok();
+            ft_input_ok();
             printf("%s81 expand_str.c\t\t82 ft_split.c\n", WHITE);
         }
         if (i >= 90)

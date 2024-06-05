@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libgrademe.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 16:14:02 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/05 16:35:45 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/05 22:55:06 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@
 # include <string.h>
 
 # ifdef _FILE_FT_PRUEBA_C
-#  define FT_PRUEBA_PATH __FILE__ "/prueba/ft_prueba.c"
-#  include FT_PRUEBA_PATH
+#  include "ft_prueba.c"
 # else
     void ft_prueba_fallback(char *str)
     {
@@ -30,14 +29,14 @@
             write(1, str, 1);
             str++;
         }
+        write(1, "\n", 1);
     }
     #define ft_prueba ft_prueba_fallback
 # endif
 
-
 #ifdef _FILE_FT_PUTSTR_C
 #  define FT_PUTSTR_PATH __FILE__ "/rendu/ft_putstr/ft_putstr.c"
-    #include FT_PUTSTR_PATH
+#  include FT_PUTSTR_PATH
 #endif
 
 void ft_prueba(char *str);
