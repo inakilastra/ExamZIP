@@ -6,10 +6,11 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/05 11:25:03 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/05 15:54:08 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "mylib.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -925,7 +926,7 @@ void	ft_grademe(void)
         if (i == 20)
         {
             input_ok();
-second = 1;
+second = 5;
             if (second >= 0 && second <= 3)
             {
                 ft_file("rev_print");//23
@@ -1051,7 +1052,84 @@ second = 1;
             }
             else if (i == 21)
             {
-                printf("%s21 ft_putstr.c\n", WHITE);//21
+                input_ok();
+                ft_putstr("hola que tal");
+                input_ok();
+				if (check_file(rendu_c) == 0)
+                {
+                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    {
+                        if (strncmp(name, "ft_putstr", 9) == 0)
+                        {
+                            k = 0;
+							printf("%s\n PACO:\n\n", CYAN);
+							if (mypaco_write(name, "abcdefg", "", "") == 1)
+							{
+                            	if (show == 1)
+									printf("%s ./ft_putstr \"abcdefg\"\n", GREEN);
+								k++;
+							}
+							else
+								printf("%s ./ft_putstr \"abcdefg\"\n", RED);																
+							if (k == 1)
+							{
+								printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN);
+								if (check_file("subjects/ft_putstr.txt") == 0)
+								{
+									if (remove("subjects/ft_putstr.txt") == 0)
+										printf("\n");
+									else
+										perror("Error deleting the file");
+								}
+								i = 20;
+                                ctr_txt("control/ctrl_penal.txt", 'W', 'P', 0, ""); 
+							}
+							else
+							{
+								if (show == 1)
+									ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
+								else
+									ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
+								printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE);
+							}
+                        }
+
+                    }
+                    else
+                    {
+                        if (show == 1)
+                        {
+                            ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
+                        }
+                        else
+                        {
+                            ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
+                        }
+                        printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
+                    }
+                }
+                else
+                {
+                    if ((check_file("subjects/ft_putstr.txt") == 0)
+                        && (check_file("rendu/ft_putstr") == 0) 
+                        && (check_file("rendu/ft_putstr/ft_putstr.c") != 0))
+                    {
+                        if (show == 1)
+                            {
+                                ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
+                                printf(" No existe: %s\n\n", rendu_c);
+                            }
+                            else
+                            {
+                                ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
+                            }
+                            printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
+                    }           
+                    if (check_file("subjects/ft_putstr.txt") != 0)
+                        copy_file("questions/ft_putstr.txt", "subjects/ft_putstr.txt");//11
+                    if (check_file("rendu/ft_putstr") != 0)
+                        new_folder("rendu/ft_putstr");
+                }  				
             }
             else if (i == 22)
             {
