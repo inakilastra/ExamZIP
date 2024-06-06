@@ -6,7 +6,7 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:01:41 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/06 14:49:45 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/06 17:00:32 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,136 @@ int	ft_paco_aff_a(int k, int show)
 	return (k);
 }
 
+int	ft_paco_aff_z(int k, int show)
+{
+	char	*paco;
+
+	paco = ft_paco_argv1("aff_z", "abc");
+	if (strncmp(paco, "z", 1) == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./aff_z \"abc\" | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./aff_z \"abc\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = ft_paco_argv1("aff_z", "\"dubO a POIL\"");
+	if (strncmp(paco, "z", 1) == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./aff_z \"dubO a POIL\" | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./aff_az \"dubO a POIL\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = ft_paco_argv1("aff_z", "\"zz sent le poney\"");
+	if (strncmp(paco, "z", 1) == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./aff_z \"zz sent le poney\" | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./aff_z \"zz sent le poney\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = ft_paco_argv0("aff_z");
+	if (strncmp(paco, "z", 1) == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./aff_z | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./aff_z | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	return (k);
+}
+
+int	ft_paco_rev_print(int k, int show)
+{
+	char	*paco;
+/* $> ./rev_print "zaz" | cat -e
+zaz$
+$> ./rev_print "dub0 a POIL" | cat -e
+LIOP a 0bud$
+$> ./rev_print | cat -e
+$ */
+	paco = ft_paco_argv1("rev_print", "zaz");
+	if (strncmp(paco, "zaz", 3) == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./rev_print \"zaz\" | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./rev_print \"zaz\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = ft_paco_argv1("rev_print", "\"dubO a POIL\"");
+	if (strncmp(paco, "LIOP a Obud", 11) == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./rev_print \"dubO a POIL\" | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./rev_print \"dubO a POIL\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = ft_paco_argv0("rev_print");
+	if (strncmp(paco, "", 0) == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./rev_print | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./rev_print | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	return (k);
+}
 int	ft_paco_ok(char *name, char *argv1, int i, int show)
 {
 	int		k;
@@ -205,11 +335,11 @@ char	*ft_paco_argv1(char *name, char *argv1)
         strcat(result, buffer);
     }
     // Elimina el carácter de salto de línea si existe
-/*     size_t result_len = strlen(result);
+/* 	size_t result_len = strlen(result);
     if (result_len > 0 && result[result_len - 1] == '\n')
     {
         result[result_len - 1] = '\0';
-    }  */   
+    } */
 	//printf("result --> %s argv1 --> %s\n", result, argv1);
     if (pclose(fp) == -1)
     {

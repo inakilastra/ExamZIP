@@ -6,7 +6,7 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/06 14:50:36 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/06 17:02:49 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,145 +68,6 @@ void	remove_directory(const char *path)
     closedir(dir);
     if (rmdir(path) != 0)
         perror("rmdir");
-}
-
-int new_folder(const char *dir)
-{
-	if (mkdir(dir, 0755) == -1)
-		if (errno != EEXIST)
-			return (1);
-	return (0);
-}
-
-int	check_file(const char *str)
-{
-    char check_path[1024];
-
-    snprintf(check_path, sizeof(check_path), "%s", str);  
-    if (access(check_path, F_OK) != 0)
-        return (1);
-    return (0);
-}
-
-int copy_file(const char *src, const char *dst)
-{
-    FILE *source, *destination;
-    char buffer[1024];
-    size_t bytes;
-
-    source = fopen(src, "rb");
-    if (source == NULL) 
-	{
-        perror("Error al abrir el archivo de origen");
-        return 1;
-    }
-    destination = fopen(dst, "wb");
-    if (destination == NULL)
-	{
-        perror("Error al abrir el archivo de destino");
-        fclose(source);
-        return 1;
-    }
-    while ((bytes = fread(buffer, 1, sizeof(buffer), source)) > 0)
-	{
-        fwrite(buffer, 1, bytes, destination);
-    }
-    fclose(source);
-    fclose(destination);
-    return 0;
-}
-
-char *ctr_txt(const char *sfile_txt, const char get_write, char mode, int question , const char *question_name) 
-{
-    char	line[MAX_LINE_LENGTH];
-    char	*line_get = NULL;
-    char    *line_new = NULL;
-    int     i = 0;
-    time_t      current_time;
-    struct tm   *time_info;
-    char        date_start[256];
-
-    FILE *control_fp = fopen(sfile_txt, "r");
-
-    if (!control_fp)
-    {
-        perror("Error opening file");
-        return (0);
-    }
-    while (fgets(line, sizeof(line), control_fp))
-    {
-		line_get = strdup(line); 
-    }
-    if (strcmp(sfile_txt, "control/ctrl_penal.txt") == 0
-        || strcmp(sfile_txt, "control/ctrl_question.txt") == 0)
-    {
-        i = atoi(line_get);
-    }
-    fclose(control_fp);
-    if (get_write == 'W')
-    {
-       	if (strcmp(sfile_txt, "control/ctrl_mode.txt") == 0)
-        {
-            if (mode == 'P' || mode == 'p')
-                line_new = strdup("P");
-            else
-                line_new = strdup("R");
-        }
-        if (strcmp(sfile_txt, "control/ctrl_penal.txt") == 0)
-        {
-            i += i;
-            if (mode == 'P' || mode == 'p')
-                if (question == 0)
-                    line_new = strdup(ft_itoa(15));
-                else
-                    line_new = strdup(ft_itoa(i));
-            else
-                if (question == 0)
-                    line_new = strdup(ft_itoa(60));
-                else
-                    line_new = strdup(ft_itoa(i)); 
-        }
-        if (strcmp(sfile_txt, "control/ctrl_question.txt") == 0)
-        {
-            if (question == i)
-                line_new = strdup(ft_itoa(i));
-            else
-                line_new = strdup(ft_itoa(question));
-        }
-        if (strcmp(sfile_txt, "control/ctrl_question_name.txt") == 0)
-        {
-            line_new = strdup(question_name);
-        }        
-        if (strcmp(sfile_txt, "control/ctrl_time.txt") == 0)
-        {   
-            if (question == 0)
-            {
-                time(&current_time);
-                time_info = localtime(&current_time);
-                snprintf(date_start, sizeof(date_start), "%d/%d/%d %d:%d:%d\n", 
-                         time_info->tm_mday, time_info->tm_mon + 1, time_info->tm_year + 1900, 
-                         time_info->tm_hour, time_info->tm_min, time_info->tm_sec);
-                if (line_new)
-                    free(line_new);
-                line_new = strdup(date_start);
-            } 
-        }   
-        FILE *final_fp = fopen(sfile_txt, "w");
-        if (!final_fp)
-        {
-            perror("Error opening files for final writing");
-            return ("X");
-        }
-        if (line_new)
-        {
-            fputs(line_new, final_fp);
-            free(line_new);
-        }
-        fclose(final_fp); 
-        (void)question;
-        return (line_new);      
-    }
-    return (line_get);
 }
 
 char *get_date(void) 
@@ -493,9 +354,9 @@ void ft_file(const char *sfile)
 	strcat(subjects_txt, ".txt");
     strcat(rendu_txt, sfile);
     
-    copy_file(questions_txt, subjects_txt);//11
-    if (check_file(rendu_txt) != 0)
-        new_folder(rendu_txt);
+    ft_copy_file(questions_txt, subjects_txt);//11
+    if (ft_check_file(rendu_txt) != 0)
+        ft_new_folder(rendu_txt);
     print_msg ("questionX", sfile);
 }
 
@@ -543,8 +404,8 @@ void	ft_start(const char c)
 {
     //ctrl_txt_reset();
     ctrl_txt_start(c);
-    new_folder("subjects");
-    new_folder("rendu");
+    ft_new_folder("subjects");
+    ft_new_folder("rendu");
 }
 
 void	ft_help(void)
@@ -577,11 +438,11 @@ void	ft_help(void)
 void	ft_reset()
 {
 	ctrl_txt_reset();
-    if (check_file("rendu") == 0)
+    if (ft_check_file("rendu") == 0)
     {
         remove_directory("rendu");
     }
-    if (check_file("subjects") == 0)
+    if (ft_check_file("subjects") == 0)
     {
         remove_directory("subjects");
     }
@@ -655,7 +516,7 @@ void	ft_grademe(void)
         {
             if (((second > 0 && second <= 5) || (i == 11)) &&  (i != 12))
             {
-                if (check_file(rendu_c) == 0)
+                if (ft_check_file(rendu_c) == 0)
                 {
                     if (check_norminette(rendu_c,mode[0]) == 0)
                     {    
@@ -664,69 +525,23 @@ void	ft_grademe(void)
 							k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
                             k = ft_paco_aff_a(k, show);                        
-							if (k == 7)
-							{
-								printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN);
-								if (check_file("subjects/aff_a.txt") == 0)
-								{
-									if (remove("subjects/aff_a.txt") == 0)
-										printf("\n");
-									else
-										perror("Error deleting the file");
-								}
-								i = 20;
-                                ctr_txt("control/ctrl_penal.txt", 'W', 'P', 0, ""); 
-							}
-							else
-							{
-								if (show == 1)
-									ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
-								else
-									ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
-								printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE);
-							}
+							if (k == 4)
+								i = ft_success_del_subject(name, show, 20);
+							else							
+								ft_failure(show);
                         }
-
                     }
                     else
-                    {
-                        if (show == 1)
-                        {
-                            ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
-                        }
-                        else
-                        {
-                            ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
-                        }
-                        printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
-                    }
+                        ft_failure(show);
                 }
                 else
                 {
-                    if ((check_file("subjects/aff_a.txt") == 0)
-                        && (check_file("rendu/aff_a") == 0) 
-                        && (check_file("rendu/aff_a/aff_a.c") != 0))
-                    {
-                        if (show == 1)
-                            {
-                                ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
-                                printf(" No existe: %s\n\n", rendu_c);
-                            }
-                            else
-                            {
-                                ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
-                            }
-                            printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
-                    }           
-                    if (check_file("subjects/aff_a.txt") != 0)
-                        copy_file("questions/aff_a.txt", "subjects/aff_a.txt");//11
-                    if (check_file("rendu/aff_a") != 0)
-                        new_folder("rendu/aff_a");
+                    ft_failure_check_file(name, show);
                 }
             }
             else
             {
-                if (check_file(rendu_c) == 0)
+                if (ft_check_file(rendu_c) == 0)
                 {
                     if (check_norminette(rendu_c,mode[0]) == 0)
                     {    
@@ -734,100 +549,26 @@ void	ft_grademe(void)
                         {
                             k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
-                            paco = ft_paco_argv0("aff_z");
-                            if (strncmp(paco, "z", 1) == 0)
-                            {
-                            	if (show == 1)
-									printf("%s ./aff_z \"z\"\n", GREEN);
-								k++;
-							}                           
+                            k = ft_paco_aff_z(k, show);                           
+							if (k == 4)
+								i = ft_success_del_subject(name, show, 20);
 							else
-								printf("%s ./aff_z \"z\"\n", RED);
-                            free(paco);
-                            paco = ft_paco_argv1("aff_z", "");
-                             if (strncmp(paco, "", 0) == 0)
-                            {
-                            	if (show == 1)
-									printf("%s ./aff_z\n", GREEN);
-								k++;
-							}                           
-							else
-								printf("%s ./aff_z\n", RED);
-                            free(paco);                            
-/* 							if (mypaco_write(name, "", "", "") == 1)
-							{
-                            	if (show == 1)
-									printf("%s ./aff_z \n", GREEN);
-								k++;
-							}
-							else
-								printf("%s ./aff_z \n", RED); */
-							if (k == 2)
-							{
-								printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN);
-								if (check_file("subjects/aff_z.txt") == 0)
-								{
-									if (remove("subjects/aff_z.txt") == 0)
-										printf(" ");
-									else
-										perror("Error deleting the file");
-								}
-								i = 20;
-                                ctr_txt("control/ctrl_penal.txt", 'W', 'P', 0, ""); 
-							}
-							else
-							{
-								if (show == 1)
-									ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
-								else
-									ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
-								printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE);
-							}
+							    ft_failure(show);
                         }
 
                     }
                     else
-                    {
-                        if (show == 1)
-                        {
-                            ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
-                        }
-                        else
-                        {
-                            ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
-                        }
-                        printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
-                    }
+                        ft_failure(show);
                 }
                 else
-                {
-                    if ((check_file("subjects/aff_z.txt") == 0)
-                        && (check_file("rendu/aff_z") == 0) 
-                        && (check_file("rendu/aff_z/aff_z.c") != 0))
-                    {
-                        if (show == 1)
-                            {
-                                ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
-                                printf(" No existe: %s\n\n", rendu_c);
-                            }
-                            else
-                            {
-                                ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
-                            }
-                            printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
-                    }           
-                    if (check_file("subjects/aff_z.txt") != 0)
-                        copy_file("questions/aff_z.txt", "subjects/aff_z.txt");//11
-                    if (check_file("rendu/aff_z") != 0)
-                        new_folder("rendu/aff_z");
-                }
+                    ft_failure_check_file(name, show);
             }
         }
         
         if (i == 20)
         {
             ft_input_ok();
-second = 5;
+second = 2;
             if (second >= 0 && second <= 3)
             {
                 ft_file("rev_print");//23
@@ -859,7 +600,7 @@ second = 5;
         {
             if (i == 23)
             {
-                if (check_file(rendu_c) == 0)
+                if (ft_check_file(rendu_c) == 0)
                 {
                     if (check_norminette(rendu_c,mode[0]) == 0)
                     {
@@ -867,93 +608,23 @@ second = 5;
                         {
                             k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
-							if (mypaco_write(name, "zaz", "", "") == 1)
-							{
-                            	if (show == 1)
-									printf("%s ./rev_print \"zaz\"\n", GREEN);
-								k++;
-							}
-							else
-								printf("%s ./rev_print \"zaz\"\n", RED);
-							if (mypaco_write(name, "\"dub0 a POIL\"", "", "") == 1)
-							{
-                            	if (show == 1)
-									printf("%s ./rev_print \"dub0 a POIL\"\n", GREEN);
-								k++;
-							}
-							else
-								printf("%s ./rev_print \"dub0 a POIL\"\n", RED);
-							if (mypaco_write(name, "", "", "") == 1)
-							{
-                            	if (show == 1)
-									printf("%s ./rev_print \n", GREEN);
-								k++;
-							}
-							else
-								printf("%s ./rev_print \n", RED);																
+                            k = ft_paco_rev_print(k, show); 															
 							if (k == 3)
-							{
-								printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN);
-								if (check_file("subjects/rev_print.txt") == 0)
-								{
-									if (remove("subjects/rev_print.txt") == 0)
-										printf("\n");
-									else
-										perror("Error deleting the file");
-								}
-								i = 20;
-                                ctr_txt("control/ctrl_penal.txt", 'W', 'P', 0, ""); 
-							}
+							    i = ft_success_del_subject(name, show, 30);
 							else
-							{
-								if (show == 1)
-									ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
-								else
-									ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
-								printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE);
-							}
+							    ft_failure(show);
                         }
 
                     }
                     else
-                    {
-                        if (show == 1)
-                        {
-                            ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
-                        }
-                        else
-                        {
-                            ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
-                        }
-                        printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
-                    }
+                        ft_failure(show);
                 }
                 else
-                {
-                    if ((check_file("subjects/rev_print.txt") == 0)
-                        && (check_file("rendu/rev_print") == 0) 
-                        && (check_file("rendu/rev_print/rev_print.c") != 0))
-                    {
-                        if (show == 1)
-                            {
-                                ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
-                                printf(" No existe: %s\n\n", rendu_c);
-                            }
-                            else
-                            {
-                                ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
-                            }
-                            printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
-                    }           
-                    if (check_file("subjects/rev_print.txt") != 0)
-                        copy_file("questions/rev_print.txt", "subjects/rev_print.txt");//11
-                    if (check_file("rendu/rev_print") != 0)
-                        new_folder("rendu/rev_print");
-                }                
+                    ft_failure_check_file(name, show);                
             }
             else if (i == 21)
             {
-				if (check_file(rendu_c) == 0)
+				if (ft_check_file(rendu_c) == 0)
                 {
                     if (check_norminette(rendu_c,mode[0]) == 0)
                     {
@@ -972,7 +643,7 @@ second = 5;
 							if (k == 1)
 							{
 								printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN);
-								if (check_file("subjects/ft_putstr.txt") == 0)
+								if (ft_check_file("subjects/ft_putstr.txt") == 0)
 								{
 									if (remove("subjects/ft_putstr.txt") == 0)
 										printf("\n");
@@ -1008,9 +679,9 @@ second = 5;
                 }
                 else
                 {
-                    if ((check_file("subjects/ft_putstr.txt") == 0)
-                        && (check_file("rendu/ft_putstr") == 0) 
-                        && (check_file("rendu/ft_putstr/ft_putstr.c") != 0))
+                    if ((ft_check_file("subjects/ft_putstr.txt") == 0)
+                        && (ft_check_file("rendu/ft_putstr") == 0) 
+                        && (ft_check_file("rendu/ft_putstr/ft_putstr.c") != 0))
                     {
                         if (show == 1)
                             {
@@ -1023,10 +694,10 @@ second = 5;
                             }
                             printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
                     }           
-                    if (check_file("subjects/ft_putstr.txt") != 0)
-                        copy_file("questions/ft_putstr.txt", "subjects/ft_putstr.txt");//11
-                    if (check_file("rendu/ft_putstr") != 0)
-                        new_folder("rendu/ft_putstr");
+                    if (ft_check_file("subjects/ft_putstr.txt") != 0)
+                        ft_copy_file("questions/ft_putstr.txt", "subjects/ft_putstr.txt");//11
+                    if (ft_check_file("rendu/ft_putstr") != 0)
+                        ft_new_folder("rendu/ft_putstr");
                 }  				
             }
             else if (i == 22)

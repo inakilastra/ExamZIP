@@ -6,7 +6,7 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 11:18:06 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/06 14:36:55 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:29:35 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,18 @@
 int		ft_input_ok(void);
 int		ft_input_ok_fallback(void);
 char	*ft_itoa(int n);
+int     ft_check_file(const char *str);
+int     ft_new_folder(const char *dir);
+int     ft_copy_file(const char *src, const char *dst);
+char    *ctr_txt(const char *sfile_txt, const char get_write, char mode, int question , const char *question_name);
 char	*ft_paco_argv0(char *name);
 char    *ft_paco_argv1(char *name, char *argv1);
-int		ft_paco_ok(char *name, char * argv1, int i, int show);
+int		ft_paco_ok(char *name, char *argv1, int i, int show);
 int		ft_paco_aff_a(int k, int show);
+int     ft_paco_aff_z(int k, int show);
+int     ft_paco_rev_print(int k, int show);
+int     ft_success_del_subject(char *name, int show, int i);
+void	ft_failure(int show);
+void    ft_failure_check_file(char *name, int show);
 
 #endif

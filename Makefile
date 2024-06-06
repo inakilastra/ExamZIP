@@ -15,6 +15,12 @@ SRC_FILES += control/lib/ft_itoa.c
 OBJ_FILES += control/lib/ft_itoa.o
 SRC_FILES += control/lib/ft_paco.c
 OBJ_FILES += control/lib/ft_paco.o
+SRC_FILES += control/lib/ft_msg.c
+OBJ_FILES += control/lib/ft_msg.o
+SRC_FILES += control/lib/ft_files.c
+OBJ_FILES += control/lib/ft_files.o
+SRC_FILES += control/lib/ft_ctr_txt.c
+OBJ_FILES += control/lib/ft_ctr_txt.o
 
 # Verificar si los archivos existen y agregar las definiciones y objetos necesarios
 # ifeq ($(wildcard control/mymain/mft_putstr.c),control/mymain/mft_putstr.c)

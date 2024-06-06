@@ -1,35 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   aff_a.c                                            :+:      :+:    :+:   */
+/*   rev_print.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/06 13:34:19 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/06 13:53:25 by ilastra-         ###   ########.fr       */
+/*   Created: 2024/06/05 11:20:22 by ilastra-          #+#    #+#             */
+/*   Updated: 2024/06/05 11:22:21 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
+int	str_len(char *str)
+{
+	int	n;
+
+	n = 0;
+	while (str[n])
+		n++;
+	return (n);
+}
+
 int	main(int argc, char **argv)
 {
-	int	i;
+	int	len;
 
-	i = 0;
-	if (argc != 2)
-		write(1, "a", 1);
-	else
+	if (argc == 2)
 	{
-		while (argv[1][i])
-		{
-			if (argv[1][i] == 'a')
-			{
-				write(1, "a", 1);
-				break ;
-			}
-			i++;
-		}
+		len = str_len(argv[1]) - 1;
+		while (len >= 0)
+			write(1, &argv[1][len--], 1);
 	}
 	write(1, "\n", 1);
 	return (0);
