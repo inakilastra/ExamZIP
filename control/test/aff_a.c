@@ -1,24 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_prueba.c                                        :+:      :+:    :+:   */
+/*   aff_a.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/05 16:13:34 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/05 22:48:48 by inaki            ###   ########.fr       */
+/*   Created: 2024/06/06 13:34:19 by ilastra-          #+#    #+#             */
+/*   Updated: 2024/06/06 13:35:40 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libgrademe.h"
+#include <unistd.h>
 
-void	ft_prueba(char *str)
+int	main(int argc, char **argv)
 {
-	while (*str)
+	int	i;
+
+	i = 0;
+	if (argc != 2)
+		write(1, "a", 1);
+	else
 	{
-		write(1, str, 1);
-		str++;
+		while (argv[1][i])
+		{
+			if (argv[1][i] == 'a')
+			{
+				write(1, "a", 1);
+				break ;
+			}
+			i++;
+		}
 	}
-	write(1, "X", 1);
 	write(1, "\n", 1);
+	return (0);
 }

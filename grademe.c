@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   grademe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/05 23:51:22 by inaki            ###   ########.fr       */
+/*   Updated: 2024/06/06 14:50:36 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define _FILE_FT_INPUT_OK_C
-#include <unistd.h>
+//#define _FILE_FT_INPUT_OK_C
+//#define _FILE_FT_PUTSTR_C
+/* #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,11 +21,11 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <errno.h>
-#include <dirent.h>
-#include "mylib.h"
+#include <dirent.h> */
+#include "libzip.h"
 
 
-#define DEF_COLOR "\033[0;39m"
+/* #define DEF_COLOR "\033[0;39m"
 #define GRAY "\033[0;90m"
 #define RED "\033[0;91m"
 #define GREEN "\033[0;92m"
@@ -35,99 +36,7 @@
 #define WHITE "\033[0;97m"
 #define MAX_PATH 4096
 #define MAX_LINE_LENGTH 256
-#define BUFFER_SIZE 128
-
-
-int	input_ok(void)
-{
-	char	input[100];
-
-	printf("Escribe \"ok\" para continuar:\n");
-	while (1)
-	{
-		fgets(input, sizeof(input), stdin);
-		input[strcspn(input, "\n")] = 0;
-		if (strcmp(input, "ok") == 0)
-		{
-			printf("Has escrito \"ok\". Continuando...\n");
-			break ;
-		}
-		else
-			printf("Entrada no válida. Por favor, escribe \"ok\":\n\n");
-	}
-	return (0);
-}
-/** int	input_ok(void)
-{
-	char	input[100];
-
-	printf("Escribe 'ok' para continuar:\n");
-	// Leer la entrada del usuario
-    while (1) 
-	{
-        // Limpiar el buffer de entrada
-		fgets(input, sizeof(input), stdin);
-        // Eliminar el carácter de nueva línea que fgets agrega
-		input[strcspn(input, "\n")] = 0;
-        // Comparar la entrada con "ok"
-		if (strcmp(input, "ok") == 0)
-		{
-			printf("Has escrito 'ok'. Continuando...\n");
-			break ;
-        }
-		else
-			printf("Entrada no válida. Por favor, escribe 'ok':\n");
-    }
-    return (0);
-}
-*/
-
-static int	n_dig(int n)// ft_itoa
-{
-	int	i;
-	int	tmp;
-
-	tmp = n;
-	i = 1;
-	if (tmp < 0)
-	{
-		tmp *= -1;
-		i++;
-	}
-	while (tmp >= 10)
-	{
-		tmp /= 10;
-		i++;
-	}
-	return (i);
-}
-
-char	*ft_itoa(int n)// ft_itoa
-{
-	int		dig;
-	char	*str;
-
-	if (n == -2147483648)
-		return (strdup("-2147483648"));
-	if (n == 0)
-		return (strdup("0"));
-	dig = n_dig(n);
-	str = (char *)malloc(sizeof(char) * (dig + 1));
-	if (!str)
-		return ("");
-	str[dig--] = '\0';
-	if (n < 0)
-	{
-		str[0] = '-';
-		n *= -1;
-	}
-	while (n > 0)
-	{
-		str[dig--] = (n % 10) + '0';
-		n /= 10;
-	}
-	return (str);
-}
+#define BUFFER_SIZE 128 */
 
 void	remove_directory(const char *path)
 {
@@ -544,13 +453,13 @@ void    print_msg (const char *str1, const char *sfile)
 		printf("%s You can log out at any time.", WHITE); 
 		printf("%s If this program tells you you earned points\n", WHITE);
 		printf("%s then they will be counted whatever happens.\n\n", WHITE);
-		printf("%s You are about to start the project %sExam ZIP%s, in", WHITE, GREEN, WHITE);
+		printf("%s You are about to start the project %sExam_42_ZIP%s, in", WHITE, GREEN, WHITE);
         if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
             printf("%s PRACTICE%s mode, at level.\n", MAGENTA, WHITE);
         else
             printf("%s REAL%s mode, at level.\n", MAGENTA, WHITE);
 		printf("%s You would have 3hrs to complete this project.\n", WHITE);
-		printf("%s Start exam ZIP --> ", WHITE);     
+		printf("%s Start Exam_42_ZIP --> ", WHITE);     
 		printf("%s %s\n\n", GREEN, get_date());
 		printf("%s =====================================================================================\n", WHITE);
 		printf("%s Mode:", WHITE);
@@ -726,6 +635,7 @@ void	ft_grademe(void)
     int         i = 0;
 	int			k = 0;
     int         show = 0;
+    char        *paco;
 
     second = get_second();
     i = atoi(ctr_txt("control/ctrl_question.txt", 'G', 'P', 0, ""));
@@ -753,39 +663,8 @@ void	ft_grademe(void)
                         {
 							k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
-                            if (mypaco_write(name, "abc", "", "") == 1)
-							{
-                            	if (show == 1)
-									printf("%s ./aff_a abc\n", GREEN);
-								k++;
-							}
-							else
-								printf("%s ./aff_a abc\n", RED);
-							if (mypaco_write(name, "\"dubO a POIL\"", "", "") == 1)
-							{
-                            	if (show == 1)
-									printf("%s ./aff_a \"dubO a POIL\"\n", GREEN);
-								k++;
-							}
-							else
-								printf("%s ./aff_a \"dubO a POIL\"\n", RED);  
-							if (mypaco_write(name, "\"zz sent le poney\"", "", "") == 1)
-							{
-                            	if (show == 1)
-									printf("%s ./aff_a \"zz sent le poney\"\n", GREEN);
-								k++;
-							}
-							else
-								printf("%s ./aff_a \"zz sent le poney\"\n", RED);
-							if (mypaco_write(name, "", "", "") == 1)
-							{
-                            	if (show == 1)
-									printf("%s ./aff_a \n", GREEN);
-								k++;
-							}
-							else
-								printf("%s ./aff_a \n", RED);
-							if (k == 4)
+                            k = ft_paco_aff_a(k, show);                        
+							if (k == 7)
 							{
 								printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN);
 								if (check_file("subjects/aff_a.txt") == 0)
@@ -855,15 +734,35 @@ void	ft_grademe(void)
                         {
                             k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
-							if (mypaco_write(name, "", "", "") == 1)
+                            paco = ft_paco_argv0("aff_z");
+                            if (strncmp(paco, "z", 1) == 0)
+                            {
+                            	if (show == 1)
+									printf("%s ./aff_z \"z\"\n", GREEN);
+								k++;
+							}                           
+							else
+								printf("%s ./aff_z \"z\"\n", RED);
+                            free(paco);
+                            paco = ft_paco_argv1("aff_z", "");
+                             if (strncmp(paco, "", 0) == 0)
+                            {
+                            	if (show == 1)
+									printf("%s ./aff_z\n", GREEN);
+								k++;
+							}                           
+							else
+								printf("%s ./aff_z\n", RED);
+                            free(paco);                            
+/* 							if (mypaco_write(name, "", "", "") == 1)
 							{
                             	if (show == 1)
 									printf("%s ./aff_z \n", GREEN);
 								k++;
 							}
 							else
-								printf("%s ./aff_z \n", RED);
-							if (k == 1)
+								printf("%s ./aff_z \n", RED); */
+							if (k == 2)
 							{
 								printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN);
 								if (check_file("subjects/aff_z.txt") == 0)
@@ -952,7 +851,7 @@ second = 5;
 
     		rendu_c = strdup(get_rendu_c(name));		
             printf("\033[H\033[J");
-            printf("%s\n ExamZIP v1.03\n\n", WHITE);		
+            printf("%s\n Exam_42_ZIP v1.03\n\n", WHITE);		
             print_msg ("questionX", name);         
         }
 
@@ -1203,7 +1102,7 @@ int	main(int argc, char **argv)
     second = time_info->tm_sec;	
 	second = second % 10;
     printf("\033[H\033[J");
-    printf("%s\n ExamZIP v1.0\n\n", WHITE);
+    printf("%s\n Exam_42_ZIP v1.0\n\n", WHITE);
 	if (argc >= 2 && (strncmp(argv[1], "help", 5) == 0) )  
     {
     	if (strncmp(argv[1], "help", 5) == 0) 
@@ -1238,6 +1137,7 @@ int	main(int argc, char **argv)
                     ctr_txt("control/ctrl_question.txt", 'W', argv[2][0], 12, "");
                     ctr_txt("control/ctrl_question_name.txt", 'W', argv[2][0], 11, "aff_z");
                 }
+                return (0);
             }
             else
 		        ft_grademe(); 
@@ -1245,8 +1145,7 @@ int	main(int argc, char **argv)
 	}
     
     if (i == 0)
-        //print_msg ("start", "");
-        printf(" ");
+        print_msg ("start", "");
     else
 	    ft_grademe();  
 	return (0);
