@@ -3,15 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   grademe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/06 17:02:49 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/07 00:05:45 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#define _FILE_FT_INPUT_OK_C
-//#define _FILE_FT_PUTSTR_C
 /* #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,7 +21,6 @@
 #include <errno.h>
 #include <dirent.h> */
 #include "libzip.h"
-
 
 /* #define DEF_COLOR "\033[0;39m"
 #define GRAY "\033[0;90m"
@@ -568,7 +565,7 @@ void	ft_grademe(void)
         if (i == 20)
         {
             ft_input_ok();
-second = 2;
+second = 5;
             if (second >= 0 && second <= 3)
             {
                 ft_file("rev_print");//23
@@ -632,73 +629,19 @@ second = 2;
                         {
                             k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
-							if (mypaco_write(name, "abcdefg", "", "") == 1)
-							{
-                            	if (show == 1)
-									printf("%s ./ft_putstr \"abcdefg\"\n", GREEN);
-								k++;
-							}
+                            k = ft_paco_ft_putstr(k, show); 															
+							if (k == 30)
+							    i = ft_success_del_subject(name, show, 30);
 							else
-								printf("%s ./ft_putstr \"abcdefg\"\n", RED);																
-							if (k == 1)
-							{
-								printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN);
-								if (ft_check_file("subjects/ft_putstr.txt") == 0)
-								{
-									if (remove("subjects/ft_putstr.txt") == 0)
-										printf("\n");
-									else
-										perror("Error deleting the file");
-								}
-								i = 20;
-                                ctr_txt("control/ctrl_penal.txt", 'W', 'P', 0, ""); 
-							}
-							else
-							{
-								if (show == 1)
-									ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
-								else
-									ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
-								printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE);
-							}
+							    ft_failure(show);
                         }
 
                     }
                     else
-                    {
-                        if (show == 1)
-                        {
-                            ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
-                        }
-                        else
-                        {
-                            ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
-                        }
-                        printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
-                    }
+                        ft_failure(show);
                 }
                 else
-                {
-                    if ((ft_check_file("subjects/ft_putstr.txt") == 0)
-                        && (ft_check_file("rendu/ft_putstr") == 0) 
-                        && (ft_check_file("rendu/ft_putstr/ft_putstr.c") != 0))
-                    {
-                        if (show == 1)
-                            {
-                                ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, ""); 
-                                printf(" No existe: %s\n\n", rendu_c);
-                            }
-                            else
-                            {
-                                ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
-                            }
-                            printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n%s You have falled the assignement.\n\n", RED, WHITE); 
-                    }           
-                    if (ft_check_file("subjects/ft_putstr.txt") != 0)
-                        ft_copy_file("questions/ft_putstr.txt", "subjects/ft_putstr.txt");//11
-                    if (ft_check_file("rendu/ft_putstr") != 0)
-                        ft_new_folder("rendu/ft_putstr");
-                }  				
+                    ft_failure_check_file(name, show);  				
             }
             else if (i == 22)
             {

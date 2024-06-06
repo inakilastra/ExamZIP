@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libzip.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 11:18:06 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/06 16:29:35 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/07 00:05:25 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int		ft_paco_ok(char *name, char *argv1, int i, int show);
 int		ft_paco_aff_a(int k, int show);
 int     ft_paco_aff_z(int k, int show);
 int     ft_paco_rev_print(int k, int show);
+int     ft_paco_ft_putstr(int k, int show);
 int     ft_success_del_subject(char *name, int show, int i);
 void	ft_failure(int show);
 void    ft_failure_check_file(char *name, int show);

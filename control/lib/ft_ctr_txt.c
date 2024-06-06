@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ctr_txt.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 16:03:41 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/06 16:04:01 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/06 23:38:34 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ char *ctr_txt(const char *sfile_txt, const char get_write, char mode, int questi
             i += i;
             if (mode == 'P' || mode == 'p')
                 if (question == 0)
-                    line_new = strdup(ft_itoa(15));
+                    line_new = strdup(ft_itoa(1));//15
                 else
-                    line_new = strdup(ft_itoa(i));
+                    line_new = strdup(ft_itoa(1));//i
             else
                 if (question == 0)
                     line_new = strdup(ft_itoa(60));

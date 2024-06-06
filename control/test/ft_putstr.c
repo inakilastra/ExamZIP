@@ -1,36 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   aff_a.c                                            :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/06 13:34:19 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/06 13:35:40 by ilastra-         ###   ########.fr       */
+/*   Created: 2024/06/07 00:01:51 by inaki             #+#    #+#             */
+/*   Updated: 2024/06/07 00:02:33 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
-int	main(int argc, char **argv)
+void	ft_putstr(char *str)
 {
 	int	i;
 
 	i = 0;
-	if (argc != 2)
-		write(1, "a", 1);
-	else
+	while (str[i])
 	{
-		while (argv[1][i])
-		{
-			if (argv[1][i] == 'a')
-			{
-				write(1, "a", 1);
-				break ;
-			}
-			i++;
-		}
+		write(1, &str[i++], 1);
 	}
-	write(1, "\n", 1);
-	return (0);
 }

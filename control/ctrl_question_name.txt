@@ -1,1 +1,1 @@
-rev_print
+ft_putstr

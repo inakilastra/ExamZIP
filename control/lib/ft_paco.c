@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_paco.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:01:41 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/06 17:00:32 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/06 23:53:57 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,12 +157,7 @@ int	ft_paco_aff_z(int k, int show)
 int	ft_paco_rev_print(int k, int show)
 {
 	char	*paco;
-/* $> ./rev_print "zaz" | cat -e
-zaz$
-$> ./rev_print "dub0 a POIL" | cat -e
-LIOP a 0bud$
-$> ./rev_print | cat -e
-$ */
+
 	paco = ft_paco_argv1("rev_print", "zaz");
 	if (strncmp(paco, "zaz", 3) == 0)
 	{
@@ -213,6 +208,62 @@ $ */
 	free(paco);
 	return (k);
 }
+
+int	ft_paco_ft_putstr(int k, int show)
+{
+	char	*paco;
+
+	paco = ft_paco_argv1("ft_putstr", "zaz");
+	if (strncmp(paco, "zaz", 3) == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./ft_putstr \"zaz\" | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./ft_putstr \"zaz\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = ft_paco_argv1("ft_putstr", "\"dubO a POIL\"");
+	if (strncmp(paco, "dubO a POIL", 11) == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./ft_putstr \"dubO a POIL\" | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./ft_putstr \"dubO a POIL\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = ft_paco_argv0("ft_putstr");
+	if (strncmp(paco, "", 0) == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./ft_putstr | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./ft_putstr | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	return (k);
+}
+
 int	ft_paco_ok(char *name, char *argv1, int i, int show)
 {
 	int		k;
