@@ -1,43 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fizzbuzz.c                                         :+:      :+:    :+:   */
+/*   aff_a.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 13:33:52 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/07 13:37:05 by ilastra-         ###   ########.fr       */
+/*   Created: 2024/06/06 13:34:19 by ilastra-          #+#    #+#             */
+/*   Updated: 2024/06/06 13:35:40 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
-void	print_number(int nbr)
-{
-	char	*digits;
-
-	digits = "0123456789";
-	if (nbr > 9)
-		print_number(nbr / 10);
-	write(1, &digits[nbr % 10], 1);
-}
-
-int	main(void)
+int	main(int argc, char **argv)
 {
 	int	i;
 
-	i = 1;
-	while (i <= 100)
+	i = 0;
+	if (argc != 2)
+		write(1, "a", 1);
+	else
 	{
-		if (i % 15 == 0)
-			write(1, "fizzbuzz", 8);
-		else if (i % 3 == 0)
-			write(1, "fizz", 4);
-		else if (i % 5 == 0)
-			write(1, "buzz", 4);
-		else
-			print_number(i);
-		write(1, "\n", 1);
-		i++;
+		while (argv[1][i])
+		{
+			if (argv[1][i] == 'a')
+			{
+				write(1, "a", 1);
+				break ;
+			}
+			i++;
+		}
 	}
+	write(1, "\n", 1);
+	return (0);
 }

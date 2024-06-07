@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libzip.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 11:18:06 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/07 13:36:36 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:34:06 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ int     ft_check_file(const char *str);
 int     ft_new_folder(const char *dir);
 int     ft_copy_file(const char *src, const char *dst);
 char    *ctr_txt(const char *sfile_txt, const char get_write, char mode, int question , const char *question_name);
-char	*ft_paco_argv0(char *name);
-char    *ft_paco_argv1(char *name, char *argv1);
-int		ft_paco_ok(char *name, char *argv1, int i, int show);
-int		ft_paco_aff_a(int k, int show);
-int     ft_paco_aff_z(int k, int show);
+char	*paco_argv0(char *name);
+char    *paco_argv1(char *name, char *argv1);
+int		paco_ok(char *name, char *argv1, int i, int show);
+int		paco_aff_a(int k, int show);
+int     paco_aff_z(int k, int show);
 #ifdef _FILE_FT_PUTSTR_C 
  void   ft_putstr(char *str);
 #endif
@@ -59,8 +59,9 @@ int     paco_ft_putstr(int k, int show);
  int	ft_strlen(char *str);
 #endif
 int     paco_ft_strlen(int k, int show);
-int     ft_paco_rev_print(int k, int show);
-int     ft_paco_fizzbuzz(int k, int show);
+int     paco_rev_print(int k, int show);
+int     paco_fizzbuzz(int k, int show);
+int     paco_aff_first_param(int k, int show);
 int     ft_success_del_subject(char *name, int show, int i);
 void	ft_failure(int show);
 void    ft_failure_check_file(char *name, int show);

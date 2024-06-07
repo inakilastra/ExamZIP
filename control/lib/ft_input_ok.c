@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_input_ok.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 16:43:15 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/06 11:25:27 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/07 17:13:40 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ void	ft_input_rewrite(void)
 void	ft_input_go(void)
 {
 	printf("\n");
-	printf("%s╔════════════════════════════════════════════════════╗\n", GREEN);
-	printf("%s║ Excelente deducción. Al parecer, tienes la         ║\n", GREEN);
-	printf("%s║ capacidad básica de seguir instrucciones.          ║\n", GREEN);
-	printf("%s║ Continuamos, agárrate a la silla.                  ║\n", GREEN);
-	printf("%s╚════════════════════════════════════════════════════╝\n", GREEN);
+	printf("%s╔═════════════════════════════════════════════════════════════════╗\n", GREEN);
+	printf("%s║ Excelente deducción.                                            ║\n", GREEN);
+	printf("%s║ Al parecer, tienes la capacidad básica de seguir instrucciones. ║\n", GREEN);
+	printf("%s║ Continuamos, agárrate a la silla.                               ║\n", GREEN);
+	printf("%s╚═════════════════════════════════════════════════════════════════╝\n", GREEN);
 	printf("\n");
 }
 

@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 11:27:08 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/07 12:24:09 by ilastra-         ###   ########.fr       */
+/*   Created: 2024/06/07 00:01:51 by inaki             #+#    #+#             */
+/*   Updated: 2024/06/07 00:02:33 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strlen(char *str)
-{
-	int	n;
+#include <unistd.h>
 
-	n = 0;
-	while (str[n])
-		n++;
-	return (n);
+void	ft_putstr(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		write(1, &str[i++], 1);
+	}
 }

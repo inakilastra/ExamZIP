@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_paco.c                                          :+:      :+:    :+:   */
+/*   paco.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:01:41 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/07 13:46:52 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:17:57 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libzip.h"
 
-int	ft_paco_aff_a(int k, int show)
+int	paco_aff_a(int k, int show)
 {
 	char	*paco;
 
-	paco = ft_paco_argv1("aff_a", "abc");
-	if (strncmp(paco, "a", 1) == 0)
+	paco = paco_argv1("aff_a", "abc");
+	if ((strncmp(paco, "a", 1) == 0) && (strlen(paco) == 2))
 	{
 		if (show == 1)
 		{
@@ -32,8 +32,8 @@ int	ft_paco_aff_a(int k, int show)
 		printf("%s %s\n", RED, paco);
 	}
 	free(paco);
-	paco = ft_paco_argv1("aff_a", "\"dubO a POIL\"");
-	if (strncmp(paco, "a", 1) == 0)
+	paco = paco_argv1("aff_a", "\"dubO a POIL\"");
+	if ((strncmp(paco, "a", 1) == 0) && (strlen(paco) == 2))
 	{
 		if (show == 1)
 		{
@@ -48,8 +48,8 @@ int	ft_paco_aff_a(int k, int show)
 		printf("%s %s\n", RED, paco);
 	}
 	free(paco);
-	paco = ft_paco_argv1("aff_a", "\"zz sent le poney\"");
-	if (strncmp(paco, "", 0) == 0)
+	paco = paco_argv1("aff_a", "\"zz sent le poney\"");
+	if ((strcmp(paco, "\n") == 0) && (strlen(paco) == 1))
 	{
 		if (show == 1)
 		{
@@ -64,8 +64,8 @@ int	ft_paco_aff_a(int k, int show)
 		printf("%s %s\n", RED, paco);
 	}
 	free(paco);
-	paco = ft_paco_argv0("aff_a");
-	if (strncmp(paco, "a", 1) == 0)
+	paco = paco_argv0("aff_a");
+	if ((strncmp(paco, "a", 1) == 0) && (strlen(paco) == 2))
 	{
 		if (show == 1)
 		{
@@ -83,12 +83,12 @@ int	ft_paco_aff_a(int k, int show)
 	return (k);
 }
 
-int	ft_paco_aff_z(int k, int show)
+int	paco_aff_z(int k, int show)
 {
 	char	*paco;
 
-	paco = ft_paco_argv1("aff_z", "abc");
-	if (strncmp(paco, "z", 1) == 0)
+	paco = paco_argv1("aff_z", "abc");
+	if ((strncmp(paco, "z", 1) == 0) && (strlen(paco) == 2))
 	{
 		if (show == 1)
 		{
@@ -103,8 +103,8 @@ int	ft_paco_aff_z(int k, int show)
 		printf("%s %s\n", RED, paco);
 	}
 	free(paco);
-	paco = ft_paco_argv1("aff_z", "\"dubO a POIL\"");
-	if (strncmp(paco, "z", 1) == 0)
+	paco = paco_argv1("aff_z", "\"dubO a POIL\"");
+	if ((strncmp(paco, "z", 1) == 0) && (strlen(paco) == 2))
 	{
 		if (show == 1)
 		{
@@ -119,8 +119,8 @@ int	ft_paco_aff_z(int k, int show)
 		printf("%s %s\n", RED, paco);
 	}
 	free(paco);
-	paco = ft_paco_argv1("aff_z", "\"zz sent le poney\"");
-	if (strncmp(paco, "z", 1) == 0)
+	paco = paco_argv1("aff_z", "\"zz sent le poney\"");
+	if ((strncmp(paco, "z", 1) == 0) && (strlen(paco) == 2))
 	{
 		if (show == 1)
 		{
@@ -135,8 +135,8 @@ int	ft_paco_aff_z(int k, int show)
 		printf("%s %s\n", RED, paco);
 	}
 	free(paco);
-	paco = ft_paco_argv0("aff_z");
-	if (strncmp(paco, "z", 1) == 0)
+	paco = paco_argv0("aff_z");
+	if ((strncmp(paco, "z", 1) == 0) && (strlen(paco) == 2))
 	{
 		if (show == 1)
 		{
@@ -239,13 +239,13 @@ int    paco_ft_strlen(int k, int show)
     }
 #endif
 
-int	ft_paco_rev_print(int k, int show)
+int	paco_rev_print(int k, int show)
 {
 	
 	char	*paco;
 
-	paco = ft_paco_argv1("rev_print", "zaz");
-	if (strncmp(paco, "zaz", 3) == 0)
+	paco = paco_argv1("rev_print", "zaz");
+	if ((strncmp(paco, "zaz", 3) == 0) && (strlen(paco) == 4))
 	{
 		if (show == 1)
 		{
@@ -260,8 +260,8 @@ int	ft_paco_rev_print(int k, int show)
 		printf("%s %s\n", RED, paco);
 	}
 	free(paco);
-	paco = ft_paco_argv1("rev_print", "\"dubO a POIL\"");
-	if (strncmp(paco, "LIOP a Obud", 11) == 0)
+	paco = paco_argv1("rev_print", "\"dubO a POIL\"");
+	if ((strncmp(paco, "LIOP a Obud", 11) == 0) && (strlen(paco) == 12))
 	{
 		if (show == 1)
 		{
@@ -276,8 +276,8 @@ int	ft_paco_rev_print(int k, int show)
 		printf("%s %s\n", RED, paco);
 	}
 	free(paco);
-	paco = ft_paco_argv0("rev_print");
-	if (strcmp(paco, "\n") == 0)
+	paco = paco_argv0("rev_print");
+	if ((strcmp(paco, "\n") == 0) && (strlen(paco) == 1))
 	{
 		if (show == 1)
 		{
@@ -295,12 +295,13 @@ int	ft_paco_rev_print(int k, int show)
 	return (k);
 }
 
-int	ft_paco_fizzbuzz(int k, int show)
+int	paco_fizzbuzz(int k, int show)
 {
 	char	*paco;
 
-	paco = ft_paco_argv0("fizzbuzz");
-	if (strncmp(paco, "1\n2\nfizz\n4\nbbuzz\nfizz\n7\n8\nfizz\nbbuzz\n11\nfizz\n13\n14\nfizzbuzz\n16\n17\nfizz\n19\nbbuzz\nfizz\n22\n23\nfizz\nbbuzz\n26\nfizz\n28\n29\nfizzbuzz\n31\n32\nfizz\n34\nbbuzz\nfizz\n37\n38\nfizz\nbbuzz\n41\nfizz\n43\n44\nfizzbuzz\n46\n47\nfizz\n49\nbbuzz\nfizz\n52\n53\nfizz\nbbuzz\n56\nfizz\n58\n59\nfizzbuzz\n61\n62\nfizz\n64\nbbuzz\nfizz\n67\n68\nfizz\nbbuzz\n71\nfizz\n73\n74\nfizzbuzz\n76\n77\nfizz\n79\nbbuzz\nfizz\n82\n83\nfizz\nbbuzz\n86\nfizz\n88\n89\nfizzbuzz\n91\n92\nfizz\n94\nbbuzz\nfizz\n97\n98\nfizz\nbbuzz", 0) == 0)
+	paco = paco_argv0("fizzbuzz");
+	if ((strncmp(paco, " 1\n2\nfizz\n4\nbbuzz\nfizz\n7\n8\nfizz\nbbuzz\n11\nfizz\n13\n14\nfizzbuzz\n16\n17\nfizz\n19\nbbuzz\nfizz\n22\n23\nfizz\nbbuzz\n26\nfizz\n28\n29\nfizzbuzz\n31\n32\nfizz\n34\nbbuzz\nfizz\n37\n38\nfizz\nbbuzz\n41\nfizz\n43\n44\nfizzbuzz\n46\n47\nfizz\n49\nbbuzz\nfizz\n52\n53\nfizz\nbbuzz\n56\nfizz\n58\n59\nfizzbuzz\n61\n62\nfizz\n64\nbbuzz\nfizz\n67\n68\nfizz\nbbuzz\n71\nfizz\n73\n74\nfizzbuzz\n76\n77\nfizz\n79\nbbuzz\nfizz\n82\n83\nfizz\nbbuzz\n86\nfizz\n88\n89\nfizzbuzz\n91\n92\nfizz\n94\nbbuzz\nfizz\n97\n98\nfizz\nbbuzz", 0) == 0)
+		 && (strlen(paco) == 413))
 	{
 		if (show == 1)
 		{
@@ -312,19 +313,75 @@ int	ft_paco_fizzbuzz(int k, int show)
 	else
 	{
 		printf("%s ./fizzbuzz | cat -e\n", RED);
+		printf("%s %s %ld\n", RED, paco, strlen(paco));
+	}
+	free(paco);
+	return (k);
+}
+
+int	paco_aff_first_param(int k, int show)
+{
+	char	*paco;
+
+	paco = paco_argv1("aff_first_param", "vincent");
+	if ((strncmp(paco, "vincent", 7) == 0) && (strlen(paco) == 8))
+	{
+		if (show == 1)
+		{
+			printf("%s ./aff_first_param vincent mit \"l'ane\" dans un pre et \"s'en\" vint | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./aff_first_param vincent mit \"l'ane\" dans un pre et \"s'en\" vint | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("aff_first_param", "\"j'aime le fromage de chevre\"");
+	if ((strncmp(paco, "j'aime le fromage de chevre", 27) == 0) && (strlen(paco) == 28))
+	{
+		if (show == 1)
+		{
+			printf("%s ./aff_first_param \"j'aime le fromage de chevre\" | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./aff_first_param \"j'aime le fromage de chevre\" | cat -e\n", RED);
+		printf("%s %s %ld\n", RED, paco, strlen(paco));
+	}
+	free(paco);
+	paco = paco_argv0("aff_first_param");
+	if (strcmp(paco, "\n") == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./aff_first_param | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./aff_first_param | cat -e\n", RED);
 		printf("%s %s\n", RED, paco);
 	}
 	free(paco);
 	return (k);
 }
 
-int	ft_paco_ok(char *name, char *argv1, int i, int show)
+/******************************************** */
+int	paco_ok(char *name, char *argv1, int i, int show)
 {
 	int		k;
 	char	*paco;
 
 	k = i;
-	paco = ft_paco_argv1(name, argv1);
+	paco = paco_argv1(name, argv1);
 	if (strncmp(paco, "a", 1) == 0)
 	{
 		if (show == 1)
@@ -337,7 +394,7 @@ int	ft_paco_ok(char *name, char *argv1, int i, int show)
 	return (k);
 }
 
-char	*ft_paco_argv0(char *name)
+char	*paco_argv0(char *name)
 {
 	FILE	*fp;
 	char	buffer[BUFFER_SIZE];
@@ -393,7 +450,7 @@ char	*ft_paco_argv0(char *name)
 	return (result);
 }
 
-char	*ft_paco_argv1(char *name, char *argv1)
+char	*paco_argv1(char *name, char *argv1)
 {
 	FILE	*fp;
 	char	buffer[BUFFER_SIZE];

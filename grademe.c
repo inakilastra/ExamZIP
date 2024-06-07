@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grademe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/07 14:37:21 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/07 17:09:48 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -534,7 +534,7 @@ void	ft_grademe(void)
                         {
 							k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
-                            k = ft_paco_aff_a(k, show);                        
+                            k = paco_aff_a(k, show);                        
 							if (k == 4)
 								i = ft_success_del_subject(name, show, 20);
 							else							
@@ -559,7 +559,7 @@ void	ft_grademe(void)
                         {
                             k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
-                            k = ft_paco_aff_z(k, show);                           
+                            k = paco_aff_z(k, show);                           
 							if (k == 4)
 								i = ft_success_del_subject(name, show, 20);
 							else
@@ -617,7 +617,7 @@ void	ft_grademe(void)
                         {
                             k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
-                            k = ft_paco_rev_print(k, show); 															
+                            k = paco_rev_print(k, show); 															
 							if (k == 3)
 							    i = ft_success_del_subject(name, show, 30);
 							else
@@ -717,7 +717,7 @@ void	ft_grademe(void)
                         {
 							k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
-                            k = ft_paco_fizzbuzz(k, show);                        
+                            k = paco_fizzbuzz(k, show);                        
 							if (k == 1)
 								i = ft_success_del_subject(name, show, 40);
 							else							
@@ -742,7 +742,7 @@ void	ft_grademe(void)
                         {
 							k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
-                            //k = ft_paco_buzzfizz(k, show);                        
+                            //k = paco_buzzfizz(k, show);                        
 							if (k == 4)
 								i = ft_success_del_subject(name, show, 40);
 							else							
@@ -795,8 +795,8 @@ void	ft_grademe(void)
                         {
 							k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
-                            //k = ft_paco_aff_first_param(k, show);                        
-							if (k == 1)
+                            k = paco_aff_first_param(k, show);                        
+							if (k == 3)
 								i = ft_success_del_subject(name, show, 50);
 							else							
 								ft_failure(show);
@@ -820,7 +820,7 @@ void	ft_grademe(void)
                         {
 							k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
-                            //k = ft_paco_aff_last_param(k, show);                        
+                            //k = paco_aff_last_param(k, show);                        
 							if (k == 4)
 								i = ft_success_del_subject(name, show, 50);
 							else							
