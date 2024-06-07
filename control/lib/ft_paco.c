@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_paco.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:01:41 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/06 23:53:57 by inaki            ###   ########.fr       */
+/*   Updated: 2024/06/07 13:46:52 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,8 +154,94 @@ int	ft_paco_aff_z(int k, int show)
 	return (k);
 }
 
+#ifdef _FILE_FT_PUTSTR_C
+int    paco_ft_putstr(int k, int show)
+{
+    #ifdef _FILE_FT_PUTSTR_C
+    int stdout_fd = dup(STDOUT_FILENO);  // Duplicar stdout
+    int pipe_fd[2];
+    pipe(pipe_fd);
+    dup2(pipe_fd[1], STDOUT_FILENO);  // Redirigir stdout al pipe
+    close(pipe_fd[1]);
+
+    // Llamar a la función ft_putstr
+    ft_putstr("Hola Mundo!");
+
+    // Restaurar stdout
+    dup2(stdout_fd, STDOUT_FILENO);
+    close(stdout_fd);
+
+    // Leer desde el pipe
+    char paco[100];
+    int len = read(pipe_fd[0], paco, sizeof(paco) - 1);
+    paco[len] = '\0';
+    close(pipe_fd[0]);
+
+    // Comparar la salida con el valor esperado
+    if (strcmp(paco, "Hola Mundo!") == 0)
+    {
+        if (show == 1)
+		{
+			printf("%s ./ft_putstr(\"Hola Mundo!\") | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+    }
+    else
+    {
+		printf("%s ./ft_putstr(\"Hola Mundo!\")\n", RED);
+		printf("%s %s\n", RED, paco);
+    }
+	return (k);
+    #else
+    printf("ft_putstr.c not found. Skipping test.\n");
+    #endif
+}
+#else
+    int     paco_ft_putstr(int k, int show)
+    {
+        return (0);
+    }
+#endif
+
+#ifdef _FILE_FT_STRLEN_C
+int    paco_ft_strlen(int k, int show)
+{
+    #ifdef _FILE_FT_STRLEN_C
+	 int i_ft_strlen;
+
+	 i_ft_strlen = ft_strlen("Hola Mundo!");
+
+    // Comparar la salida con el valor esperado
+    if (i_ft_strlen == strlen("Hola Mundo!"))
+    {
+        if (show == 1)
+		{
+			printf("%s ./ft_strlen(\"Hola Mundo!\") | cat -e\n", GREEN);
+			printf("%s %d\n", GREEN, i_ft_strlen);
+		}
+		k++;
+    }
+    else
+    {
+		printf("%s ./ft_strlen(\"Hola Mundo!\")\n", RED);
+		printf("%s %d\n", RED, i_ft_strlen);
+    }
+	return (k);
+    #else
+    printf("ft_strlen.c not found. Skipping test.\n");
+    #endif
+}
+#else
+    int     paco_ft_strlen(int k, int show)
+    {
+        return (0);
+    }
+#endif
+
 int	ft_paco_rev_print(int k, int show)
 {
+	
 	char	*paco;
 
 	paco = ft_paco_argv1("rev_print", "zaz");
@@ -191,7 +277,7 @@ int	ft_paco_rev_print(int k, int show)
 	}
 	free(paco);
 	paco = ft_paco_argv0("rev_print");
-	if (strncmp(paco, "", 0) == 0)
+	if (strcmp(paco, "\n") == 0)
 	{
 		if (show == 1)
 		{
@@ -209,55 +295,23 @@ int	ft_paco_rev_print(int k, int show)
 	return (k);
 }
 
-int	ft_paco_ft_putstr(int k, int show)
+int	ft_paco_fizzbuzz(int k, int show)
 {
 	char	*paco;
 
-	paco = ft_paco_argv1("ft_putstr", "zaz");
-	if (strncmp(paco, "zaz", 3) == 0)
+	paco = ft_paco_argv0("fizzbuzz");
+	if (strncmp(paco, "1\n2\nfizz\n4\nbbuzz\nfizz\n7\n8\nfizz\nbbuzz\n11\nfizz\n13\n14\nfizzbuzz\n16\n17\nfizz\n19\nbbuzz\nfizz\n22\n23\nfizz\nbbuzz\n26\nfizz\n28\n29\nfizzbuzz\n31\n32\nfizz\n34\nbbuzz\nfizz\n37\n38\nfizz\nbbuzz\n41\nfizz\n43\n44\nfizzbuzz\n46\n47\nfizz\n49\nbbuzz\nfizz\n52\n53\nfizz\nbbuzz\n56\nfizz\n58\n59\nfizzbuzz\n61\n62\nfizz\n64\nbbuzz\nfizz\n67\n68\nfizz\nbbuzz\n71\nfizz\n73\n74\nfizzbuzz\n76\n77\nfizz\n79\nbbuzz\nfizz\n82\n83\nfizz\nbbuzz\n86\nfizz\n88\n89\nfizzbuzz\n91\n92\nfizz\n94\nbbuzz\nfizz\n97\n98\nfizz\nbbuzz", 0) == 0)
 	{
 		if (show == 1)
 		{
-			printf("%s ./ft_putstr \"zaz\" | cat -e\n", GREEN);
+			printf("%s ./fizzbuzz | cat -e\n", GREEN);
 			printf("%s %s\n", GREEN, paco);
 		}
 		k++;
 	}
 	else
 	{
-		printf("%s ./ft_putstr \"zaz\" | cat -e\n", RED);
-		printf("%s %s\n", RED, paco);
-	}
-	free(paco);
-	paco = ft_paco_argv1("ft_putstr", "\"dubO a POIL\"");
-	if (strncmp(paco, "dubO a POIL", 11) == 0)
-	{
-		if (show == 1)
-		{
-			printf("%s ./ft_putstr \"dubO a POIL\" | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
-		}
-		k++;
-	}
-	else
-	{
-		printf("%s ./ft_putstr \"dubO a POIL\" | cat -e\n", RED);
-		printf("%s %s\n", RED, paco);
-	}
-	free(paco);
-	paco = ft_paco_argv0("ft_putstr");
-	if (strncmp(paco, "", 0) == 0)
-	{
-		if (show == 1)
-		{
-			printf("%s ./ft_putstr | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
-		}
-		k++;
-	}
-	else
-	{
-		printf("%s ./ft_putstr | cat -e\n", RED);
+		printf("%s ./fizzbuzz | cat -e\n", RED);
 		printf("%s %s\n", RED, paco);
 	}
 	free(paco);

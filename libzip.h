@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libzip.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 11:18:06 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/07 00:05:25 by inaki            ###   ########.fr       */
+/*   Updated: 2024/06/07 13:36:36 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,16 @@ char    *ft_paco_argv1(char *name, char *argv1);
 int		ft_paco_ok(char *name, char *argv1, int i, int show);
 int		ft_paco_aff_a(int k, int show);
 int     ft_paco_aff_z(int k, int show);
+#ifdef _FILE_FT_PUTSTR_C 
+ void   ft_putstr(char *str);
+#endif
+int     paco_ft_putstr(int k, int show);
+#ifdef _FILE_FT_STRLEN_C 
+ int	ft_strlen(char *str);
+#endif
+int     paco_ft_strlen(int k, int show);
 int     ft_paco_rev_print(int k, int show);
-int     ft_paco_ft_putstr(int k, int show);
+int     ft_paco_fizzbuzz(int k, int show);
 int     ft_success_del_subject(char *name, int show, int i);
 void	ft_failure(int show);
 void    ft_failure_check_file(char *name, int show);

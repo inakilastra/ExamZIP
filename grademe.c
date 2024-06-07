@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grademe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/07 00:05:45 by inaki            ###   ########.fr       */
+/*   Updated: 2024/06/07 14:37:21 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,10 @@ void calculate_time_difference(const char *start_str)
     }
     seconds_difference = difftime(end_time, current_time);
     if (seconds_difference < 0) {
-        fprintf(stderr, "End time is in the past\n");
+        printf("%s End time is in the past\n", RED);
+        printf("%s Parece que has inventado la máquina del tiempo... ¡pero viajaste demasiado lejos!\n", RED);
+        printf("%s Por favor, regresa al presente y vuelve a intentarlo.\n", RED);
+        //fprintf(stderr, "End time is in the past\n");
         return;
     }
     // Calculate hours, minutes, and seconds from seconds_difference
@@ -291,6 +294,15 @@ int mypaco_write(char *name, char *argv1, char *argv2, char *argv3)
     return (0);
 }
 
+void replaceHomeWithTilde(char *path) {
+    char *homeDir = getenv("HOME");
+    if (homeDir && strstr(path, homeDir) == path) {
+        char tempPath[MAX_PATH];
+        snprintf(tempPath, sizeof(tempPath), "~%s", path + strlen(homeDir));
+        strcpy(path, tempPath);
+    }
+}
+
 void    print_msg (const char *str1, const char *sfile)
 {
 	char        *username = getlogin();
@@ -299,6 +311,7 @@ void    print_msg (const char *str1, const char *sfile)
     char         *mode;
 
     mode = ctr_txt("control/ctrl_mode.txt", 'G', 'P', 0, "");
+    replaceHomeWithTilde(currentDirPath);
 	if (strncmp(str1, "start", 5) == 0)
     {
 		printf("%s\n Para empezar prueba con cualquiera de estos comandos:\n\n", RED);
@@ -565,7 +578,6 @@ void	ft_grademe(void)
         if (i == 20)
         {
             ft_input_ok();
-second = 5;
             if (second >= 0 && second <= 3)
             {
                 ft_file("rev_print");//23
@@ -629,8 +641,8 @@ second = 5;
                         {
                             k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
-                            k = ft_paco_ft_putstr(k, show); 															
-							if (k == 30)
+                            k = paco_ft_putstr(k, show);															
+							if (k == 1)
 							    i = ft_success_del_subject(name, show, 30);
 							else
 							    ft_failure(show);
@@ -645,20 +657,184 @@ second = 5;
             }
             else if (i == 22)
             {
-                printf("%s22 ft_strlen.c\n", WHITE);//22
+				if (ft_check_file(rendu_c) == 0)
+                {
+                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    {
+                        if (strncmp(name, "ft_strlen", 9) == 0)
+                        {
+                            k = 0;
+							printf("%s\n PACO:\n\n", CYAN);
+                            k = paco_ft_strlen(k, show);															
+							if (k == 1)
+							    i = ft_success_del_subject(name, show, 30);
+							else
+							    ft_failure(show);
+                        }
+
+                    }
+                    else
+                        ft_failure(show);
+                }
+                else
+                    ft_failure_check_file(name, show);                
             }
         }
-        
-        if (i >= 30 && i < 34)
+//MODIFICAR CUANDO TENGA EL BUZZFIZZ 
+        if (i == 30)
         {
             ft_input_ok();
-            printf("%s31 fizzbuzz.c\t\t32 buzzfizz.c\n", WHITE);
+            if (second >= 0 && second <= 9)
+            {
+                ft_file("fizzbuzz");//31
+                ctr_txt("control/ctrl_question.txt", 'W', mode[0], 31, "");
+                ctr_txt("control/ctrl_question_name.txt", 'W', mode[0], 31, "fizzbuzz");
+            }
+            else
+            {
+                ft_file("buzzfizz");//32
+                ctr_txt("control/ctrl_question.txt", 'W', mode[0], 32, "");
+                ctr_txt("control/ctrl_question_name.txt", 'W', mode[0], 32, "buzzfizz");              
+            }
+            name = ctr_txt("control/ctrl_question_name.txt", 'G', 'P', 0, "");
+            mode = ctr_txt("control/ctrl_mode.txt", 'G', 'P', 0, "");
+
+    		rendu_c = strdup(get_rendu_c(name));		
+            printf("\033[H\033[J");
+            printf("%s\n Exam_42_ZIP v1.03\n\n", WHITE);		
+            print_msg ("questionX", name);         
+        }  
+              
+        if (i > 30 && i < 34)
+        {
+            if (i == 31)
+            {
+                if (ft_check_file(rendu_c) == 0)
+                {
+                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    {    
+                        if (strncmp(name, "fizzbuzz", 5) == 0)
+                        {
+							k = 0;
+							printf("%s\n PACO:\n\n", CYAN);
+                            k = ft_paco_fizzbuzz(k, show);                        
+							if (k == 1)
+								i = ft_success_del_subject(name, show, 40);
+							else							
+								ft_failure(show);
+                        }
+                    }
+                    else
+                        ft_failure(show);
+                }
+                else
+                {
+                    ft_failure_check_file(name, show);
+                }                
+            }
+            else
+            {
+                if (ft_check_file(rendu_c) == 0)
+                {
+                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    {    
+                        if (strncmp(name, "buzzfizz", 5) == 0)
+                        {
+							k = 0;
+							printf("%s\n PACO:\n\n", CYAN);
+                            //k = ft_paco_buzzfizz(k, show);                        
+							if (k == 4)
+								i = ft_success_del_subject(name, show, 40);
+							else							
+								ft_failure(show);
+                        }
+                    }
+                    else
+                        ft_failure(show);
+                }
+                else
+                {
+                    ft_failure_check_file(name, show);
+                } 
+            }
         }
+
+       if (i == 40)
+        {
+            ft_input_ok();
+            if (second >= 0 && second <= 4)
+            {
+                ft_file("aff_first_param");//41
+                ctr_txt("control/ctrl_question.txt", 'W', mode[0], 41, "");
+                ctr_txt("control/ctrl_question_name.txt", 'W', mode[0], 41, "aff_first_param");
+            }
+            else
+            {
+                ft_file("aff_last_param");//42
+                ctr_txt("control/ctrl_question.txt", 'W', mode[0], 42, "");
+                ctr_txt("control/ctrl_question_name.txt", 'W', mode[0], 42, "aff_last_param");              
+            }
+            name = ctr_txt("control/ctrl_question_name.txt", 'G', 'P', 0, "");
+            mode = ctr_txt("control/ctrl_mode.txt", 'G', 'P', 0, "");
+
+    		rendu_c = strdup(get_rendu_c(name));		
+            printf("\033[H\033[J");
+            printf("%s\n Exam_42_ZIP v1.03\n\n", WHITE);		
+            print_msg ("questionX", name);         
+        } 
 
         if (i >= 40 && i < 44)
         {
-            ft_input_ok();
-            printf("%s41 aff_first_param.c\t42 aff_last_param.c\n", WHITE);
+            if (i == 41)
+            {
+                if (ft_check_file(rendu_c) == 0)
+                {
+                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    {    
+                        if (strncmp(name, "aff_first_param", 5) == 0)
+                        {
+							k = 0;
+							printf("%s\n PACO:\n\n", CYAN);
+                            //k = ft_paco_aff_first_param(k, show);                        
+							if (k == 1)
+								i = ft_success_del_subject(name, show, 50);
+							else							
+								ft_failure(show);
+                        }
+                    }
+                    else
+                        ft_failure(show);
+                }
+                else
+                {
+                    ft_failure_check_file(name, show);
+                }                
+            }
+            else
+            {
+                if (ft_check_file(rendu_c) == 0)
+                {
+                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    {    
+                        if (strncmp(name, "aff_last_param", 5) == 0)
+                        {
+							k = 0;
+							printf("%s\n PACO:\n\n", CYAN);
+                            //k = ft_paco_aff_last_param(k, show);                        
+							if (k == 4)
+								i = ft_success_del_subject(name, show, 50);
+							else							
+								ft_failure(show);
+                        }
+                    }
+                    else
+                        ft_failure(show);
+                }
+                else
+                {
+                    ft_failure_check_file(name, show);
+                } 
+            }            
         }
 
         if (i >= 50 && i < 54)

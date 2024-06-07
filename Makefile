@@ -22,12 +22,20 @@ OBJ_FILES += control/lib/ft_files.o
 SRC_FILES += control/lib/ft_ctr_txt.c
 OBJ_FILES += control/lib/ft_ctr_txt.o
 
-# Verificar si los archivos existen y agregar las definiciones y objetos necesarios
-# ifeq ($(wildcard control/mymain/mft_putstr.c),control/mymain/mft_putstr.c)
-#     CFLAGS += -D_FILE_MFT_PUTSTR_C
-#     SRC_FILES += control/mymain/mft_putstr.c
-#     OBJ_FILES += control/mymain/mft_putstr.o
-# endif
+
+# Verificar si el archivo ft_putstr.c existe y agregarlo a la compilación
+ifeq ($(wildcard rendu/ft_putstr/ft_putstr.c),rendu/ft_putstr/ft_putstr.c)
+    SRC_FILES += rendu/ft_putstr/ft_putstr.c
+    OBJ_FILES += rendu/ft_putstr/ft_putstr.o
+    CFLAGS += -D_FILE_FT_PUTSTR_C
+endif
+
+# Verificar si el archivo ft_strlen.c existe y agregarlo a la compilación
+ifeq ($(wildcard rendu/ft_strlen/ft_strlen.c),rendu/ft_strlen/ft_strlen.c)
+    SRC_FILES += rendu/ft_strlen/ft_strlen.c
+    OBJ_FILES += rendu/ft_strlen/ft_strlen.o
+    CFLAGS += -D_FILE_FT_STRLEN_C
+endif
 
 # Regla por defecto, solo compila el programa
 all: run
@@ -48,6 +56,7 @@ clean:
 clean_objs:
 	$(RM) *.o
 	$(RM) control/lib/*.o
+	$(RM) rendu/*.o
 
 # Regla para limpiar y luego compilar el programa
 rebuild: clean all
