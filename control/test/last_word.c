@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rot_13.c                                           :+:      :+:    :+:   */
+/*   last_word.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/09 18:43:13 by inaki             #+#    #+#             */
-/*   Updated: 2024/06/09 18:51:58 by inaki            ###   ########.fr       */
+/*   Created: 2024/06/09 23:30:57 by inaki             #+#    #+#             */
+/*   Updated: 2024/06/10 00:07:16 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,24 @@
 
 int	main(int argc, char **argv)
 {
-	int	i;
+	char	*str;
+	int		i;
+	int		j;
 
 	if (argc == 2)
 	{
+		str = argv[1];
 		i = 0;
-		while (argv[1][i])
+		j = 0;
+		while (str[i])
 		{
-			if ((argv[1][i] >= 'a' && argv[1][i] <= 'm')
-				|| (argv[1][i] >= 'A' && argv[1][i] <= 'M'))
-				argv[1][i] = argv[1][i] + 13;
-			else if ((argv[1][i] >= 'n' && argv[1][i] <= 'z')
-				|| (argv[1][i] >= 'N' && argv[1][i] <= 'Z'))
-				argv[1][i] = argv[1][i] - 13;
-			write(1, &argv[1][i], 1);
+			if ((str[i] == ' ' || str[i] == '\t')
+				&& (str[i + 1] >= 33 && str[i + 1] <= 126))
+				j = i + 1;
 			i++;
 		}
+		while (str[j] >= 33 && str[j] <= 126)
+			write(1, &str[j++], 1);
 	}
 	write(1, "\n", 1);
 	return (0);

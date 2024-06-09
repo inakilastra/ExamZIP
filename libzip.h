@@ -6,7 +6,7 @@
 /*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 11:18:06 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/09 18:50:06 by inaki            ###   ########.fr       */
+/*   Updated: 2024/06/09 23:49:39 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int     paco_aff_last_param(int k, int show);
 int     paco_rotone(int k, int show);
 int     paco_first_word(int k, int show);
 int     paco_rot_13(int k, int show);
+int     paco_last_word(int k, int show);
 int     ft_success_del_subject(char *name, int show, int i, int grade);
 void	ft_failure(int show, int try);
 void    ft_failure_check_file(char *name, int show, int try);

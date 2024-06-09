@@ -690,6 +690,93 @@ int	paco_rot_13(int k, int show)
 	return (k);
 }
 
+int	paco_last_word(int k, int show)
+{
+	char	*paco;
+
+	paco = paco_argv1("last_word", "\"FOR PONY\"");
+	if ((strncmp(paco, "PONY", 4) == 0) && (strlen(paco) == 5))
+	{
+		if (show == 1)
+		{
+			printf("%s ./last_word \"FOR PONY\"| cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./last_word \"FOR PONY\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("last_word", "\"this        ...       is sparta, then again, maybe    not\"");
+	if ((strncmp(paco, "not", 3) == 0) && (strlen(paco) == 4))
+	{
+		if (show == 1)
+		{
+			printf("%s ./last_word \"this        ...       is sparta, then again, maybe    not\"| cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./last_word \"this        ...       is sparta, then again, maybe    not\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("last_word", "\"   \"");
+	if (strcmp(paco, "\n") == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./last_word \"   \"| cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./last_word \"   \" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("last_word", "\"a\" \"b\"");
+	if (strcmp(paco, "\n") == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./last_word \"a\" \"b\"| cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./last_word \"a\" \"b\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("last_word", "\"  lorem,ipsum  \"");
+	if ((strncmp(paco, "lorem,ipsum", 11) == 0) && (strlen(paco) == 12))
+	{
+		if (show == 1)
+		{
+			printf("%s ./last_word \"  lorem,ipsum  \"| cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./last_word \"  lorem,ipsum  \" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	return (k);
+}
+
 /******************************************** */
 int	paco_ok(char *name, char *argv1, int i, int show)
 {

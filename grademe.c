@@ -6,7 +6,7 @@
 /*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/09 18:59:42 by inaki            ###   ########.fr       */
+/*   Updated: 2024/06/10 00:09:54 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -733,7 +733,7 @@ void	ft_grademe(void)
                 {
                     if (check_norminette(rendu_c,mode[0]) == 0)
                     {    
-                        if (strncmp(name, "fizzbuzz", 5) == 0)
+                        if (strncmp(name, "fizzbuzz", 8) == 0)
                         {
 							k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
@@ -758,7 +758,7 @@ void	ft_grademe(void)
                 {
                     if (check_norminette(rendu_c,mode[0]) == 0)
                     {    
-                        if (strncmp(name, "buzzfizz", 5) == 0)
+                        if (strncmp(name, "buzzfizz", 8) == 0)
                         {
 							k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
@@ -811,7 +811,7 @@ void	ft_grademe(void)
                 {
                     if (check_norminette(rendu_c,mode[0]) == 0)
                     {    
-                        if (strncmp(name, "aff_first_param", 5) == 0)
+                        if (strncmp(name, "aff_first_param", 15) == 0)
                         {
 							k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
@@ -836,7 +836,7 @@ void	ft_grademe(void)
                 {
                     if (check_norminette(rendu_c,mode[0]) == 0)
                     {    
-                        if (strncmp(name, "aff_last_param", 5) == 0)
+                        if (strncmp(name, "aff_last_param", 14) == 0)
                         {
 							k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
@@ -895,7 +895,7 @@ void	ft_grademe(void)
                 {
                     if (check_norminette(rendu_c,mode[0]) == 0)
                     {
-                        if (strncmp(name, "rotone", 9) == 0)
+                        if (strncmp(name, "rotone", 6) == 0)
                         {
                             k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
@@ -919,7 +919,7 @@ void	ft_grademe(void)
                 {
                     if (check_norminette(rendu_c,mode[0]) == 0)
                     {
-                        if (strncmp(name, "first_word", 9) == 0)
+                        if (strncmp(name, "first_word", 10) == 0)
                         {
                             k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
@@ -943,7 +943,7 @@ void	ft_grademe(void)
                 {
                     if (check_norminette(rendu_c,mode[0]) == 0)
                     {
-                        if (strncmp(name, "rot_13", 9) == 0)
+                        if (strncmp(name, "rot_13", 6) == 0)
                         {
                             k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
@@ -966,7 +966,7 @@ void	ft_grademe(void)
         if (i == 60)
         {
             ft_input_ok(); 
-second = 2;             
+second = 5;             
             if (second >= 0 && second <= 3)
             {
                 ft_file("last_word");//63
@@ -996,7 +996,6 @@ second = 2;
         
         if (i >= 60 && i < 64)
         {
-            ft_input_ok();
             if (i == 63)
             {
                 if (ft_check_file(rendu_c) == 0)
@@ -1007,7 +1006,7 @@ second = 2;
                         {
                             k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
-                            //k = paco_last_word(k, show); 															
+                            k = paco_last_word(k, show); 															
 							if (k == 5)
 							    i = ft_success_del_subject(name, show, 70, grade);
 							else
@@ -1027,7 +1026,7 @@ second = 2;
                 {
                     if (check_norminette(rendu_c,mode[0]) == 0)
                     {
-                        if (strncmp(name, "inter", 9) == 0)
+                        if (strncmp(name, "inter", 5) == 0)
                         {
                             k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
@@ -1051,7 +1050,7 @@ second = 2;
                 {
                     if (check_norminette(rendu_c,mode[0]) == 0)
                     {
-                        if (strncmp(name, "union", 9) == 0)
+                        if (strncmp(name, "union", 5) == 0)
                         {
                             k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
