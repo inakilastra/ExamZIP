@@ -6,7 +6,7 @@
 /*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/07 17:09:48 by inaki            ###   ########.fr       */
+/*   Updated: 2024/06/09 18:59:42 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ char *get_date(void)
         line_t = strdup(line);
     }
     fclose(control_fp);
-	    if (sscanf(line_t, "%d/%d/%d %d:%d:%d",
+    if (sscanf(line_t, "%d/%d/%d %d:%d:%d",
                &start_tm.tm_mday, &start_tm.tm_mon, &start_tm.tm_year,
-               &start_tm.tm_hour, &start_tm.tm_min, &start_tm.tm_sec) != 6)
+               &start_tm.tm_hour, &start_tm.tm_min, &start_tm.tm_sec) != 6)           
 	{
         fprintf(stderr, "Error parsing date string\n");
         return ("");
@@ -136,10 +136,14 @@ void calculate_time_difference(const char *start_str)
         return;
     }
     seconds_difference = difftime(end_time, current_time);
-    if (seconds_difference < 0) {
-        printf("%s End time is in the past\n", RED);
-        printf("%s Parece que has inventado la máquina del tiempo... ¡pero viajaste demasiado lejos!\n", RED);
-        printf("%s Por favor, regresa al presente y vuelve a intentarlo.\n", RED);
+    if (seconds_difference < 0)
+    {
+    	printf("%s╔═══════════════════════════════════════════════════════════════════════════════════╗\n", RED);
+	    printf("%s║ End time is in the past.                                                          ║\n", RED);
+	    printf("%s║ Parece que has inventado la máquina del tiempo... ¡pero viajaste demasiado lejos! ║\n", RED);
+	    printf("%s║ Por favor, regresa al presente y vuelve a intentarlo.                             ║\n", RED);
+    	printf("%s╚═══════════════════════════════════════════════════════════════════════════════════╝\n", RED);
+    	printf("\n");    
         //fprintf(stderr, "End time is in the past\n");
         return;
     }
@@ -309,8 +313,12 @@ void    print_msg (const char *str1, const char *sfile)
     char        currentPath[MAX_PATH];
     char        *currentDirPath = getcwd(currentPath, MAX_PATH);
     char         *mode;
+    int         grade;
+    int         try;
 
     mode = ctr_txt("control/ctrl_mode.txt", 'G', 'P', 0, "");
+    grade = atoi(ctr_txt("control/ctrl_grade.txt", 'G', 'P', 0, ""));
+    try = atoi(ctr_txt("control/ctrl_try.txt", 'G', 'P', 0, ""));
     replaceHomeWithTilde(currentDirPath);
 	if (strncmp(str1, "start", 5) == 0)
     {
@@ -335,20 +343,26 @@ void    print_msg (const char *str1, const char *sfile)
 		printf("%s =====================================================================================\n", WHITE);
 		printf("%s Mode:", WHITE);
         if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
-            printf("%s PRACTICE ZIP\n\n", MAGENTA);
+            printf("%s PRACTICE ZIP", MAGENTA);
         else
-            printf("%s REAL ZIP\n\n", MAGENTA);
+            printf("%s REAL ZIP", MAGENTA);
+        printf("%s | Current Grade: %s%d%s / 200", WHITE, GREEN, grade, WHITE);
+        printf("%s | Level: %s%d%s / 8\n\n", WHITE, GREEN, grade / 25, WHITE);
+        
 	}
 	if (strncmp(str1, "questionX", 9) == 0)
 	{
 		print_msg ("empezamos", "");
-		printf("%s Assignement: %s%s.c\n\n", WHITE, GREEN, sfile);
+		printf("%s Assignement: %s%s %sfor %s25%sxp\n\n", WHITE, GREEN, sfile, WHITE, GREEN, WHITE);
 		printf("%s Subject location: %s%s/subjects/%s.txt\n", WHITE, GREEN, currentDirPath, sfile); 
 		printf("%s Exercice location: %s%s/rendu/%s/\n", WHITE, RED, currentDirPath, sfile); 
 		printf("%s Here you %sdon't need%s to use git.\n\n", WHITE, RED, WHITE); 
 		calculate_time_difference(get_date());
 		printf("%s =====================================================================================\n", WHITE);
-		printf("%s You can work on your assignesent.\n When you are sure you're done with it, use the \"./grademe\" command to be graded.\n\n\n", WHITE);
+		printf("%s You can work on your assignesent.\n", WHITE);
+        if (strncmp(sfile, "ft_", 3) == 0)
+            printf("%s En este caso en la primera comprobación usa \"make\" despues usa \"./grademe\" .\n", YELLOW);
+        printf("%s When you are sure you're done with it, use the \"./grademe\" command to be graded.\n\n\n", WHITE);            
 	}
 }
 
@@ -401,6 +415,8 @@ void    ctrl_txt_reset()
     ctr_txt("control/ctrl_mode.txt", 'W', 'P', 0, "");// Mode P
     ctr_txt("control/ctrl_penal.txt", 'W', 'P', 0, "");// Penal 0 reinicia 1 en P 5 en R
     ctr_txt("control/ctrl_question.txt", 'W', 'P', 0, "");// Mode P
+    ctr_txt("control/ctrl_grade.txt", 'W', 'P', 0, "");// Mode P
+    ctr_txt("control/ctrl_try.txt", 'W', 'P', 0, "");// Mode P
 }
 
 void    ctrl_txt_start(const char c)
@@ -502,6 +518,8 @@ void	ft_grademe(void)
     char        *mode;
     char 	    *rendu_c;
     int         penal=0;
+    int         grade;
+    int         try;
     int         second;
     int         i = 0;
 	int			k = 0;
@@ -513,6 +531,8 @@ void	ft_grademe(void)
     name = ctr_txt("control/ctrl_question_name.txt", 'G', 'P', 0, "");
     mode = ctr_txt("control/ctrl_mode.txt", 'G', 'P', 0, "");
     penal = atoi(ctr_txt("control/ctrl_penal.txt", 'G', 'P', 0, ""));
+    grade = atoi(ctr_txt("control/ctrl_grade.txt", 'G', 'P', 0, ""));
+    try = atoi(ctr_txt("control/ctrl_try.txt", 'G', 'P', 0, ""));
     if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
         show = 1;
     print_msg ("questionX", name);
@@ -536,17 +556,17 @@ void	ft_grademe(void)
 							printf("%s\n PACO:\n\n", CYAN);
                             k = paco_aff_a(k, show);                        
 							if (k == 4)
-								i = ft_success_del_subject(name, show, 20);
+								i = ft_success_del_subject(name, show, 20, grade);
 							else							
-								ft_failure(show);
+								ft_failure(show, try);
                         }
                     }
                     else
-                        ft_failure(show);
+                        ft_failure(show, try);
                 }
                 else
                 {
-                    ft_failure_check_file(name, show);
+                    ft_failure_check_file(name, show, try);
                 }
             }
             else
@@ -561,17 +581,17 @@ void	ft_grademe(void)
 							printf("%s\n PACO:\n\n", CYAN);
                             k = paco_aff_z(k, show);                           
 							if (k == 4)
-								i = ft_success_del_subject(name, show, 20);
+								i = ft_success_del_subject(name, show, 20, grade);
 							else
-							    ft_failure(show);
+							    ft_failure(show, try);
                         }
 
                     }
                     else
-                        ft_failure(show);
+                        ft_failure(show, try);
                 }
                 else
-                    ft_failure_check_file(name, show);
+                    ft_failure_check_file(name, show, try);
             }
         }
         
@@ -619,17 +639,17 @@ void	ft_grademe(void)
 							printf("%s\n PACO:\n\n", CYAN);
                             k = paco_rev_print(k, show); 															
 							if (k == 3)
-							    i = ft_success_del_subject(name, show, 30);
+							    i = ft_success_del_subject(name, show, 30, grade);
 							else
-							    ft_failure(show);
+							    ft_failure(show, try);
                         }
 
                     }
                     else
-                        ft_failure(show);
+                        ft_failure(show, try);
                 }
                 else
-                    ft_failure_check_file(name, show);                
+                    ft_failure_check_file(name, show, try);                
             }
             else if (i == 21)
             {
@@ -643,17 +663,17 @@ void	ft_grademe(void)
 							printf("%s\n PACO:\n\n", CYAN);
                             k = paco_ft_putstr(k, show);															
 							if (k == 1)
-							    i = ft_success_del_subject(name, show, 30);
+							    i = ft_success_del_subject(name, show, 30, grade);
 							else
-							    ft_failure(show);
+							    ft_failure(show, try);
                         }
 
                     }
                     else
-                        ft_failure(show);
+                        ft_failure(show, try);
                 }
                 else
-                    ft_failure_check_file(name, show);  				
+                    ft_failure_check_file(name, show, try);  				
             }
             else if (i == 22)
             {
@@ -667,17 +687,17 @@ void	ft_grademe(void)
 							printf("%s\n PACO:\n\n", CYAN);
                             k = paco_ft_strlen(k, show);															
 							if (k == 1)
-							    i = ft_success_del_subject(name, show, 30);
+							    i = ft_success_del_subject(name, show, 30, grade);
 							else
-							    ft_failure(show);
+							    ft_failure(show, try);
                         }
 
                     }
                     else
-                        ft_failure(show);
+                        ft_failure(show, try);
                 }
                 else
-                    ft_failure_check_file(name, show);                
+                    ft_failure_check_file(name, show, try);                
             }
         }
 //MODIFICAR CUANDO TENGA EL BUZZFIZZ 
@@ -719,17 +739,17 @@ void	ft_grademe(void)
 							printf("%s\n PACO:\n\n", CYAN);
                             k = paco_fizzbuzz(k, show);                        
 							if (k == 1)
-								i = ft_success_del_subject(name, show, 40);
+								i = ft_success_del_subject(name, show, 40, grade);
 							else							
-								ft_failure(show);
+								ft_failure(show, try);
                         }
                     }
                     else
-                        ft_failure(show);
+                        ft_failure(show, try);
                 }
                 else
                 {
-                    ft_failure_check_file(name, show);
+                    ft_failure_check_file(name, show, try);
                 }                
             }
             else
@@ -744,17 +764,17 @@ void	ft_grademe(void)
 							printf("%s\n PACO:\n\n", CYAN);
                             //k = paco_buzzfizz(k, show);                        
 							if (k == 4)
-								i = ft_success_del_subject(name, show, 40);
+								i = ft_success_del_subject(name, show, 40, grade);
 							else							
-								ft_failure(show);
+								ft_failure(show, try);
                         }
                     }
                     else
-                        ft_failure(show);
+                        ft_failure(show, try);
                 }
                 else
                 {
-                    ft_failure_check_file(name, show);
+                    ft_failure_check_file(name, show, try);
                 } 
             }
         }
@@ -783,7 +803,7 @@ void	ft_grademe(void)
             print_msg ("questionX", name);         
         } 
 
-        if (i >= 40 && i < 44)
+        if (i > 40 && i < 44)
         {
             if (i == 41)
             {
@@ -797,17 +817,17 @@ void	ft_grademe(void)
 							printf("%s\n PACO:\n\n", CYAN);
                             k = paco_aff_first_param(k, show);                        
 							if (k == 3)
-								i = ft_success_del_subject(name, show, 50);
+								i = ft_success_del_subject(name, show, 50, grade);
 							else							
-								ft_failure(show);
+								ft_failure(show, try);
                         }
                     }
                     else
-                        ft_failure(show);
+                        ft_failure(show, try);
                 }
                 else
                 {
-                    ft_failure_check_file(name, show);
+                    ft_failure_check_file(name, show, try);
                 }                
             }
             else
@@ -820,47 +840,260 @@ void	ft_grademe(void)
                         {
 							k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
-                            //k = paco_aff_last_param(k, show);                        
-							if (k == 4)
-								i = ft_success_del_subject(name, show, 50);
+                            k = paco_aff_last_param(k, show);                        
+							if (k == 3)
+								i = ft_success_del_subject(name, show, 50, grade);
 							else							
-								ft_failure(show);
+								ft_failure(show, try);
                         }
                     }
                     else
-                        ft_failure(show);
+                        ft_failure(show, try);
                 }
                 else
                 {
-                    ft_failure_check_file(name, show);
+                    ft_failure_check_file(name, show, try);
                 } 
             }            
         }
 
-        if (i >= 50 && i < 54)
+        if (i == 50)
         {
-            ft_input_ok();
-            printf("%s51 first_word.c\t\t52 rot_13.c\t\t53 rotone.c\n", WHITE);
+            ft_input_ok();           
+            if (second >= 0 && second <= 3)
+            {
+                ft_file("rotone");//53
+                ctr_txt("control/ctrl_question.txt", 'W', mode[0], 53, "");
+                ctr_txt("control/ctrl_question_name.txt", 'W', mode[0], 53, "rotone");
+            }
+            else if (second >= 4 && second <= 6)
+            {
+                ft_file("first_word");//51
+                ctr_txt("control/ctrl_question.txt", 'W', mode[0], 51, "");
+                ctr_txt("control/ctrl_question_name.txt", 'W', mode[0], 51, "first_word");              
+            }
+            else
+            {
+                ft_file("rot_13");//52
+                ctr_txt("control/ctrl_question.txt", 'W', mode[0], 52, "");
+                ctr_txt("control/ctrl_question_name.txt", 'W', mode[0], 52, "rot_13");                
+            }
+            name = ctr_txt("control/ctrl_question_name.txt", 'G', 'P', 0, "");
+            mode = ctr_txt("control/ctrl_mode.txt", 'G', 'P', 0, "");
+
+    		rendu_c = strdup(get_rendu_c(name));		
+            printf("\033[H\033[J");
+            printf("%s\n Exam_42_ZIP v1.03\n\n", WHITE);		
+            print_msg ("questionX", name);              
         }
 
+        if (i > 50 && i < 54)
+        {
+            if (i == 53)
+            {
+                if (ft_check_file(rendu_c) == 0)
+                {
+                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    {
+                        if (strncmp(name, "rotone", 9) == 0)
+                        {
+                            k = 0;
+							printf("%s\n PACO:\n\n", CYAN);
+                            k = paco_rotone(k, show); 															
+							if (k == 5)
+							    i = ft_success_del_subject(name, show, 60, grade);
+							else
+							    ft_failure(show, try);
+                        }
+
+                    }
+                    else
+                        ft_failure(show, try);
+                }
+                else
+                    ft_failure_check_file(name, show, try);                
+            }
+            else if (i == 51)
+            {
+				if (ft_check_file(rendu_c) == 0)
+                {
+                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    {
+                        if (strncmp(name, "first_word", 9) == 0)
+                        {
+                            k = 0;
+							printf("%s\n PACO:\n\n", CYAN);
+                            k = paco_first_word(k, show);															
+							if (k == 5)
+							    i = ft_success_del_subject(name, show, 60, grade);
+							else
+							    ft_failure(show, try);
+                        }
+
+                    }
+                    else
+                        ft_failure(show, try);
+                }
+                else
+                    ft_failure_check_file(name, show, try);  				
+            }
+            else if (i == 52)
+            {
+				if (ft_check_file(rendu_c) == 0)
+                {
+                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    {
+                        if (strncmp(name, "rot_13", 9) == 0)
+                        {
+                            k = 0;
+							printf("%s\n PACO:\n\n", CYAN);
+                            k = paco_rot_13(k, show);															
+							if (k == 5)
+							    i = ft_success_del_subject(name, show, 60, grade);
+							else
+							    ft_failure(show, try);
+                        }
+
+                    }
+                    else
+                        ft_failure(show, try);
+                }
+                else
+                    ft_failure_check_file(name, show, try);                
+            }            
+        }
+
+        if (i == 60)
+        {
+            ft_input_ok(); 
+second = 2;             
+            if (second >= 0 && second <= 3)
+            {
+                ft_file("last_word");//63
+                ctr_txt("control/ctrl_question.txt", 'W', mode[0], 63, "");
+                ctr_txt("control/ctrl_question_name.txt", 'W', mode[0], 63, "last_word");
+            }
+            else if (second >= 4 && second <= 6)
+            {
+                ft_file("inter");//61
+                ctr_txt("control/ctrl_question.txt", 'W', mode[0], 61, "");
+                ctr_txt("control/ctrl_question_name.txt", 'W', mode[0], 61, "inter");              
+            }
+            else
+            {
+                ft_file("union");//62
+                ctr_txt("control/ctrl_question.txt", 'W', mode[0], 62, "");
+                ctr_txt("control/ctrl_question_name.txt", 'W', mode[0], 62, "union");                
+            }
+            name = ctr_txt("control/ctrl_question_name.txt", 'G', 'P', 0, "");
+            mode = ctr_txt("control/ctrl_mode.txt", 'G', 'P', 0, "");
+
+    		rendu_c = strdup(get_rendu_c(name));		
+            printf("\033[H\033[J");
+            printf("%s\n Exam_42_ZIP v1.03\n\n", WHITE);		
+            print_msg ("questionX", name);  
+        }
+        
         if (i >= 60 && i < 64)
         {
             ft_input_ok();
-           printf("%s61 inter.c\t\t62 union.c\t\t62 last_word.c\n", WHITE);
+            if (i == 63)
+            {
+                if (ft_check_file(rendu_c) == 0)
+                {
+                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    {
+                        if (strncmp(name, "last_word", 9) == 0)
+                        {
+                            k = 0;
+							printf("%s\n PACO:\n\n", CYAN);
+                            //k = paco_last_word(k, show); 															
+							if (k == 5)
+							    i = ft_success_del_subject(name, show, 70, grade);
+							else
+							    ft_failure(show, try);
+                        }
+
+                    }
+                    else
+                        ft_failure(show, try);
+                }
+                else
+                    ft_failure_check_file(name, show, try);                
+            }
+            else if (i == 61)
+            {
+				if (ft_check_file(rendu_c) == 0)
+                {
+                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    {
+                        if (strncmp(name, "inter", 9) == 0)
+                        {
+                            k = 0;
+							printf("%s\n PACO:\n\n", CYAN);
+                            //k = paco_inter(k, show);															
+							if (k == 5)
+							    i = ft_success_del_subject(name, show, 70, grade);
+							else
+							    ft_failure(show, try);
+                        }
+
+                    }
+                    else
+                        ft_failure(show, try);
+                }
+                else
+                    ft_failure_check_file(name, show, try);  				
+            }
+            else if (i == 62)
+            {
+				if (ft_check_file(rendu_c) == 0)
+                {
+                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    {
+                        if (strncmp(name, "union", 9) == 0)
+                        {
+                            k = 0;
+							printf("%s\n PACO:\n\n", CYAN);
+                            //k = paco_union(k, show);															
+							if (k == 5)
+							    i = ft_success_del_subject(name, show, 70, grade);
+							else
+							    ft_failure(show, try);
+                        }
+
+                    }
+                    else
+                        ft_failure(show, try);
+                }
+                else
+                    ft_failure_check_file(name, show, try);                
+            }            
         }
 
-        if (i >= 70 && i < 74)
+        if (i == 70)
+        {
+
+        }
+        
+        if (i > 70 && i < 74)
         {
             ft_input_ok();
             printf("%s71 ft_itoa.c\t\t72 ft_range.c\t\t73 ft_rrange_z.c\n", WHITE);
         }
-        
-        if (i >= 80 && i < 84)
+   
+        if (i == 80)
+        {
+
+        }
+             
+        if (i > 80 && i < 84)
         {
             ft_input_ok();
             printf("%s81 expand_str.c\t\t82 ft_split.c\n", WHITE);
         }
-        if (i >= 90)
+        
+        if (i == 90)
             printf("%s SUCCESS\n\n", GREEN);
     }
     else

@@ -6,7 +6,7 @@
 /*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 16:43:15 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/07 17:13:40 by inaki            ###   ########.fr       */
+/*   Updated: 2024/06/09 17:18:32 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	ft_input_ok(void)
 		if (strcmp(input, "ok") == 0)
 		{
 			ft_input_go();
-			sleep(6);
+			sleep(4);
 			break ;
 		}
 		else

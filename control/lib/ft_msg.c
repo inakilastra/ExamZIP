@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_msg.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 14:57:21 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/06 16:00:14 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/09 12:33:07 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libzip.h"
 
-int	ft_success_del_subject(char *name, int show, int i)
+int	ft_success_del_subject(char *name, int show, int i, int grade)
 {
 	char	subject[128];
 
@@ -28,20 +28,25 @@ int	ft_success_del_subject(char *name, int show, int i)
 		ctr_txt("control/ctrl_penal.txt", 'W', 'P', 0, "");
 	else
 		ctr_txt("control/ctrl_penal.txt", 'W', 'R', 0, "");
+	grade += 25;
+	ctr_txt("control/ctrl_grade.txt", 'W', 'P', grade, "");
+	ctr_txt("control/ctrl_try.txt", 'W', 'P', 0, "");		
 	printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN);
 	return (i);
 }
 
-void	ft_failure(int show)
+void	ft_failure(int show, int try)
 {
 	if (show == 1)
 		ctr_txt("control/ctrl_penal.txt", 'W', 'P', 1, "");
 	else
 		ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
+	try += 1;
+	ctr_txt("control/ctrl_try.txt", 'W', 'P', try, "");		
 	printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n", RED);
-	printf("%s You have falled the assignement.\n\n", WHITE);
+	printf("%s You have falled the assignement. Try: %s %d\n\n", WHITE, YELLOW, try);
 }
-void	ft_failure_check_file(char *name, int show)
+void	ft_failure_check_file(char *name, int show, int try)
 {
 	char	subject[128];
 	char	rendu[128];
@@ -63,8 +68,10 @@ void	ft_failure_check_file(char *name, int show)
 		}
 		else
 			ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
+		try++;
+		ctr_txt("control/ctrl_try.txt", 'W', 'P', try, "");				
 		printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n", RED);
-		printf("%s You have falled the assignement.\n\n", WHITE); 
+		printf("%s You have falled the assignement. Try: %s %d\n\n", WHITE, YELLOW, try); 
 	}
 	if (ft_check_file(subject) != 0)
 		ft_copy_file(question, subject);

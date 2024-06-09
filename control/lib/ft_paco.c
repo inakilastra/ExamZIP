@@ -374,6 +374,322 @@ int	paco_aff_first_param(int k, int show)
 	return (k);
 }
 
+int	paco_aff_last_param(int k, int show)
+{
+	char	*paco;
+
+	paco = paco_argv1("aff_last_param", "\"zaz\" \"mange\" \"des\" \"chats\"");
+	if ((strncmp(paco, "chats", 5) == 0) && (strlen(paco) == 6))
+	{
+		if (show == 1)
+		{
+			printf("%s ./aff_last_param \"zaz\" \"mange\" \"des\" \"chats\"| cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./aff_last_param \"zaz\" \"mange\" \"des\" \"chats\"\"s'en\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("aff_last_param", "\"j'aime le savon\"");
+	if ((strncmp(paco, "j'aime le savon", 15) == 0) && (strlen(paco) == 16))
+	{
+		if (show == 1)
+		{
+			printf("%s ./aff_last_param \"j'aime le savon\" | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./aff_last_param \"j'aime le savon\" | cat -e\n", RED);
+		printf("%s %s %ld\n", RED, paco, strlen(paco));
+	}
+	free(paco);
+	paco = paco_argv0("aff_last_param");
+	if (strcmp(paco, "\n") == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./aff_last_param | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./aff_last_param | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	return (k);
+}
+
+int	paco_rotone(int k, int show)
+{
+	char	*paco;
+
+	paco = paco_argv1("rotone", "\"abc\"");
+	if ((strncmp(paco, "bcd", 3) == 0) && (strlen(paco) == 4))
+	{
+		if (show == 1)
+		{
+			printf("%s ./rotone \"abc\"| cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./rotone \"abc\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("rotone", "\"Les stagiaires du staff ne sentent pas toujours tres bon.\"");
+	if ((strncmp(paco, "Mft tubhjbjsft ev tubgg of tfoufou qbt upvkpvst usft cpo.", 57) == 0) && (strlen(paco) == 58))
+	{
+		if (show == 1)
+		{
+			printf("%s ./rotone \"Les stagiaires du staff ne sentent pas toujours tres bon.\" | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./rotone \"Les stagiaires du staff ne sentent pas toujours tres bon.\" | cat -e\n", RED);
+		printf("%s %s %ld\n", RED, paco, strlen(paco));
+	}
+	free(paco);
+	paco = paco_argv1("rotone", "\"AkjhZ zLKIJz , 23y \"");
+	if ((strncmp(paco, "BlkiA aMLJKa , 23z ", 19) == 0) && (strlen(paco) == 20))
+	{
+		if (show == 1)
+		{
+			printf("%s ./rotone \"AkjhZ zLKIJz , 23y \"| cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./rotone \"AkjhZ zLKIJz , 23y \" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("rotone", "\"\"");
+	if (strcmp(paco, "\n") == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./rotone \"\"| cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./rotone \"\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv0("rotone");
+	if (strcmp(paco, "\n") == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./rotone | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./rotone | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	return (k);
+}
+
+int	paco_first_word(int k, int show)
+{
+	char	*paco;
+
+	paco = paco_argv1("first_word", "\"FOR PONY\"");
+	if ((strncmp(paco, "FOR", 3) == 0) && (strlen(paco) == 4))
+	{
+		if (show == 1)
+		{
+			printf("%s ./first_word \"FOR PONY\"| cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./first_word \"FOR PONY\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("first_word", "\"this        ...       is sparta, then again, maybe    not\"");
+	if ((strncmp(paco, "this", 4) == 0) && (strlen(paco) == 5))
+	{
+		if (show == 1)
+		{
+			printf("%s ./first_word \"this        ...       is sparta, then again, maybe    not\"| cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./first_word \"this        ...       is sparta, then again, maybe    not\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("first_word", "\"   \"");
+	if (strcmp(paco, "\n") == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./first_word \"   \"| cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./first_word \"   \" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("first_word", "\"a\" \"b\"");
+	if (strcmp(paco, "\n") == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./first_word \"a\" \"b\"| cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./first_word \"a\" \"b\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("first_word", "\"  lorem,ipsum  \"");
+	if ((strncmp(paco, "lorem,ipsum", 11) == 0) && (strlen(paco) == 12))
+	{
+		if (show == 1)
+		{
+			printf("%s ./first_word \"  lorem,ipsum  \"| cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./first_word \"  lorem,ipsum  \" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	return (k);
+}
+
+int	paco_rot_13(int k, int show)
+{
+	char	*paco;
+
+	paco = paco_argv1("rot_13", "\"abc\"");
+	if ((strncmp(paco, "nop", 3) == 0) && (strlen(paco) == 4))
+	{
+		if (show == 1)
+		{
+			printf("%s ./rot_13 \"abc\"| cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./rot_13 \"abc\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("rot_13", "\"My horse is Amazing.\"");
+	if ((strncmp(paco, "Zl ubefr vf Nznmvat.", 20) == 0) && (strlen(paco) == 21))
+	{
+		if (show == 1)
+		{
+			printf("%s ./rot_13 \"My horse is Amazing.\" | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./rot_13 \"My horse is Amazing.\" | cat -e\n", RED);
+		printf("%s %s %ld\n", RED, paco, strlen(paco));
+	}
+	free(paco);
+	paco = paco_argv1("rot_13", "\"AkjhZ zLKIJz , 23y \"");
+	if ((strncmp(paco, "NxwuM mYXVWm , 23l ", 19) == 0) && (strlen(paco) == 20))
+	{
+		if (show == 1)
+		{
+			printf("%s ./rot_13 \"AkjhZ zLKIJz , 23y \"| cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./rot_13 \"AkjhZ zLKIJz , 23y \" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("rot_13", "\"\"");
+	if (strcmp(paco, "\n") == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./rot_13 \"\"| cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./rot_13 \"\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv0("rot_13");
+	if (strcmp(paco, "\n") == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./rot_13 | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./rot_13 | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	return (k);
+}
+
 /******************************************** */
 int	paco_ok(char *name, char *argv1, int i, int show)
 {

@@ -1,1 +1,1 @@
-fizzbuzz
+last_word

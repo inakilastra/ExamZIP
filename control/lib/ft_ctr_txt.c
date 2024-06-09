@@ -6,7 +6,7 @@
 /*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 16:03:41 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/06 23:38:34 by inaki            ###   ########.fr       */
+/*   Updated: 2024/06/09 11:54:52 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ char *ctr_txt(const char *sfile_txt, const char get_write, char mode, int questi
 		line_get = strdup(line); 
     }
     if (strcmp(sfile_txt, "control/ctrl_penal.txt") == 0
-        || strcmp(sfile_txt, "control/ctrl_question.txt") == 0)
+        || strcmp(sfile_txt, "control/ctrl_question.txt") == 0
+        || strcmp(sfile_txt, "control/ctrl_grade.txt") == 0
+        || strcmp(sfile_txt, "control/ctrl_try.txt") == 0)
     {
         i = atoi(line_get);
     }
@@ -47,7 +49,7 @@ char *ctr_txt(const char *sfile_txt, const char get_write, char mode, int questi
                 line_new = strdup("P");
             else
                 line_new = strdup("R");
-        }
+        }       
         if (strcmp(sfile_txt, "control/ctrl_penal.txt") == 0)
         {
             i += i;
@@ -69,6 +71,14 @@ char *ctr_txt(const char *sfile_txt, const char get_write, char mode, int questi
             else
                 line_new = strdup(ft_itoa(question));
         }
+        if (strcmp(sfile_txt, "control/ctrl_grade.txt") == 0)
+        {
+            line_new = strdup(ft_itoa(question));
+        }
+        if (strcmp(sfile_txt, "control/ctrl_try.txt") == 0)
+        {
+            line_new = strdup(ft_itoa(question));
+        }                
         if (strcmp(sfile_txt, "control/ctrl_question_name.txt") == 0)
         {
             line_new = strdup(question_name);
