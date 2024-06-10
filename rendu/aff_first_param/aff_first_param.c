@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr.c                                        :+:      :+:    :+:   */
+/*   aff_first_param.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 00:01:51 by inaki             #+#    #+#             */
-/*   Updated: 2024/06/07 00:02:33 by inaki            ###   ########.fr       */
+/*   Created: 2024/06/09 17:02:37 by inaki             #+#    #+#             */
+/*   Updated: 2024/06/09 17:20:45 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
-void	ft_putstr(char *str)
+int	main(int argc, char **argv)
 {
 	int	i;
 
 	i = 0;
-	while (str[i])
+	if (argc > 1)
 	{
-		write(1, &str[i++], 1);
+		while (argv[1][i])
+		{
+			write(1, &argv[1][i++], 1);
+		}
 	}
+	write(1, "\n", 1);
+	return (0);
 }

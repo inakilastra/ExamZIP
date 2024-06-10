@@ -37,6 +37,19 @@ ifeq ($(wildcard rendu/ft_strlen/ft_strlen.c),rendu/ft_strlen/ft_strlen.c)
     CFLAGS += -D_FILE_FT_STRLEN_C
 endif
 
+# Verificar si el archivo ft_rrange.c existe y agregarlo a la compilación
+ifeq ($(wildcard rendu/ft_rrange/ft_rrange.c),rendu/ft_rrange/ft_rrange.c)
+    SRC_FILES += rendu/ft_rrange/ft_rrange.c
+    OBJ_FILES += rendu/ft_rrange/ft_rrange.o
+    CFLAGS += -D_FILE_FT_RRANGE_C
+endif
+
+# Verificar si el archivo ft_range.c existe y agregarlo a la compilación
+ifeq ($(wildcard rendu/ft_range/ft_range.c),rendu/ft_range/ft_range.c)
+    SRC_FILES += rendu/ft_range/ft_range.c
+    OBJ_FILES += rendu/ft_range/ft_range.o
+    CFLAGS += -D_FILE_FT_RANGE_C
+endif
 # Regla por defecto, solo compila el programa
 all: run
 

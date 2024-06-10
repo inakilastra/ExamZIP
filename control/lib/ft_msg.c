@@ -6,7 +6,7 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 14:57:21 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/10 08:27:17 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/10 10:24:49 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ft_success_del_subject(char *name, int show, int i, int grade)
 	grade += 25;
 	ctr_txt("control/ctrl_grade.txt", 'W', 'P', grade, "");
 	ctr_txt("control/ctrl_try.txt", 'W', 'P', 0, "");		
-	printf("%s >>>>>>>>>> SUCCESS <<<<<<<<<<\n", GREEN);
+	printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n", GREEN);
 	return (i);
 }
 

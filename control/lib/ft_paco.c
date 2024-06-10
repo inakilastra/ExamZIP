@@ -22,7 +22,7 @@ int	paco_aff_a(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./aff_a \"abc\" | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -38,7 +38,7 @@ int	paco_aff_a(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./aff_a \"dubO a POIL\" | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -54,7 +54,7 @@ int	paco_aff_a(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./aff_a \"zz sent le poney\" | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -70,7 +70,7 @@ int	paco_aff_a(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./aff_a | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -93,14 +93,14 @@ int	paco_aff_z(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./aff_z \"abc\" | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
 	else
 	{
 		printf("%s ./aff_z \"abc\" | cat -e\n", RED);
-		printf("%s %s\n", RED, paco);
+		printf("%s %s", RED, paco);
 	}
 	free(paco);
 	paco = paco_argv1("aff_z", "\"dubO a POIL\"");
@@ -109,7 +109,7 @@ int	paco_aff_z(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./aff_z \"dubO a POIL\" | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -125,7 +125,7 @@ int	paco_aff_z(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./aff_z \"zz sent le poney\" | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -141,7 +141,7 @@ int	paco_aff_z(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./aff_z | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -183,7 +183,7 @@ int    paco_ft_putstr(int k, int show)
         if (show == 1)
 		{
 			printf("%s ./ft_putstr(\"Hola Mundo!\") | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
     }
@@ -202,6 +202,10 @@ int    paco_ft_putstr(int k, int show)
     {
         return (0);
     }
+	void   ft_putstr(char *str)
+	{
+
+	}
 #endif
 
 #ifdef _FILE_FT_STRLEN_C
@@ -218,7 +222,7 @@ int    paco_ft_strlen(int k, int show)
         if (show == 1)
 		{
 			printf("%s ./ft_strlen(\"Hola Mundo!\") | cat -e\n", GREEN);
-			printf("%s %d\n", GREEN, i_ft_strlen);
+			printf("%s %d", GREEN, i_ft_strlen);
 		}
 		k++;
     }
@@ -237,6 +241,10 @@ int    paco_ft_strlen(int k, int show)
     {
         return (0);
     }
+	int	ft_strlen(char *str)
+	{
+		return (0);
+	}
 #endif
 
 int	paco_rev_print(int k, int show)
@@ -250,7 +258,7 @@ int	paco_rev_print(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./rev_print \"zaz\" | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -266,7 +274,7 @@ int	paco_rev_print(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./rev_print \"dubO a POIL\" | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -282,14 +290,14 @@ int	paco_rev_print(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./rev_print | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
 	else
 	{
 		printf("%s ./rev_print | cat -e\n", RED);
-		printf("%s %s\n", RED, paco);
+		printf("%s %s", RED, paco);
 	}
 	free(paco);
 	return (k);
@@ -306,7 +314,7 @@ int	paco_fizzbuzz(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./fizzbuzz | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s%s", GREEN, paco);
 		}
 		k++;
 	}
@@ -329,7 +337,7 @@ int	paco_aff_first_param(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./aff_first_param vincent mit \"l'ane\" dans un pre et \"s'en\" vint | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -345,7 +353,7 @@ int	paco_aff_first_param(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./aff_first_param \"j'aime le fromage de chevre\" | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -361,7 +369,7 @@ int	paco_aff_first_param(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./aff_first_param | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -384,7 +392,7 @@ int	paco_aff_last_param(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./aff_last_param \"zaz\" \"mange\" \"des\" \"chats\"| cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -400,7 +408,7 @@ int	paco_aff_last_param(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./aff_last_param \"j'aime le savon\" | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -416,7 +424,7 @@ int	paco_aff_last_param(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./aff_last_param | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -439,7 +447,7 @@ int	paco_rotone(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./rotone \"abc\"| cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -455,7 +463,7 @@ int	paco_rotone(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./rotone \"Les stagiaires du staff ne sentent pas toujours tres bon.\" | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -471,7 +479,7 @@ int	paco_rotone(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./rotone \"AkjhZ zLKIJz , 23y \"| cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -487,7 +495,7 @@ int	paco_rotone(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./rotone \"\"| cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -503,7 +511,7 @@ int	paco_rotone(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./rotone | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -526,7 +534,7 @@ int	paco_first_word(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./first_word \"FOR PONY\"| cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -542,7 +550,7 @@ int	paco_first_word(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./first_word \"this        ...       is sparta, then again, maybe    not\"| cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -558,7 +566,7 @@ int	paco_first_word(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./first_word \"   \"| cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -574,7 +582,7 @@ int	paco_first_word(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./first_word \"a\" \"b\"| cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -590,7 +598,7 @@ int	paco_first_word(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./first_word \"  lorem,ipsum  \"| cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -613,7 +621,7 @@ int	paco_rot_13(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./rot_13 \"abc\"| cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -629,7 +637,7 @@ int	paco_rot_13(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./rot_13 \"My horse is Amazing.\" | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -645,7 +653,7 @@ int	paco_rot_13(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./rot_13 \"AkjhZ zLKIJz , 23y \"| cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -661,7 +669,7 @@ int	paco_rot_13(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./rot_13 \"\"| cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -677,7 +685,7 @@ int	paco_rot_13(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./rot_13 | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -700,7 +708,7 @@ int	paco_last_word(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./last_word \"FOR PONY\"| cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -716,7 +724,7 @@ int	paco_last_word(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./last_word \"this        ...       is sparta, then again, maybe    not\"| cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -732,7 +740,7 @@ int	paco_last_word(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./last_word \"   \"| cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -748,7 +756,7 @@ int	paco_last_word(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./last_word \"a\" \"b\"| cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -764,7 +772,7 @@ int	paco_last_word(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./last_word \"  lorem,ipsum  \"| cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -787,7 +795,7 @@ int	paco_inter(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./inter \"padinton\" \"paqefwtdjetyiytjneytjoeyjnejeyj\" | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -803,7 +811,7 @@ int	paco_inter(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./inter ddf6vewg64f gtwthgdwthdwfteewhrtag6h4ffdhsd | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -819,7 +827,7 @@ int	paco_inter(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./inter \"rien\" \"cette phrase ne cache rien\" | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -835,7 +843,7 @@ int	paco_inter(int k, int show)
 		if (show == 1)
 		{
 			printf("%s ./inter | cat -e\n", GREEN);
-			printf("%s %s\n", GREEN, paco);
+			printf("%s %s", GREEN, paco);
 		}
 		k++;
 	}
@@ -847,6 +855,297 @@ int	paco_inter(int k, int show)
 	free(paco);
 	return (k);
 }
+
+int	paco_union(int k, int show)
+{
+	char	*paco;
+
+	paco = paco_argv1("union", "zpadinton \"paqefwtdjetyiytjneytjoeyjnejeyj\"");
+	if ((strncmp(paco, "zpadintoqefwjy", 14) == 0) && (strlen(paco) == 15))
+	{
+		if (show == 1)
+		{
+			printf("%s ./union zpadinton \"paqefwtdjetyiytjneytjoeyjnejeyj\" | cat -e\n", GREEN);
+			printf("%s %s", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./union zpadinton \"paqefwtdjetyiytjneytjoeyjnejeyj\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("union", "ddf6vewg64f gtwthgdwthdwfteewhrtag6h4ffdhsd");
+	if ((strncmp(paco, "df6vewg4thras", 13) == 0) && (strlen(paco) == 14))
+	{
+		if (show == 1)
+		{
+			printf("%s ./union ddf6vewg64f gtwthgdwthdwfteewhrtag6h4ffdhsd | cat -e\n", GREEN);
+			printf("%s %s", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./union ddf6vewg64f gtwthgdwthdwfteewhrtag6h4ffdhsd | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("union", "\"rien\" \"cette phrase ne cache rien\"");
+	if ((strncmp(paco, "rienct phas", 11) == 0) && (strlen(paco) == 12))
+	{
+		if (show == 1)
+		{
+			printf("%s ./union \"rien\" \"cette phrase ne cache rien\" | cat -e\n", GREEN);
+			printf("%s %s", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./union \"rien\" \"cette phrase ne cache rien\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("union", "\"rien\"");
+	if (strcmp(paco, "\n") == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./union \"rien\" | cat -e\n", GREEN);
+			printf("%s %s", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./union \"rien\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv0("union");
+	if (strcmp(paco, "\n") == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./union | cat -e\n", GREEN);
+			printf("%s %s", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./union | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	return (k);
+}
+
+#ifdef _FILE_FT_RRANGE_C
+int    paco_ft_rrange(int k, int show)
+{
+    #ifdef _FILE_FT_RRANGE_C
+	int ok;
+	int *prueba;
+
+	ok = 0;
+	prueba = ft_rrange(1, 3);
+	if(prueba[0] != 3
+		|| prueba[1] != 2
+		|| prueba[2] != 1)
+		ok = 1;
+    if (ok == 0)
+    {
+        if (show == 1)
+		{
+			printf("%s ./ft_rrange(1, 3) | cat -e\n", GREEN);
+			printf("%s %d, %d, %d\n", GREEN, prueba[0], prueba[1], prueba[2]);
+		}
+		k++;
+    }
+    else
+    {
+		printf("%s ./ft_rrange(1, 3)\n", RED);
+		printf("%s %d, %d, %d\n", RED, prueba[0], prueba[1], prueba[2]);
+    }		
+	prueba = ft_rrange(-1, 2);
+	if(prueba[0] != 2
+		|| prueba[1] != 1
+		|| prueba[2] != 0
+		|| prueba[3] != -1)
+		ok = 1;
+    if (ok == 0)
+    {
+        if (show == 1)
+		{
+			printf("%s ./ft_rrange(-1, 2) | cat -e\n", GREEN);
+			printf("%s %d, %d, %d, %d\n", GREEN, prueba[0], prueba[1], prueba[2], prueba[3]);
+		}
+		k++;
+    }
+    else
+    {
+		printf("%s ./ft_rrange(-1, 2)\n", RED);
+		printf("%s %d, %d, %d, %d\n", RED, prueba[0], prueba[1], prueba[2], prueba[3]);
+    }
+	prueba = ft_rrange(0, 0);
+	if(prueba[0] != 0)
+		ok = 1;
+    if (ok == 0)
+    {
+        if (show == 1)
+		{
+			printf("%s ./ft_rrange(0, 0) | cat -e\n", GREEN);
+			printf("%s %d\n", GREEN, prueba[0]);
+		}
+		k++;
+    }
+    else
+    {
+		printf("%s ./ft_rrange(0, 0)\n", RED);
+		printf("%s %d\n", RED, prueba[0]);
+    }
+	prueba = ft_rrange(0, -3);
+	if(prueba[0] != -3
+		|| prueba[1] != -2
+		|| prueba[2] != -1
+		|| prueba[3] != 0)
+		ok = 1;
+    if (ok == 0)
+    {
+        if (show == 1)
+		{
+			printf("%s ./ft_rrange(0, -3) | cat -e\n", GREEN);
+			printf("%s %d, %d, %d, %d\n", GREEN, prueba[0], prueba[1], prueba[2], prueba[3]);
+		}
+		k++;
+    }
+    else
+    {
+		printf("%s ./ft_rrange(0, -3)\n", RED);
+		printf("%s %d, %d, %d, %d\n", RED, prueba[0], prueba[1], prueba[2], prueba[3]);
+    }
+
+	return (k);
+    #else
+    printf("ft_rrange.c not found. Skipping test.\n");
+    #endif
+}
+#else
+    int     paco_ft_rrange(int k, int show)
+    {
+        return (0);
+    }
+	int    *ft_rrange(int start, int end)
+	{
+		return (0);
+	}
+#endif
+
+
+#ifdef _FILE_FT_RANGE_C
+int    paco_ft_range(int k, int show)
+{
+    #ifdef _FILE_FT_RANGE_C
+	int ok;
+	int *prueba;
+
+
+	ok = 0;
+	prueba = ft_range(1, 3);
+	if(prueba[0] != 1
+		|| prueba[1] != 2
+		|| prueba[2] != 3)
+		ok = 1;
+    if (ok == 0)
+    {
+        if (show == 1)
+		{
+			printf("%s ./ft_range(1, 3) | cat -e\n", GREEN);
+			printf("%s %d, %d, %d\n", GREEN, prueba[0], prueba[1], prueba[2]);
+		}
+		k++;
+    }
+    else
+    {
+		printf("%s ./ft_range(1, 3)\n", RED);
+		printf("%s %d, %d, %d\n", RED, prueba[0], prueba[1], prueba[2]);
+    }		
+	prueba = ft_range(-1, 2);
+	if(prueba[0] != -1
+		|| prueba[1] != 0
+		|| prueba[2] != 1
+		|| prueba[3] != 2)
+		ok = 1;
+    if (ok == 0)
+    {
+        if (show == 1)
+		{
+			printf("%s ./ft_range(-1, 2) | cat -e\n", GREEN);
+			printf("%s %d, %d, %d, %d\n", GREEN, prueba[0], prueba[1], prueba[2], prueba[3]);
+		}
+		k++;
+    }
+    else
+    {
+		printf("%s ./ft_range(-1, 2)\n", RED);
+		printf("%s %d, %d, %d, %d\n", RED, prueba[0], prueba[1], prueba[2], prueba[3]);
+    }
+	prueba = ft_range(0, 0);
+	if(prueba[0] != 0)
+		ok = 1;
+    if (ok == 0)
+    {
+        if (show == 1)
+		{
+			printf("%s ./ft_range(0, 0) | cat -e\n", GREEN);
+			printf("%s %d\n", GREEN, prueba[0]);
+		}
+		k++;
+    }
+    else
+    {
+		printf("%s ./ft_range(0, 0)\n", RED);
+		printf("%s %d\n", RED, prueba[0]);
+    }
+	prueba = ft_range(0, -3);
+	if(prueba[0] != 0
+		|| prueba[1] != -1
+		|| prueba[2] != -2
+		|| prueba[3] != -3)
+		ok = 1;
+    if (ok == 0)
+    {
+        if (show == 1)
+		{
+			printf("%s ./ft_range(0, -3) | cat -e\n", GREEN);
+			printf("%s %d, %d, %d, %d\n", GREEN, prueba[0], prueba[1], prueba[2], prueba[3]);
+		}
+		k++;
+    }
+    else
+    {
+		printf("%s ./ft_range(0, -3)\n", RED);
+		printf("%s %d, %d, %d, %d\n", RED, prueba[0], prueba[1], prueba[2], prueba[3]);
+    }
+
+	return (k);
+    #else
+    printf("ft_range.c not found. Skipping test.\n");
+    #endif
+}
+#else
+    int     paco_ft_range(int k, int show)
+    {
+        return (0);
+    }
+	int    *ft_range(int start, int end)
+	{
+		return (0);
+	}
+#endif
 
 /******************************************** */
 int	paco_ok(char *name, char *argv1, int i, int show)
