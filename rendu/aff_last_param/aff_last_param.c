@@ -1,21 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   aff_last_param.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 11:27:08 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/07 12:24:09 by ilastra-         ###   ########.fr       */
+/*   Created: 2024/06/09 13:01:41 by inaki             #+#    #+#             */
+/*   Updated: 2024/06/09 16:58:49 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strlen(char *str)
-{
-	int	n;
+#include <unistd.h>
 
-	n = 0;
-	while (str[n])
-		n++;
-	return (n);
+int	main(int argc, char **argv)
+{
+	int	i;
+
+	i = 0;
+	if (argc > 1)
+	{
+		while (argv[argc - 1][i])
+		{
+			write(1, &argv[argc - 1][i++], 1);
+		}
+	}
+	write(1, "\n", 1);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/10 10:47:04 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/10 14:09:42 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -450,15 +450,17 @@ void	ft_help(void)
 	printf("%s ./grademe help\n\n", CYAN);
     printf("%s Instruccciones:\n\n", WHITE);
 	printf("%s Copia todo en la carpeta que quieras.\n\n", WHITE);
-	printf("%s Compila %sgcc -o grademe grademe.c -Wall -Wextra -Werror\n\n", WHITE, CYAN);
-	printf("%s Para comenzar una simulación ejecuta %s./grademe start R%s o %s./grademe start P\n", WHITE, CYAN, WHITE, CYAN);
-	printf("%s  ./grademe start R %sModo REAL te penaliza más tiempo y no ves el motivo del fallo\n", CYAN, WHITE);
-	printf("%s  ./grademe start P %sModo PRACTICE te penaliza menos tiempo y ves el motivo del fallo:\n", CYAN, WHITE);
+	printf("%s Ejecuta %s\"make\"\n\n", WHITE, CYAN);
+    printf("%s Para preparar una simulación ejecuta  %s\"./grademe reset\"\n", WHITE, CYAN);
+	printf("%s  OJO ESTO %sBORRA LA CARPETA \"rendu\"%s, si quieres conservar tus ficheros muevelos antes\n\n", WHITE, RED, WHITE);      
+	printf("%s Para comenzar una simulación ejecuta %s\"./grademe start R\"%s o %s\"./grademe start P\"\n", WHITE, CYAN, WHITE, CYAN);
+	printf("%s  \"./grademe start R\" %sModo REAL te penaliza con más tiempo de espera y no ves el motivo del fallo\n", CYAN, WHITE);
+	printf("%s  \"./grademe start P\" %sModo PRACTICE te penaliza con menos tiempo de espera y ves el motivo del fallo:\n", CYAN, WHITE);
 	printf("%s    Tanto Norminette como lo que se esperaba recibir vs lo que devuelve tu cógigo\n\n", WHITE);
-	printf("%s Para evaluar cada ejercicio ejecuta %s./grademe\n\n", WHITE, CYAN);
-	printf("%s Para reiniciar una simulación ejecuta %s./grademe reset R%s o %s./grademe reset P\n", WHITE, CYAN, WHITE, CYAN);
-	printf("%s  OJO ESTO BORRA LA CARPETA %s\"rendu\"%s, si quieres conservar tus ficheros muevelos antes\n\n", WHITE, RED, WHITE);
+	printf("%s Para evaluar cada ejercicio ejecuta %s\"./grademe\"\n\n", WHITE, CYAN);
+	printf("%s Si el ejercicio es una función %s\"ft_xxx.c\"%s ejecuta la primera vez %s\"make\"\n\n", WHITE, CYAN, WHITE, CYAN);
 	printf("%s Para ver la ayuda ejecuta %s./grademe help\n\n", WHITE, CYAN);
+    printf("%s Para ver bien los textos el fondo de la terminal tiene que ser negro\n\n", WHITE);
 }
 
 void	ft_reset()
@@ -1071,8 +1073,7 @@ void	ft_grademe(void)
 
         if (i == 70)
         {
-            ft_input_ok();  
-second = 5;                       
+            ft_input_ok();                       
             if (second >= 0 && second <= 3)
             {
                 ft_file("ft_rrange");//73
@@ -1136,7 +1137,7 @@ second = 5;
                         {
                             k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
-                            //k = paco_ft_itoa(k, show);															
+                            k = paco_ft_itoa(k, show);															
 							if (k == 4)
 							    i = ft_success_del_subject(name, show, 80, grade);
 							else
@@ -1178,17 +1179,97 @@ second = 5;
    
         if (i == 80)
         {
-printf("%s80\n", WHITE);
+            ft_input_ok();                                  
+            if (second >= 0 && second <= 4)
+            {
+                ft_file("expand_str");//81
+                ctr_txt("control/ctrl_question.txt", 'W', mode[0], 81, "");
+                ctr_txt("control/ctrl_question_name.txt", 'W', mode[0], 81, "expand_str");
+            }
+            else
+            {
+                ft_file("ft_split");//82
+                ctr_txt("control/ctrl_question.txt", 'W', mode[0], 82, "");
+                ctr_txt("control/ctrl_question_name.txt", 'W', mode[0], 82, "ft_split");                
+            }
+            name = ctr_txt("control/ctrl_question_name.txt", 'G', 'P', 0, "");
+            mode = ctr_txt("control/ctrl_mode.txt", 'G', 'P', 0, "");
+
+    		rendu_c = strdup(get_rendu_c(name));		
+            printf("\033[H\033[J");
+            printf("%s\n Exam_42_ZIP v1.03\n\n", WHITE);		
+            print_msg ("questionX", name); 
         }
              
         if (i > 80 && i < 84)
         {
-            ft_input_ok();
-            printf("%s81 expand_str.c\t\t82 ft_split.c\n", WHITE);
+            if (i == 81)
+            {
+                if (ft_check_file(rendu_c) == 0)
+                {
+                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    {
+                        if (strncmp(name, "expand_str", 10) == 0)
+                        {
+                            k = 0;
+							printf("%s\n PACO:\n\n", CYAN);
+                            k = paco_expand_str(k, show); 															
+							if (k == 4)
+							    i = ft_success_del_subject(name, show, 90, grade);
+							else
+							    ft_failure(show, try);
+                        }
+
+                    }
+                    else
+                        ft_failure(show, try);
+                }
+                else
+                    ft_failure_check_file(name, show, try);                
+            }
+            else if (i == 82)
+            {
+				if (ft_check_file(rendu_c) == 0)
+                {
+                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    {
+                        if (strncmp(name, "ft_split", 8) == 0)
+                        {
+                            k = 0;
+							printf("%s\n PACO:\n\n", CYAN);
+                            k = paco_ft_split(k, show);															
+							if (k == 2)
+							    i = ft_success_del_subject(name, show, 90, grade);
+							else
+							    ft_failure(show, try);
+                        }
+
+                    }
+                    else
+                        ft_failure(show, try);
+                }
+                else
+                    ft_failure_check_file(name, show, try);  				
+            }            
         }
         
         if (i == 90)
-            printf("%s SUCCESS\n\n", GREEN);
+        {
+            printf("\n\n");
+            printf("%s Exam_42_ZIP passed, congratulations    \n", GREEN);
+            printf("%s Azterketa_42_ZIP gainditu da, zorionak \n", GREEN);
+            printf("%s Exam_42_ZIP superado, felicidades      \n", GREEN);
+	        printf("%s   ╔════════════════════════════════╗   \n", GREEN);
+            printf("%s   ║            :::      ::::::::   ║   \n", GREEN);
+            printf("%s   ║          :+:      :+:    :+:   ║   \n", GREEN);
+            printf("%s   ║        +:+ +:+         +:+     ║   \n", GREEN);
+            printf("%s   ║      +#+  +:+       +#+        ║   \n", GREEN);
+            printf("%s   ║    +#+#+#+#+#+   +#+           ║   \n", GREEN);
+            printf("%s   ║         #+#    #+#             ║   \n", GREEN);
+            printf("%s   ║        ###   ########.fr       ║   \n", GREEN);
+	        printf("%s   ╚════════════════════════════════╝   \n", GREEN);
+            printf("\n\n\n");   
+        }         
     }
     else
     {
@@ -1205,7 +1286,6 @@ printf("%s80\n", WHITE);
     }
 		free(rendu_c);
 }
-
 
 int	main(int argc, char **argv)
 { 

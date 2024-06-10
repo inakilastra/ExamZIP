@@ -6,7 +6,7 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 11:18:06 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/10 10:37:37 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/10 13:31:59 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 // Declaraciones de las funciones
 int		ft_input_ok(void);
 int		ft_input_ok_fallback(void);
-char	*ft_itoa(int n);
+char	*ft_myitoa(int n);
 int     ft_check_file(const char *str);
 int     ft_new_folder(const char *dir);
 int     ft_copy_file(const char *src, const char *dst);
@@ -69,14 +69,15 @@ int     paco_rot_13(int k, int show);
 int     paco_last_word(int k, int show);
 int     paco_inter(int k, int show);
 int     paco_union(int k, int show);
-#ifdef _FILE_FT_RRANGE_C 
- int    *ft_rrange(int start, int end);
-#endif
+int     *ft_rrange(int start, int end);
 int     paco_ft_rrange(int k, int show);
-#ifdef _FILE_FT_RANGE_C 
- int    *ft_range(int start, int end);
-#endif
+int     *ft_range(int start, int end);
 int     paco_ft_range(int k, int show);
+char    *ft_itoa(int nbr);
+int     paco_ft_itoa(int k, int show);
+int     paco_expand_str(int k, int show);
+char    **ft_split(char *str);
+int     paco_ft_split(int k, int show);
 int     ft_success_del_subject(char *name, int show, int i, int grade);
 void	ft_failure(int show, int try);
 void    ft_failure_check_file(char *name, int show, int try);

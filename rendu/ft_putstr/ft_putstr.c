@@ -1,38 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   last_word.c                                        :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/09 23:30:57 by inaki             #+#    #+#             */
-/*   Updated: 2024/06/10 00:07:16 by inaki            ###   ########.fr       */
+/*   Created: 2024/06/07 00:01:51 by inaki             #+#    #+#             */
+/*   Updated: 2024/06/07 00:02:33 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
-int	main(int argc, char **argv)
+void	ft_putstr(char *str)
 {
-	char	*str;
-	int		i;
-	int		j;
+	int	i;
 
-	if (argc == 2)
+	i = 0;
+	while (str[i])
 	{
-		str = argv[1];
-		i = 0;
-		j = 0;
-		while (str[i])
-		{
-			if ((str[i] == ' ' || str[i] == '\t')
-				&& (str[i + 1] >= 33 && str[i + 1] <= 126))
-				j = i + 1;
-			i++;
-		}
-		while (str[j] >= 33 && str[j] <= 126)
-			write(1, &str[j++], 1);
+		write(1, &str[i++], 1);
 	}
-	write(1, "\n", 1);
-	return (0);
 }

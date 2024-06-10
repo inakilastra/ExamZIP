@@ -11,8 +11,8 @@ OBJ_FILES = grademe.o
 
 SRC_FILES += control/lib/ft_input_ok.c
 OBJ_FILES += control/lib/ft_input_ok.o
-SRC_FILES += control/lib/ft_itoa.c
-OBJ_FILES += control/lib/ft_itoa.o
+SRC_FILES += control/lib/ft_myitoa.c
+OBJ_FILES += control/lib/ft_myitoa.o
 SRC_FILES += control/lib/ft_paco.c
 OBJ_FILES += control/lib/ft_paco.o
 SRC_FILES += control/lib/ft_msg.c
@@ -50,6 +50,21 @@ ifeq ($(wildcard rendu/ft_range/ft_range.c),rendu/ft_range/ft_range.c)
     OBJ_FILES += rendu/ft_range/ft_range.o
     CFLAGS += -D_FILE_FT_RANGE_C
 endif
+
+# Verificar si el archivo ft_itoa.c existe y agregarlo a la compilación
+ifeq ($(wildcard rendu/ft_itoa/ft_itoa.c),rendu/ft_itoa/ft_itoa.c)
+    SRC_FILES += rendu/ft_itoa/ft_itoa.c
+    OBJ_FILES += rendu/ft_itoa/ft_itoa.o
+    CFLAGS += -D_FILE_FT_ITOA_C
+endif
+
+# Verificar si el archivo ft_split.c existe y agregarlo a la compilación
+ifeq ($(wildcard rendu/ft_split/ft_split.c),rendu/ft_split/ft_split.c)
+    SRC_FILES += rendu/ft_split/ft_split.c
+    OBJ_FILES += rendu/ft_split/ft_split.o
+    CFLAGS += -D_FILE_FT_SPLIT_C
+endif
+
 # Regla por defecto, solo compila el programa
 all: run
 

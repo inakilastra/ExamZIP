@@ -5,56 +5,53 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/06 11:43:56 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/06 11:45:09 by ilastra-         ###   ########.fr       */
+/*   Created: 2024/06/10 11:17:03 by ilastra-          #+#    #+#             */
+/*   Updated: 2024/06/10 11:34:50 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libzip.h"
+#include <stdlib.h>
 
-static int	n_dig(int n)
+int	nlen(int nbr)
 {
-	int	i;
-	int	tmp;
+	int	n;
 
-	tmp = n;
-	i = 1;
-	if (tmp < 0)
+	n = 0;
+	if (nbr <= 0)
+		n++;
+	while (nbr != 0)
 	{
-		tmp *= -1;
-		i++;
+		n++;
+		nbr = nbr / 10;
 	}
-	while (tmp >= 10)
-	{
-		tmp /= 10;
-		i++;
-	}
-	return (i);
+	return (n);
 }
 
-char	*ft_itoa(int n)
+char	*ft_itoa(int nbr)
 {
-	int		dig;
+	char	*digits;
+	int		len;
 	char	*str;
 
-	if (n == -2147483648)
-		return (strdup("-2147483648"));
-	if (n == 0)
-		return (strdup("0"));
-	dig = n_dig(n);
-	str = (char *)malloc(sizeof(char) * (dig + 1));
+	digits = "0123456789";
+	len = nlen(nbr);
+	str = (char *)malloc(sizeof(char) * (len + 1));
 	if (!str)
-		return ("");
-	str[dig--] = '\0';
-	if (n < 0)
+		return (NULL);
+	if (nbr == -2147483648)
+		return ("-2147483648\0");
+	str[len] = '\0';
+	if (nbr < 0)
 	{
 		str[0] = '-';
-		n *= -1;
+		nbr = nbr * -1;
 	}
-	while (n > 0)
+	if (nbr == 0)
+		str[0] = '0';
+	while (nbr != 0)
 	{
-		str[dig--] = (n % 10) + '0';
-		n /= 10;
+		str[--len] = digits[nbr % 10];
+		nbr = nbr / 10;
 	}
 	return (str);
 }

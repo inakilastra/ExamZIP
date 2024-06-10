@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ctr_txt.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 16:03:41 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/09 11:54:52 by inaki            ###   ########.fr       */
+/*   Updated: 2024/06/10 11:28:09 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,29 +55,29 @@ char *ctr_txt(const char *sfile_txt, const char get_write, char mode, int questi
             i += i;
             if (mode == 'P' || mode == 'p')
                 if (question == 0)
-                    line_new = strdup(ft_itoa(1));//15
+                    line_new = strdup(ft_myitoa(1));//15
                 else
-                    line_new = strdup(ft_itoa(1));//i
+                    line_new = strdup(ft_myitoa(1));//i
             else
                 if (question == 0)
-                    line_new = strdup(ft_itoa(60));
+                    line_new = strdup(ft_myitoa(60));
                 else
-                    line_new = strdup(ft_itoa(i)); 
+                    line_new = strdup(ft_myitoa(i)); 
         }
         if (strcmp(sfile_txt, "control/ctrl_question.txt") == 0)
         {
             if (question == i)
-                line_new = strdup(ft_itoa(i));
+                line_new = strdup(ft_myitoa(i));
             else
-                line_new = strdup(ft_itoa(question));
+                line_new = strdup(ft_myitoa(question));
         }
         if (strcmp(sfile_txt, "control/ctrl_grade.txt") == 0)
         {
-            line_new = strdup(ft_itoa(question));
+            line_new = strdup(ft_myitoa(question));
         }
         if (strcmp(sfile_txt, "control/ctrl_try.txt") == 0)
         {
-            line_new = strdup(ft_itoa(question));
+            line_new = strdup(ft_myitoa(question));
         }                
         if (strcmp(sfile_txt, "control/ctrl_question_name.txt") == 0)
         {

@@ -943,6 +943,102 @@ int	paco_union(int k, int show)
 	return (k);
 }
 
+#ifdef _FILE_FT_ITOA_C
+int    paco_ft_itoa(int k, int show)
+{
+    #ifdef _FILE_FT_ITOA_C
+	int ok;
+	char *paco;
+
+	ok = 0;
+	paco = ft_itoa(-2147483648);
+	if ((strncmp(paco, "-2147483648", 11) == 0) || (strlen(paco) == 12))
+		ok = 1;
+    if (ok == 1)
+    {
+        if (show == 1)
+		{
+			printf("%s ./ft_itoa(-2147483648) | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+    }
+    else
+    {
+		printf("%s ./ft_itoa(-2147483648)\n", RED);
+		printf("%s %s\n", RED, paco);
+    }
+	free(paco);		
+	paco = ft_itoa(2147483647);
+	if ((strncmp(paco, "2147483647", 10) == 0) || (strlen(paco) == 11))
+		ok = 1;
+    if (ok == 1)
+    {
+        if (show == 1)
+		{
+			printf("%s ./ft_itoa(2147483647) | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+    }
+    else
+    {
+		printf("%s ./ft_itoa(2147483647)\n", RED);
+		printf("%s %s\n", RED, paco);
+    }		
+	free(paco);	
+	paco = ft_itoa(0);
+	if ((strncmp(paco, "0", 1) == 0) || (strlen(paco) == 2))
+		ok = 1;
+    if (ok == 1)
+    {
+        if (show == 1)
+		{
+			printf("%s ./ft_itoa(0) | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+    }
+    else
+    {
+		printf("%s ./ft_itoa(0)\n", RED);
+		printf("%s %s\n", RED, paco);
+    }
+	free(paco);	
+	paco = ft_itoa(123);
+	if ((strncmp(paco, "2147483647", 10) == 0) || (strlen(paco) == 11))
+		ok = 1;
+    if (ok == 1)
+    {
+        if (show == 1)
+		{
+			printf("%s ./ft_itoa(123) | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+    }
+    else
+    {
+		printf("%s ./ft_itoa(123)\n", RED);
+		printf("%s %s\n", RED, paco);
+    }	
+	free(paco);	
+	return (k);
+    #else
+    	printf("ft_itoa.c not found. Skipping test.\n");
+    #endif
+}
+#else
+    int     paco_ft_itoa(int k, int show)
+    {
+        return (0);
+    }
+	char	*ft_itoa(int nbr)
+	{
+		return (NULL);
+	}
+#endif
+
 #ifdef _FILE_FT_RRANGE_C
 int    paco_ft_rrange(int k, int show)
 {
@@ -970,6 +1066,7 @@ int    paco_ft_rrange(int k, int show)
 		printf("%s ./ft_rrange(1, 3)\n", RED);
 		printf("%s %d, %d, %d\n", RED, prueba[0], prueba[1], prueba[2]);
     }		
+	free(prueba);	
 	prueba = ft_rrange(-1, 2);
 	if(prueba[0] != 2
 		|| prueba[1] != 1
@@ -990,6 +1087,7 @@ int    paco_ft_rrange(int k, int show)
 		printf("%s ./ft_rrange(-1, 2)\n", RED);
 		printf("%s %d, %d, %d, %d\n", RED, prueba[0], prueba[1], prueba[2], prueba[3]);
     }
+	free(prueba);
 	prueba = ft_rrange(0, 0);
 	if(prueba[0] != 0)
 		ok = 1;
@@ -1007,6 +1105,7 @@ int    paco_ft_rrange(int k, int show)
 		printf("%s ./ft_rrange(0, 0)\n", RED);
 		printf("%s %d\n", RED, prueba[0]);
     }
+	free(prueba);
 	prueba = ft_rrange(0, -3);
 	if(prueba[0] != -3
 		|| prueba[1] != -2
@@ -1027,7 +1126,7 @@ int    paco_ft_rrange(int k, int show)
 		printf("%s ./ft_rrange(0, -3)\n", RED);
 		printf("%s %d, %d, %d, %d\n", RED, prueba[0], prueba[1], prueba[2], prueba[3]);
     }
-
+	free(prueba);
 	return (k);
     #else
     printf("ft_rrange.c not found. Skipping test.\n");
@@ -1044,14 +1143,12 @@ int    paco_ft_rrange(int k, int show)
 	}
 #endif
 
-
 #ifdef _FILE_FT_RANGE_C
 int    paco_ft_range(int k, int show)
 {
     #ifdef _FILE_FT_RANGE_C
 	int ok;
 	int *prueba;
-
 
 	ok = 0;
 	prueba = ft_range(1, 3);
@@ -1072,7 +1169,8 @@ int    paco_ft_range(int k, int show)
     {
 		printf("%s ./ft_range(1, 3)\n", RED);
 		printf("%s %d, %d, %d\n", RED, prueba[0], prueba[1], prueba[2]);
-    }		
+    }
+	free(prueba);
 	prueba = ft_range(-1, 2);
 	if(prueba[0] != -1
 		|| prueba[1] != 0
@@ -1093,6 +1191,7 @@ int    paco_ft_range(int k, int show)
 		printf("%s ./ft_range(-1, 2)\n", RED);
 		printf("%s %d, %d, %d, %d\n", RED, prueba[0], prueba[1], prueba[2], prueba[3]);
     }
+	free(prueba);
 	prueba = ft_range(0, 0);
 	if(prueba[0] != 0)
 		ok = 1;
@@ -1110,6 +1209,7 @@ int    paco_ft_range(int k, int show)
 		printf("%s ./ft_range(0, 0)\n", RED);
 		printf("%s %d\n", RED, prueba[0]);
     }
+	free(prueba);
 	prueba = ft_range(0, -3);
 	if(prueba[0] != 0
 		|| prueba[1] != -1
@@ -1130,10 +1230,10 @@ int    paco_ft_range(int k, int show)
 		printf("%s ./ft_range(0, -3)\n", RED);
 		printf("%s %d, %d, %d, %d\n", RED, prueba[0], prueba[1], prueba[2], prueba[3]);
     }
-
+	free(prueba);
 	return (k);
     #else
-    printf("ft_range.c not found. Skipping test.\n");
+    	printf("ft_range.c not found. Skipping test.\n");
     #endif
 }
 #else
@@ -1144,6 +1244,149 @@ int    paco_ft_range(int k, int show)
 	int    *ft_range(int start, int end)
 	{
 		return (0);
+	}
+#endif
+
+int	paco_expand_str(int k, int show)
+{
+	char	*paco;
+
+	paco = paco_argv1("expand_str", "\"vous   voyez   c'est   facile   d'afficher   la   meme   chose\"");
+	if ((strncmp(paco, "vous   voyez   c'est   facile   d'afficher   la   meme   chose", 62) == 0) && (strlen(paco) == 63))
+	{
+		if (show == 1)
+		{
+			printf("%s ./expand_str \"vous   voyez   c'est   facile   d'afficher   la   meme   chose\" | cat -e\n", GREEN);
+			printf("%s %s", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./expand_str \"vous   voyez   c'est   facile   d'afficher   la   meme   chose\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("expand_str", "\" seulement          la c'est      plus dur \"");
+	if ((strncmp(paco, "seulement   la   c'est   plus   dur", 35) == 0) && (strlen(paco) == 36))
+	{
+		if (show == 1)
+		{
+			printf("%s ./expand_str \" seulement          la c'est      plus dur \" | cat -e\n", GREEN);
+			printf("%s %s", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./expand_str \" seulement          la c'est      plus dur \" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("expand_str", "\"comme c'est cocasse\" \"vous avez entendu, Mathilde ?\"");
+	if (strcmp(paco, "\n") == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./expand_str \"comme c'est cocasse\" \"vous avez entendu, Mathilde ?\" | cat -e\n", GREEN);
+			printf("%s %s", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./expand_str \"comme c'est cocasse\" \"vous avez entendu, Mathilde ?\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("expand_str", "");
+	if (strcmp(paco, "\n") == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./expand_str \"\" | cat -e\n", GREEN);
+			printf("%s %s", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./expand_str \"\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	return (k);
+}
+
+#ifdef _FILE_FT_SPLIT_C
+int    paco_ft_split(int k, int show)
+{
+    #ifdef _FILE_FT_SPLIT_C
+	int ok;
+	char **paco;
+
+	ok = 0;
+	paco = ft_split("Hola Mundo");
+	if((strncmp(paco[0], "Hola", 4) == 0)
+		&& (strncmp(paco[1], "Mundo", 5) == 0))
+		ok = 1;
+    if (ok == 1)
+    {
+        if (show == 1)
+		{
+			printf("%s ./ft_split(\"Hola Mundo\") | cat -e\n", GREEN);
+			printf("%s %s \n", GREEN, paco[0]);
+			printf("%s %s \n", GREEN, paco[1]);
+		}
+		k++;
+    }
+    else
+    {
+		printf("%s ./ft_split(\"Hola Mundo\") | cat -e\n", RED);
+		printf("%s %s \n", RED, paco[0]);
+		printf("%s %s \n", RED, paco[1]);
+    }
+	free(paco);
+	paco = ft_split("Cada palabra una linea");
+	if((strncmp(paco[0], "Cada", 4) == 0)
+		&& (strncmp(paco[1], "palabra", 7) == 0)
+		&& (strncmp(paco[2], "una", 3) == 0)
+		&& (strncmp(paco[3], "linea", 15) == 0))
+		ok = 1;
+    if (ok == 1)
+    {
+        if (show == 1)
+		{
+			printf("%s ./ft_split(\"Cada palabra una linea\") | cat -e\n", GREEN);
+			printf("%s %s \n", GREEN, paco[0]);
+			printf("%s %s \n", GREEN, paco[1]);
+			printf("%s %s \n", GREEN, paco[2]);
+			printf("%s %s \n", GREEN, paco[3]);
+		}
+		k++;
+    }
+    else
+    {
+		printf("%s ./ft_split(\"Cada palabra una linea\") | cat -e\n", RED);
+		printf("%s %s \n", RED, paco[0]);
+		printf("%s %s \n", RED, paco[1]);
+		printf("%s %s \n", RED, paco[2]);
+		printf("%s %s \n", RED, paco[3]);
+    }
+	free(paco);
+	return (k);
+    #else
+    	printf("ft_split.c not found. Skipping test.\n");
+    #endif
+}
+#else
+    int     paco_ft_split(int k, int show)
+    {
+        return (0);
+    }
+	char    **ft_split(char *str)
+	{
+		return (NULL);
 	}
 #endif
 
