@@ -1,1 +1,1 @@
-last_word
+ft_putstr

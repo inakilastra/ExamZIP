@@ -1,37 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   last_word.c                                        :+:      :+:    :+:   */
+/*   inter.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/09 23:30:57 by inaki             #+#    #+#             */
-/*   Updated: 2024/06/10 00:07:16 by inaki            ###   ########.fr       */
+/*   Created: 2024/06/10 08:39:57 by ilastra-          #+#    #+#             */
+/*   Updated: 2024/06/10 08:41:57 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
+int	inter(char *str, char c, int max_pos)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && (i < max_pos || max_pos == -1))
+		if (str[i++] == c)
+			return (1);
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
-	char	*str;
-	int		i;
-	int		j;
+	int	i;
 
-	if (argc == 2)
+	if (argc == 3)
 	{
-		str = argv[1];
 		i = 0;
-		j = 0;
-		while (str[i])
+		while (argv[1][i])
 		{
-			if ((str[i] == ' ' || str[i] == '\t')
-				&& (str[i + 1] >= 33 && str[i + 1] <= 126))
-				j = i + 1;
+			if (!inter(argv[1], argv[1][i], i)
+				&& inter(argv[2], argv[1][i], -1))
+				write(1, &argv[1][i], 1);
 			i++;
 		}
-		while (str[j] >= 33 && str[j] <= 126)
-			write(1, &str[j++], 1);
 	}
 	write(1, "\n", 1);
 	return (0);

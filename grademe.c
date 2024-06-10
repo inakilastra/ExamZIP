@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grademe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/10 00:09:54 by inaki            ###   ########.fr       */
+/*   Updated: 2024/06/10 08:42:30 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -966,7 +966,7 @@ void	ft_grademe(void)
         if (i == 60)
         {
             ft_input_ok(); 
-second = 5;             
+second = 8;             
             if (second >= 0 && second <= 3)
             {
                 ft_file("last_word");//63
@@ -1030,8 +1030,8 @@ second = 5;
                         {
                             k = 0;
 							printf("%s\n PACO:\n\n", CYAN);
-                            //k = paco_inter(k, show);															
-							if (k == 5)
+                            k = paco_inter(k, show);															
+							if (k == 4)
 							    i = ft_success_del_subject(name, show, 70, grade);
 							else
 							    ft_failure(show, try);

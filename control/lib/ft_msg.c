@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_msg.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 14:57:21 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/09 12:33:07 by inaki            ###   ########.fr       */
+/*   Updated: 2024/06/10 08:27:17 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_success_del_subject(char *name, int show, int i, int grade)
 	if (ft_check_file(subject) == 0)
 	{
 		if (remove(subject) == 0)
-			printf("\n");
+			printf(" ");
 		else
 			perror("Error deleting the file");
 	}
@@ -31,7 +31,7 @@ int	ft_success_del_subject(char *name, int show, int i, int grade)
 	grade += 25;
 	ctr_txt("control/ctrl_grade.txt", 'W', 'P', grade, "");
 	ctr_txt("control/ctrl_try.txt", 'W', 'P', 0, "");		
-	printf("%s\n >>>>>>>>>> SUCCESS <<<<<<<<<<\n\n", GREEN);
+	printf("%s >>>>>>>>>> SUCCESS <<<<<<<<<<\n", GREEN);
 	return (i);
 }
 
@@ -43,7 +43,7 @@ void	ft_failure(int show, int try)
 		ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
 	try += 1;
 	ctr_txt("control/ctrl_try.txt", 'W', 'P', try, "");		
-	printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n", RED);
+	printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n", RED);
 	printf("%s You have falled the assignement. Try: %s %d\n\n", WHITE, YELLOW, try);
 }
 void	ft_failure_check_file(char *name, int show, int try)
@@ -70,7 +70,7 @@ void	ft_failure_check_file(char *name, int show, int try)
 			ctr_txt("control/ctrl_penal.txt", 'W', 'R', 1, "");
 		try++;
 		ctr_txt("control/ctrl_try.txt", 'W', 'P', try, "");				
-		printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n\n", RED);
+		printf("%s\n >>>>>>>>>> FAILURE <<<<<<<<<<\n", RED);
 		printf("%s You have falled the assignement. Try: %s %d\n\n", WHITE, YELLOW, try); 
 	}
 	if (ft_check_file(subject) != 0)

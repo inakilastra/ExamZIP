@@ -777,6 +777,77 @@ int	paco_last_word(int k, int show)
 	return (k);
 }
 
+int	paco_inter(int k, int show)
+{
+	char	*paco;
+
+	paco = paco_argv1("inter", "\"padinton\" \"paqefwtdjetyiytjneytjoeyjnejeyj\"");
+	if ((strncmp(paco, "padinto", 7) == 0) && (strlen(paco) == 8))
+	{
+		if (show == 1)
+		{
+			printf("%s ./inter \"padinton\" \"paqefwtdjetyiytjneytjoeyjnejeyj\" | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./inter \"padinton\" \"paqefwtdjetyiytjneytjoeyjnejeyj\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("inter", "ddf6vewg64f gtwthgdwthdwfteewhrtag6h4ffdhsd");
+	if ((strncmp(paco, "df6ewg4", 7) == 0) && (strlen(paco) == 8))
+	{
+		if (show == 1)
+		{
+			printf("%s ./inter ddf6vewg64f gtwthgdwthdwfteewhrtag6h4ffdhsd | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./inter ddf6vewg64f gtwthgdwthdwfteewhrtag6h4ffdhsd | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv1("inter", "\"rien\" \"cette phrase ne cache rien\"");
+	if ((strncmp(paco, "rien", 4) == 0) && (strlen(paco) == 5))
+	{
+		if (show == 1)
+		{
+			printf("%s ./inter \"rien\" \"cette phrase ne cache rien\" | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./inter \"rien\" \"cette phrase ne cache rien\" | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	paco = paco_argv0("inter");
+	if (strcmp(paco, "\n") == 0)
+	{
+		if (show == 1)
+		{
+			printf("%s ./inter | cat -e\n", GREEN);
+			printf("%s %s\n", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./inter | cat -e\n", RED);
+		printf("%s %s\n", RED, paco);
+	}
+	free(paco);
+	return (k);
+}
+
 /******************************************** */
 int	paco_ok(char *name, char *argv1, int i, int show)
 {
