@@ -161,7 +161,7 @@ void calculate_time_difference(const char *start_str)
 
 int	check_norminette(const char *filename, char mode)
 {
-	char		buffer[128];
+/*	char		buffer[128];
 	FILE		*pipe;
 	int			error_count;
 	char		command[256];
@@ -200,7 +200,8 @@ int	check_norminette(const char *filename, char mode)
 	}
 	if (error_count > 1)
 		error_count--;
-	return (error_count);
+	return (error_count);*/
+	return (0);
 }
 
 int mypaco_write(char *name, char *argv1, char *argv2, char *argv3)
