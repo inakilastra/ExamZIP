@@ -7,6 +7,13 @@ newline.
 If the number is a multiple of 3, it prints 'fizz' instead.
 If the number is a multiple of 5, it prints 'buzz' instead.
 If the number is both a multiple of 3 and a multiple of 5, it prints 'fizzbuzz' instead.
+--------------------------------------------------------------------------------
+Escribe un programa que imprima los números del 1 al 100, cada uno separado por un
+nueva línea.
+Si el número es múltiplo de 3, en su lugar imprime 'fizz'.
+Si el número es múltiplo de 5, en su lugar imprime "buzz".
+Si el número es múltiplo de 3 y múltiplo de 5, en su lugar imprime 'fizzbuzz'.
+
 Example:
 $>./fizzbuzz
 1

@@ -7,6 +7,12 @@ letters by the next one in alphabetical order.
 'z' becomes 'a' and 'Z' becomes 'A'. Case remains unaffected.
 The output will be followed by a \n.
 If the number of arguments is not 1, the program displays \n.
+-------------------------------------------------- ------------------------------
+Escribe un programa que tome una cadena y la muestre, reemplazando cada uno de sus
+letras por la siguiente en orden alfabético.
+'z' se convierte en 'a' y 'Z' se convierte en 'A'. El caso no se ve afectado.
+La salida irá seguida de un \n.
+Si el número de argumentos no es 1, el programa muestra \n.
 
 Example:
 $>./rotone "abc"

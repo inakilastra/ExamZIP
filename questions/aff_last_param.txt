@@ -5,6 +5,11 @@ Allowed functions: write
 Write a program that takes strings as arguments, and displays its last
 argument followed by a newline.
 If the number of arguments is less than 1, the program displays a newline.
+--------------------------------------------------------------------------------
+Escribe un programa que tome cadenas como argumentos y muestre su último
+argumento seguido de una nueva línea.
+Si el número de argumentos es menor que 1, el programa muestra una nueva línea.
+
 Examples:
 $> ./aff_last_param "zaz" "mange" "des" "chats" | cat -e
 chats$

@@ -6,6 +6,12 @@ Write a program that takes a string and displays its last word followed by a \n.
 A word is a section of string delimited by spaces/tabs or by the start/end of
 the string.
 If the number of parameters is not 1, or there are no words, display a newline.
+--------------------------------------------------------------------------------
+Escribe un programa que tome una cadena y muestre su última palabra seguida 
+de \n.
+Una palabra es una sección de cadena delimitada por espacios/tabulaciones o 
+por el inicio/final de la cadena.
+Si el número de parámetros no es 1 o no hay palabras, muestre una nueva línea.
 
 Example:
 $> ./last_word "FOR PONY" | cat -e

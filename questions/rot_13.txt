@@ -7,6 +7,12 @@ letters by the letter 13 spaces ahead in alphabetical order.
 'z' becomes 'm' and 'Z' becomes 'M'. Case remains unaffected.
 The output will be followed by a newline.
 If the number of arguments is not 1, the program displays a newline.
+--------------------------------------------------------------------------------
+Escribe un programa que tome una cadena y la muestre, reemplazando cada uno de sus
+letras por letra 13 espacios adelante en orden alfabético.
+'z' se convierte en 'm' y 'Z' se convierte en 'M'. El caso no se ve afectado.
+La salida irá seguida de una nueva línea.
+Si el número de argumentos no es 1, el programa muestra una nueva línea.
 
 Example:
 $>./rot_13 "abc"

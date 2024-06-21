@@ -5,6 +5,11 @@ Allowed functions: write
 Write a program that takes strings as arguments, and displays its first
 argument followed by a \n.
 If the number of arguments is less than 1, the program displays \n.
+-------------------------------------------------- ------------------------------
+Escribe un programa que tome cadenas como argumentos y muestre su primer
+argumento seguido de un \n.
+Si el número de argumentos es menor que 1, el programa muestra \n.
+
 Example:
 $> ./aff_first_param vincent mit "l'ane" dans un pre et "s'en" vint | cat -e
 vincent$

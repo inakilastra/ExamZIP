@@ -8,6 +8,13 @@ A word is a section of string delimited by spaces/tabs or by the start/end of
 the string.
 If the number of parameters is not 1, or if there are no words, simply display
 a newline.
+--------------------------------------------------------------------------------
+Escribe un programa que tome una cadena y muestre su primera palabra, seguida 
+de una nueva línea.
+Una palabra es una sección de cadena delimitada por espacios/tabulaciones o 
+por el inicio/final de la cuerda.
+Si el número de parámetros no es 1, o si no hay palabras, simplemente muestre
+una nueva línea.
 
 Examples:
 $> ./first_word "FOR PONY" | cat -e
