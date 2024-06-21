@@ -6,7 +6,7 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/21 08:27:39 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/21 08:45:40 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -869,6 +869,7 @@ void	ft_grademe(void)
             printf("%s     Azterketa_42_ZIP gainditu da, zorionak    \n", GREEN);
             printf("%s     Exam_42_ZIP superat, felicitats           \n", GREEN);
             printf("%s     Exam_42_ZIP superado, felicidades         \n", GREEN);
+            printf("\n");
 	        printf("%s       ╔════════════════════════════════╗      \n", GREEN);
             printf("%s       ║            :::      ::::::::   ║      \n", GREEN);
             printf("%s       ║          :+:      :+:    :+:   ║      \n", GREEN);
@@ -878,36 +879,37 @@ void	ft_grademe(void)
             printf("%s       ║         #+#    #+#             ║      \n", GREEN);
             printf("%s       ║        ###   ########.fr       ║      \n", GREEN);
 	        printf("%s       ╚════════════════════════════════╝      \n", GREEN);
-            printf("%s           ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶          \n", YELLOW);
-            printf("%s           ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶          \n", YELLOW);
-            printf("%s      ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶    \n", YELLOW);
-            printf("%s    ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶  \n", YELLOW);
-            printf("%s   ¶¶¶¶      ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶       ¶¶¶¶ \n", YELLOW);
-            printf("%s   ¶¶¶       ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶        ¶¶¶ \n", YELLOW);
-            printf("%s   ¶¶        ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶        ¶¶¶ \n", YELLOW);
-            printf("%s   ¶¶¶     ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶      ¶¶¶ \n", YELLOW);
-            printf("%s   ¶¶¶    ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶    ¶¶¶¶ \n", YELLOW);
-            printf("%s    ¶¶¶   ¶¶¶ ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶ ¶¶¶    ¶¶¶  \n", YELLOW);
-            printf("%s    ¶¶¶¶   ¶¶¶ ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶ ¶¶¶¶  ¶¶¶¶   \n", YELLOW);
-            printf("%s      ¶¶¶¶  ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶ ¶¶¶¶¶    \n", YELLOW);
-            printf("%s       ¶¶¶¶¶¶¶¶ ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶ ¶¶¶¶¶¶¶¶¶     \n", YELLOW);
-            printf("%s         ¶¶¶¶¶¶  ¶¶¶¶¶¶¶¶¶¶¶¶¶¶   ¶¶¶¶¶¶       \n", YELLOW);
-            printf("%s                  ¶¶¶¶¶¶¶¶¶¶¶¶                 \n", YELLOW);
-            printf("%s                    ¶¶¶¶¶¶¶¶                   \n", YELLOW);
-            printf("%s                      ¶¶¶¶                     \n", YELLOW);
-            printf("%s                      ¶¶¶¶                     \n", YELLOW);
-            printf("%s                      ¶¶¶¶                     \n", YELLOW);
-            printf("%s                      ¶¶¶¶                     \n", YELLOW);
-            printf("%s                  ¶¶¶¶¶¶¶¶¶¶¶¶                 \n", YELLOW);
-            printf("%s               ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶              \n", MAGENTA);
-            printf("%s               ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶              \n", MAGENTA);
-            printf("%s               ¶¶¶            ¶¶¶              \n", MAGENTA);
-            printf("%s               ¶¶¶            ¶¶¶              \n", MAGENTA);
-            printf("%s               ¶¶¶            ¶¶¶              \n", MAGENTA);
-            printf("%s               ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶              \n", MAGENTA);
-            printf("%s               ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶              \n", MAGENTA);
-            printf("%s             ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶            \n", MAGENTA);
-            printf("%s            ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶           \n", MAGENTA);
+            printf("\n");
+            printf("%s           ██████████████████████████          \n", YELLOW);
+            printf("%s           ██████████████████████████          \n", YELLOW);
+            printf("%s      █████████████████████████████████████    \n", YELLOW);
+            printf("%s    █████████████████████████████████████████  \n", YELLOW);
+            printf("%s   ████      ██████████████████████       ████ \n", YELLOW);
+            printf("%s   ███       ██████████████████████        ███ \n", YELLOW);
+            printf("%s   ██        ██████████████████████        ███ \n", YELLOW);
+            printf("%s   ███     ██████████████████████████      ███ \n", YELLOW);
+            printf("%s   ███    ████████████████████████████    ████ \n", YELLOW);
+            printf("%s    ███   ███ ████████████████████ ███    ███  \n", YELLOW);
+            printf("%s    ████   ███ ██████████████████ ████  ████   \n", YELLOW);
+            printf("%s      ████  █████████████████████████ █████    \n", YELLOW);
+            printf("%s       ████████ ████████████████ █████████     \n", YELLOW);
+            printf("%s         ██████  ██████████████   ██████       \n", YELLOW);
+            printf("%s                  ████████████                 \n", YELLOW);
+            printf("%s                    ████████                   \n", YELLOW);
+            printf("%s                      ████                     \n", YELLOW);
+            printf("%s                      ████                     \n", YELLOW);
+            printf("%s                      ████                     \n", YELLOW);
+            printf("%s                      ████                     \n", YELLOW);
+            printf("%s                  ████████████                 \n", YELLOW);
+            printf("%s               ██████████████████              \n", MAGENTA);
+            printf("%s               ██████████████████              \n", MAGENTA);
+            printf("%s               ███            ███              \n", MAGENTA);
+            printf("%s               ███            ███              \n", MAGENTA);
+            printf("%s               ███            ███              \n", MAGENTA);
+            printf("%s               ██████████████████              \n", MAGENTA);
+            printf("%s               ██████████████████              \n", MAGENTA);
+            printf("%s             ██████████████████████            \n", MAGENTA);
+            printf("%s            ████████████████████████           \n", MAGENTA);
             printf("\n\n\n");   
         }         
     }
