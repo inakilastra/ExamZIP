@@ -6,7 +6,7 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 16:03:41 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/11 08:38:51 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/20 15:27:58 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char *ctr_txt(const char *sfile_txt, const char get_write, char mode, int questi
                 if (question == 0)
                     line_new = strdup(ft_myitoa(15));//15
                 else
-                    line_new = strdup(ft_myitoa(1));//i
+                    line_new = strdup(ft_myitoa(i));//i
             else
                 if (question == 0)
                     line_new = strdup(ft_myitoa(60));
@@ -110,7 +110,7 @@ char *ctr_txt(const char *sfile_txt, const char get_write, char mode, int questi
         }
         fclose(final_fp); 
         (void)question;
-        return (line_new);      
+        return (line_new);
     }
     return (line_get);
 }

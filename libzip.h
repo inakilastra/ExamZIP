@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libzip.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 11:18:06 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/10 13:31:59 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/20 23:39:30 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,27 @@
 # define BUFFER_SIZE 128
 
 // Declaraciones de las funciones
+//  ft_ctr_txt.c
+char    *ctr_txt(const char *sfile_txt, const char get_write, char mode, int question , const char *question_name);
+//  ft_files.c
+int		ft_check_file(const char *str);
+int		ft_copy_file(const char *src, const char *dst);
+void	ft_file(const char *sfile);
+int		ft_new_folder(const char *dir);
+void	ft_remove_directory(const char *path);
+
+
 int		ft_input_ok(void);
 int		ft_input_ok_fallback(void);
 char	*ft_myitoa(int n);
-int     ft_check_file(const char *str);
-int     ft_new_folder(const char *dir);
-int     ft_copy_file(const char *src, const char *dst);
-char    *ctr_txt(const char *sfile_txt, const char get_write, char mode, int question , const char *question_name);
+
+char *get_date(void);
+void calculate_time_difference(const char *start_str);
+void replaceHomeWithTilde(char *path);
+void    print_msg (const char *str1, const char *sfile);
+
+
+
 char	*paco_argv0(char *name);
 char    *paco_argv1(char *name, char *argv1);
 int		paco_ok(char *name, char *argv1, int i, int show);
@@ -61,6 +75,7 @@ int     paco_ft_putstr(int k, int show);
 int     paco_ft_strlen(int k, int show);
 int     paco_rev_print(int k, int show);
 int     paco_fizzbuzz(int k, int show);
+int     paco_buzzfizz(int k, int show);
 int     paco_aff_first_param(int k, int show);
 int     paco_aff_last_param(int k, int show);
 int     paco_rotone(int k, int show);

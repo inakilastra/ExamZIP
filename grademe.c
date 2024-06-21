@@ -6,203 +6,11 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:37:09 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/10 14:09:42 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/21 08:27:39 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* #include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <errno.h>
-#include <dirent.h> */
 #include "libzip.h"
-
-/* #define DEF_COLOR "\033[0;39m"
-#define GRAY "\033[0;90m"
-#define RED "\033[0;91m"
-#define GREEN "\033[0;92m"
-#define YELLOW "\033[0;93m"
-#define BLUE "\033[0;94m"
-#define MAGENTA "\033[0;95m"
-#define CYAN "\033[0;96m"
-#define WHITE "\033[0;97m"
-#define MAX_PATH 4096
-#define MAX_LINE_LENGTH 256
-#define BUFFER_SIZE 128 */
-
-void	remove_directory(const char *path)
-{
-    struct dirent *entry;
-    DIR *dir = opendir(path);
-
-    if (dir == NULL)
-    {
-        perror("opendir");
-        return;
-    }
-    while ((entry = readdir(dir)) != NULL)
-    {
-        char file_path[1024];
-        struct stat statbuf;
-
-        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
-            continue;
-        snprintf(file_path, sizeof(file_path), "%s/%s", path, entry->d_name);
-        if (stat(file_path, &statbuf) == 0) 
-        {
-            if (S_ISDIR(statbuf.st_mode))
-                remove_directory(file_path);
-            else
-                if (unlink(file_path) != 0)
-                    perror("unlink");
-        }
-    }
-    closedir(dir);
-    if (rmdir(path) != 0)
-        perror("rmdir");
-}
-
-char *get_date(void) 
-{
-    struct tm start_tm = {0};
-	FILE *control_fp = fopen("control/ctrl_time.txt", "r");
-
-    if (!control_fp)
-    {
-        perror("Error opening file control/ctrl_time.txt");
-        return ("");
-    }
-
-    char	line[MAX_LINE_LENGTH];
-    char	*line_t = NULL;
-    
-    while (fgets(line, sizeof(line), control_fp))
-    {
-        line_t = strdup(line);
-    }
-    fclose(control_fp);
-    if (sscanf(line_t, "%d/%d/%d %d:%d:%d",
-               &start_tm.tm_mday, &start_tm.tm_mon, &start_tm.tm_year,
-               &start_tm.tm_hour, &start_tm.tm_min, &start_tm.tm_sec) != 6)           
-	{
-        fprintf(stderr, "Error parsing date string\n");
-        return ("");
-    }
-    return (line_t);
-}
-
-void calculate_time_difference(const char *start_str) 
-{
-    struct tm start_tm = {0};
-    struct tm end_tm = {0};
-    time_t start_time, end_time;
-    double seconds_difference;
-    int hours, minutes, seconds;
-
-    // Extract date and time components from the string
-    if (sscanf(start_str, "%d/%d/%d %d:%d:%d",
-               &start_tm.tm_mday, &start_tm.tm_mon, &start_tm.tm_year,
-               &start_tm.tm_hour, &start_tm.tm_min, &start_tm.tm_sec) != 6)
-	{
-        fprintf(stderr, "Error parsing date string\n");
-        return;
-    }
-
-    // Adjust the month and year
-    start_tm.tm_mon -= 1;   // tm_mon is 0-based
-    start_tm.tm_year -= 1900; // tm_year is years since 1900
-
-    // Convert struct tm to time_t (seconds since epoch)
-    start_time = mktime(&start_tm);
-    if (start_time == -1)
-	{
-        fprintf(stderr, "Error converting start time to time_t\n");
-        return;
-    }
-    // Add 3 hours to start_time
-    end_time = start_time + 2 * 3600;
-    // Convert end_time back to struct tm
-    end_tm = *localtime(&end_time);
-    // Calculate the difference between the end time and the current time
-    time_t current_time = time(NULL);
-    if (current_time == -1)
-	{
-        fprintf(stderr, "Error getting current time\n");
-        return;
-    }
-    seconds_difference = difftime(end_time, current_time);
-    if (seconds_difference < 0)
-    {
-    	printf("%s╔═══════════════════════════════════════════════════════════════════════════════════╗\n", RED);
-	    printf("%s║ End time is in the past.                                                          ║\n", RED);
-	    printf("%s║ Parece que has inventado la máquina del tiempo... ¡pero viajaste demasiado lejos! ║\n", RED);
-	    printf("%s║ Por favor, regresa al presente y vuelve a intentarlo.                             ║\n", RED);
-    	printf("%s╚═══════════════════════════════════════════════════════════════════════════════════╝\n", RED);
-    	printf("\n");    
-        //fprintf(stderr, "End time is in the past\n");
-        return;
-    }
-    // Calculate hours, minutes, and seconds from seconds_difference
-    hours = (int)seconds_difference / 3600;
-    seconds_difference -= hours * 3600;
-    minutes = (int)seconds_difference / 60;
-    seconds = (int)seconds_difference % 60;
-    // Print the results
-	printf("%s End date: %s%02d/%02d/%04d %02d:%02d:%02d\n", WHITE, GREEN,
-           end_tm.tm_mday, end_tm.tm_mon + 1, end_tm.tm_year + 1900,
-           end_tm.tm_hour, end_tm.tm_min, end_tm.tm_sec);
-	printf("%s Left time: %s%d hrs, %d min, and %d sec\n\n", WHITE, GREEN, hours, minutes, seconds);
-}
-
-int	check_norminette(const char *filename, char mode)
-{
-/*	char		buffer[128];
-	FILE		*pipe;
-	int			error_count;
-	char		command[256];
-	int			i;
-
-	error_count = 0;
-	snprintf(command, sizeof(command), "norminette %s", filename);
-	pipe = popen(command, "r");
-	if (!pipe)
-	{
-		fprintf(stderr, "Error al ejecutar norminette.\n");
-		return (-1);
-	}
-	i = atoi(ctr_txt("control/ctrl_question.txt", 'G', 'P', 0, ""));
-	if (i > 0 && (mode == 'P' ||  mode == 'p'))
-		printf("%s\n NORMINETTE:\n\n", CYAN);
-	while (fgets(buffer, sizeof(buffer), pipe) != NULL)
-	{
-		if (i > 0)
-		{
-			if(mode == 'P' ||  mode == 'p')
-            {
-                if (strstr(buffer, ".c: OK!") != NULL)
-				    printf("%s %s", GREEN, buffer);
-			    else
-				    printf("%s %s", RED, buffer);
-            }
-			if (strstr(buffer, "Error") != NULL)
-				error_count++;
-		}
-	}
-	if (pclose(pipe) == -1) 
-	{
-		fprintf(stderr, "Error al cerrar la tubería.\n");
-		return (-1);
-	}
-	if (error_count > 1)
-		error_count--;
-	return (error_count);*/
-	return (0);
-}
 
 int mypaco_write(char *name, char *argv1, char *argv2, char *argv3)
 {
@@ -299,91 +107,6 @@ int mypaco_write(char *name, char *argv1, char *argv2, char *argv3)
     return (0);
 }
 
-void replaceHomeWithTilde(char *path) {
-    char *homeDir = getenv("HOME");
-    if (homeDir && strstr(path, homeDir) == path) {
-        char tempPath[MAX_PATH];
-        snprintf(tempPath, sizeof(tempPath), "~%s", path + strlen(homeDir));
-        strcpy(path, tempPath);
-    }
-}
-
-void    print_msg (const char *str1, const char *sfile)
-{
-	char        *username = getlogin();
-    char        currentPath[MAX_PATH];
-    char        *currentDirPath = getcwd(currentPath, MAX_PATH);
-    char         *mode;
-    int         grade;
-    int         try;
-
-    mode = ctr_txt("control/ctrl_mode.txt", 'G', 'P', 0, "");
-    grade = atoi(ctr_txt("control/ctrl_grade.txt", 'G', 'P', 0, ""));
-    try = atoi(ctr_txt("control/ctrl_try.txt", 'G', 'P', 0, ""));
-    replaceHomeWithTilde(currentDirPath);
-	if (strncmp(str1, "start", 5) == 0)
-    {
-		printf("%s\n Para empezar prueba con cualquiera de estos comandos:\n\n", RED);
-        printf("%s ./grademe start P%s --> MODE PRACTICE\n", CYAN, WHITE);
-        printf("%s ./grademe start R%s --> MODE REAL\n\n", CYAN, WHITE);
-    }
-    if (strncmp(str1, "empezamos", 9) == 0)
-	{
-		printf("%s\n You're connected: %s%s\n", WHITE, GREEN, username); 
-		printf("%s You can log out at any time.", WHITE); 
-		printf("%s If this program tells you you earned points\n", WHITE);
-		printf("%s then they will be counted whatever happens.\n\n", WHITE);
-		printf("%s You are about to start the project %sExam_42_ZIP%s, in", WHITE, GREEN, WHITE);
-        if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
-            printf("%s PRACTICE%s mode, at level.\n", MAGENTA, WHITE);
-        else
-            printf("%s REAL%s mode, at level.\n", MAGENTA, WHITE);
-		printf("%s You would have 3hrs to complete this project.\n", WHITE);
-		printf("%s Start Exam_42_ZIP --> ", WHITE);     
-		printf("%s %s\n\n", GREEN, get_date());
-		printf("%s =====================================================================================\n", WHITE);
-		printf("%s Mode:", WHITE);
-        if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
-            printf("%s PRACTICE ZIP", MAGENTA);
-        else
-            printf("%s REAL ZIP", MAGENTA);
-        printf("%s | Current Grade: %s%d%s / 200", WHITE, GREEN, grade, WHITE);
-        printf("%s | Level: %s%d%s / 8\n\n", WHITE, GREEN, grade / 25, WHITE);
-        
-	}
-	if (strncmp(str1, "questionX", 9) == 0)
-	{
-		print_msg ("empezamos", "");
-		printf("%s Assignement: %s%s %sfor %s25%sxp\n\n", WHITE, GREEN, sfile, WHITE, GREEN, WHITE);
-		printf("%s Subject location: %s%s/subjects/%s.txt\n", WHITE, GREEN, currentDirPath, sfile); 
-		printf("%s Exercice location: %s%s/rendu/%s/\n", WHITE, RED, currentDirPath, sfile); 
-		printf("%s Here you %sdon't need%s to use git.\n\n", WHITE, RED, WHITE); 
-		calculate_time_difference(get_date());
-		printf("%s =====================================================================================\n", WHITE);
-		printf("%s You can work on your assignesent.\n", WHITE);
-        if (strncmp(sfile, "ft_", 3) == 0)
-            printf("%s En este caso en la primera comprobación usa \"make\" despues usa \"./grademe\" .\n", YELLOW);
-        printf("%s When you are sure you're done with it, use the \"./grademe\" command to be graded.\n\n\n", WHITE);            
-	}
-}
-
-void ft_file(const char *sfile)
-{
-    char 	*questions_txt = strdup("questions/");
-    char 	*subjects_txt = strdup("subjects/");
-    char 	*rendu_txt = strdup("rendu/");
-
-	strcat(questions_txt, sfile);
-	strcat(questions_txt, ".txt");
-    strcat(subjects_txt, sfile);
-	strcat(subjects_txt, ".txt");
-    strcat(rendu_txt, sfile);
-    
-    ft_copy_file(questions_txt, subjects_txt);//11
-    if (ft_check_file(rendu_txt) != 0)
-        ft_new_folder(rendu_txt);
-    print_msg ("questionX", sfile);
-}
 
 void    ctrl_txt_show(const char c)
 {
@@ -453,11 +176,11 @@ void	ft_help(void)
 	printf("%s Copia todo en la carpeta que quieras.\n\n", WHITE);
 	printf("%s Ejecuta %s\"make\"\n\n", WHITE, CYAN);
     printf("%s Para preparar una simulación ejecuta  %s\"./grademe reset\"\n", WHITE, CYAN);
-	printf("%s  OJO ESTO %sBORRA LA CARPETA \"rendu\"%s, si quieres conservar tus ficheros muevelos antes\n\n", WHITE, RED, WHITE);      
+	printf("%s  OJO ESTO %sBORRA LA CARPETA \"rendu\"%s, si quieres conservar tus ficheros de dicha carpeta, muevelos antes\n\n", WHITE, RED, WHITE);      
 	printf("%s Para comenzar una simulación ejecuta %s\"./grademe start R\"%s o %s\"./grademe start P\"\n", WHITE, CYAN, WHITE, CYAN);
 	printf("%s  \"./grademe start R\" %sModo REAL te penaliza con más tiempo de espera y no ves el motivo del fallo\n", CYAN, WHITE);
 	printf("%s  \"./grademe start P\" %sModo PRACTICE te penaliza con menos tiempo de espera y ves el motivo del fallo:\n", CYAN, WHITE);
-	printf("%s    Tanto Norminette como lo que se esperaba recibir vs lo que devuelve tu cógigo\n\n", WHITE);
+	printf("%s    El resultado que se esperaba recibir y lo que devuelve tu cógigo\n\n", WHITE);
 	printf("%s Para evaluar cada ejercicio ejecuta %s\"./grademe\"\n\n", WHITE, CYAN);
 	printf("%s Si el ejercicio es una función %s\"ft_xxx.c\"%s ejecuta la primera vez %s\"make\"\n\n", WHITE, CYAN, WHITE, CYAN);
 	printf("%s Para ver la ayuda ejecuta %s./grademe help\n\n", WHITE, CYAN);
@@ -469,11 +192,11 @@ void	ft_reset()
 	ctrl_txt_reset();
     if (ft_check_file("rendu") == 0)
     {
-        remove_directory("rendu");
+        ft_remove_directory("rendu");
     }
     if (ft_check_file("subjects") == 0)
     {
-        remove_directory("subjects");
+        ft_remove_directory("subjects");
     }
     printf("%s Reinicializado.\n", GREEN);
     print_msg ("start", "");
@@ -551,21 +274,16 @@ void	ft_grademe(void)
             {
                 if (ft_check_file(rendu_c) == 0)
                 {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
-                    {    
-                        if (strncmp(name, "aff_a", 5) == 0)
-                        {
-							k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            k = paco_aff_a(k, show);                        
-							if (k == 4)
-								i = ft_success_del_subject(name, show, 20, grade);
-							else							
-								ft_failure(show, try);
-                        }
+                    if (strncmp(name, "aff_a", 5) == 0)
+                    {
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_aff_a(k, show);                        
+                        if (k == 4)
+                            i = ft_success_del_subject(name, show, 20, grade);
+                        else							
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                 {
@@ -575,23 +293,17 @@ void	ft_grademe(void)
             else
             {
                 if (ft_check_file(rendu_c) == 0)
-                {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
-                    {    
-                        if (strncmp(name, "aff_z", 5) == 0)
-                        {
-                            k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            k = paco_aff_z(k, show);                           
-							if (k == 4)
-								i = ft_success_del_subject(name, show, 20, grade);
-							else
-							    ft_failure(show, try);
-                        }
-
+                {   
+                    if (strncmp(name, "aff_z", 5) == 0)
+                    {
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_aff_z(k, show);                           
+                        if (k == 4)
+                            i = ft_success_del_subject(name, show, 20, grade);
+                        else
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                     ft_failure_check_file(name, show, try);
@@ -634,22 +346,16 @@ void	ft_grademe(void)
             {
                 if (ft_check_file(rendu_c) == 0)
                 {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    if (strncmp(name, "rev_print", 9) == 0)
                     {
-                        if (strncmp(name, "rev_print", 9) == 0)
-                        {
-                            k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            k = paco_rev_print(k, show); 															
-							if (k == 3)
-							    i = ft_success_del_subject(name, show, 30, grade);
-							else
-							    ft_failure(show, try);
-                        }
-
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_rev_print(k, show); 															
+                        if (k == 3)
+                            i = ft_success_del_subject(name, show, 30, grade);
+                        else
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                     ft_failure_check_file(name, show, try);                
@@ -658,8 +364,6 @@ void	ft_grademe(void)
             {
 				if (ft_check_file(rendu_c) == 0)
                 {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
-                    {
                         if (strncmp(name, "ft_putstr", 9) == 0)
                         {
                             k = 0;
@@ -670,10 +374,6 @@ void	ft_grademe(void)
 							else
 							    ft_failure(show, try);
                         }
-
-                    }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                     ft_failure_check_file(name, show, try);  				
@@ -682,32 +382,26 @@ void	ft_grademe(void)
             {
 				if (ft_check_file(rendu_c) == 0)
                 {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    if (strncmp(name, "ft_strlen", 9) == 0)
                     {
-                        if (strncmp(name, "ft_strlen", 9) == 0)
-                        {
-                            k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            k = paco_ft_strlen(k, show);															
-							if (k == 1)
-							    i = ft_success_del_subject(name, show, 30, grade);
-							else
-							    ft_failure(show, try);
-                        }
-
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_ft_strlen(k, show);															
+                        if (k == 1)
+                            i = ft_success_del_subject(name, show, 30, grade);
+                        else
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                     ft_failure_check_file(name, show, try);                
             }
         }
-//MODIFICAR CUANDO TENGA EL BUZZFIZZ 
+
         if (i == 30)
         {
             ft_input_ok();
-            if (second >= 0 && second <= 9)
+            if (second >= 0 && second <= 4)
             {
                 ft_file("fizzbuzz");//31
                 ctr_txt("control/ctrl_question.txt", 'W', mode[0], 31, "");
@@ -727,28 +421,23 @@ void	ft_grademe(void)
             printf("%s\n Exam_42_ZIP v1.03\n\n", WHITE);		
             print_msg ("questionX", name);         
         }  
-              
+            
         if (i > 30 && i < 34)
         {
             if (i == 31)
             {
                 if (ft_check_file(rendu_c) == 0)
                 {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
-                    {    
-                        if (strncmp(name, "fizzbuzz", 8) == 0)
-                        {
-							k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            k = paco_fizzbuzz(k, show);                        
-							if (k == 1)
-								i = ft_success_del_subject(name, show, 40, grade);
-							else							
-								ft_failure(show, try);
-                        }
+                    if (strncmp(name, "fizzbuzz", 8) == 0)
+                    {
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_fizzbuzz(k, show);                        
+                        if (k == 1)
+                            i = ft_success_del_subject(name, show, 40, grade);
+                        else							
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                 {
@@ -758,22 +447,17 @@ void	ft_grademe(void)
             else
             {
                 if (ft_check_file(rendu_c) == 0)
-                {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
-                    {    
-                        if (strncmp(name, "buzzfizz", 8) == 0)
-                        {
-							k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            //k = paco_buzzfizz(k, show);                        
-							if (k == 4)
-								i = ft_success_del_subject(name, show, 40, grade);
-							else							
-								ft_failure(show, try);
-                        }
+                {  
+                    if (strncmp(name, "buzzfizz", 8) == 0)
+                    {
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_buzzfizz(k, show);                       
+                        if (k == 1)
+                            i = ft_success_del_subject(name, show, 40, grade);
+                        else							
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                 {
@@ -812,22 +496,17 @@ void	ft_grademe(void)
             {
                 if (ft_check_file(rendu_c) == 0)
                 {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
-                    {    
-                        if (strncmp(name, "aff_first_param", 15) == 0)
-                        {
-							k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            k = paco_aff_first_param(k, show);                        
-							if (k == 3)
-								i = ft_success_del_subject(name, show, 50, grade);
-							else							
-								ft_failure(show, try);
-                        }
+                    if (strncmp(name, "aff_first_param", 15) == 0)
+                    {
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_aff_first_param(k, show);                        
+                        if (k == 3)
+                            i = ft_success_del_subject(name, show, 50, grade);
+                        else							
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
-                }
+            }
                 else
                 {
                     ft_failure_check_file(name, show, try);
@@ -836,22 +515,17 @@ void	ft_grademe(void)
             else
             {
                 if (ft_check_file(rendu_c) == 0)
-                {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
-                    {    
-                        if (strncmp(name, "aff_last_param", 14) == 0)
-                        {
-							k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            k = paco_aff_last_param(k, show);                        
-							if (k == 3)
-								i = ft_success_del_subject(name, show, 50, grade);
-							else							
-								ft_failure(show, try);
-                        }
+                {   
+                    if (strncmp(name, "aff_last_param", 14) == 0)
+                    {
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_aff_last_param(k, show);                        
+                        if (k == 3)
+                            i = ft_success_del_subject(name, show, 50, grade);
+                        else							
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                 {
@@ -896,22 +570,16 @@ void	ft_grademe(void)
             {
                 if (ft_check_file(rendu_c) == 0)
                 {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    if (strncmp(name, "rotone", 6) == 0)
                     {
-                        if (strncmp(name, "rotone", 6) == 0)
-                        {
-                            k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            k = paco_rotone(k, show); 															
-							if (k == 5)
-							    i = ft_success_del_subject(name, show, 60, grade);
-							else
-							    ft_failure(show, try);
-                        }
-
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_rotone(k, show); 															
+                        if (k == 5)
+                            i = ft_success_del_subject(name, show, 60, grade);
+                        else
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                     ft_failure_check_file(name, show, try);                
@@ -920,22 +588,16 @@ void	ft_grademe(void)
             {
 				if (ft_check_file(rendu_c) == 0)
                 {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    if (strncmp(name, "first_word", 10) == 0)
                     {
-                        if (strncmp(name, "first_word", 10) == 0)
-                        {
-                            k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            k = paco_first_word(k, show);															
-							if (k == 5)
-							    i = ft_success_del_subject(name, show, 60, grade);
-							else
-							    ft_failure(show, try);
-                        }
-
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_first_word(k, show);															
+                        if (k == 5)
+                            i = ft_success_del_subject(name, show, 60, grade);
+                        else
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                     ft_failure_check_file(name, show, try);  				
@@ -944,22 +606,16 @@ void	ft_grademe(void)
             {
 				if (ft_check_file(rendu_c) == 0)
                 {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    if (strncmp(name, "rot_13", 6) == 0)
                     {
-                        if (strncmp(name, "rot_13", 6) == 0)
-                        {
-                            k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            k = paco_rot_13(k, show);															
-							if (k == 5)
-							    i = ft_success_del_subject(name, show, 60, grade);
-							else
-							    ft_failure(show, try);
-                        }
-
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_rot_13(k, show);															
+                        if (k == 5)
+                            i = ft_success_del_subject(name, show, 60, grade);
+                        else
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                     ft_failure_check_file(name, show, try);                
@@ -1002,22 +658,16 @@ void	ft_grademe(void)
             {
                 if (ft_check_file(rendu_c) == 0)
                 {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    if (strncmp(name, "last_word", 9) == 0)
                     {
-                        if (strncmp(name, "last_word", 9) == 0)
-                        {
-                            k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            k = paco_last_word(k, show); 															
-							if (k == 5)
-							    i = ft_success_del_subject(name, show, 70, grade);
-							else
-							    ft_failure(show, try);
-                        }
-
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_last_word(k, show); 															
+                        if (k == 5)
+                            i = ft_success_del_subject(name, show, 70, grade);
+                        else
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                     ft_failure_check_file(name, show, try);                
@@ -1026,22 +676,16 @@ void	ft_grademe(void)
             {
 				if (ft_check_file(rendu_c) == 0)
                 {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    if (strncmp(name, "inter", 5) == 0)
                     {
-                        if (strncmp(name, "inter", 5) == 0)
-                        {
-                            k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            k = paco_inter(k, show);															
-							if (k == 4)
-							    i = ft_success_del_subject(name, show, 70, grade);
-							else
-							    ft_failure(show, try);
-                        }
-
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_inter(k, show);															
+                        if (k == 4)
+                            i = ft_success_del_subject(name, show, 70, grade);
+                        else
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                     ft_failure_check_file(name, show, try);  				
@@ -1050,22 +694,16 @@ void	ft_grademe(void)
             {
 				if (ft_check_file(rendu_c) == 0)
                 {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    if (strncmp(name, "union", 5) == 0)
                     {
-                        if (strncmp(name, "union", 5) == 0)
-                        {
-                            k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            k = paco_union(k, show);															
-							if (k == 5)
-							    i = ft_success_del_subject(name, show, 70, grade);
-							else
-							    ft_failure(show, try);
-                        }
-
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_union(k, show);															
+                        if (k == 5)
+                            i = ft_success_del_subject(name, show, 70, grade);
+                        else
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                     ft_failure_check_file(name, show, try);                
@@ -1108,22 +746,16 @@ void	ft_grademe(void)
             {
                 if (ft_check_file(rendu_c) == 0)
                 {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    if (strncmp(name, "ft_rrange", 9) == 0)
                     {
-                        if (strncmp(name, "ft_rrange", 9) == 0)
-                        {
-                            k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            k = paco_ft_rrange(k, show); 															
-							if (k == 4)
-							    i = ft_success_del_subject(name, show, 80, grade);
-							else
-							    ft_failure(show, try);
-                        }
-
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_ft_rrange(k, show); 															
+                        if (k == 4)
+                            i = ft_success_del_subject(name, show, 80, grade);
+                        else
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                     ft_failure_check_file(name, show, try);                
@@ -1132,22 +764,16 @@ void	ft_grademe(void)
             {
 				if (ft_check_file(rendu_c) == 0)
                 {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    if (strncmp(name, "ft_itoa", 7) == 0)
                     {
-                        if (strncmp(name, "ft_itoa", 7) == 0)
-                        {
-                            k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            k = paco_ft_itoa(k, show);															
-							if (k == 4)
-							    i = ft_success_del_subject(name, show, 80, grade);
-							else
-							    ft_failure(show, try);
-                        }
-
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_ft_itoa(k, show);															
+                        if (k == 4)
+                            i = ft_success_del_subject(name, show, 80, grade);
+                        else
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                     ft_failure_check_file(name, show, try);  				
@@ -1156,22 +782,16 @@ void	ft_grademe(void)
             {
 				if (ft_check_file(rendu_c) == 0)
                 {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    if (strncmp(name, "ft_range", 8) == 0)
                     {
-                        if (strncmp(name, "ft_range", 8) == 0)
-                        {
-                            k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            k = paco_ft_range(k, show);															
-							if (k == 4)
-							    i = ft_success_del_subject(name, show, 80, grade);
-							else
-							    ft_failure(show, try);
-                        }
-
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_ft_range(k, show);															
+                        if (k == 4)
+                            i = ft_success_del_subject(name, show, 80, grade);
+                        else
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                     ft_failure_check_file(name, show, try);                
@@ -1208,22 +828,16 @@ void	ft_grademe(void)
             {
                 if (ft_check_file(rendu_c) == 0)
                 {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    if (strncmp(name, "expand_str", 10) == 0)
                     {
-                        if (strncmp(name, "expand_str", 10) == 0)
-                        {
-                            k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            k = paco_expand_str(k, show); 															
-							if (k == 4)
-							    i = ft_success_del_subject(name, show, 90, grade);
-							else
-							    ft_failure(show, try);
-                        }
-
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_expand_str(k, show); 															
+                        if (k == 4)
+                            i = ft_success_del_subject(name, show, 90, grade);
+                        else
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                     ft_failure_check_file(name, show, try);                
@@ -1232,22 +846,16 @@ void	ft_grademe(void)
             {
 				if (ft_check_file(rendu_c) == 0)
                 {
-                    if (check_norminette(rendu_c,mode[0]) == 0)
+                    if (strncmp(name, "ft_split", 8) == 0)
                     {
-                        if (strncmp(name, "ft_split", 8) == 0)
-                        {
-                            k = 0;
-							printf("%s\n PACO:\n\n", CYAN);
-                            k = paco_ft_split(k, show);															
-							if (k == 2)
-							    i = ft_success_del_subject(name, show, 90, grade);
-							else
-							    ft_failure(show, try);
-                        }
-
+                        k = 0;
+                        printf("%s\n PACO:\n\n", CYAN);
+                        k = paco_ft_split(k, show);															
+                        if (k == 2)
+                            i = ft_success_del_subject(name, show, 90, grade);
+                        else
+                            ft_failure(show, try);
                     }
-                    else
-                        ft_failure(show, try);
                 }
                 else
                     ft_failure_check_file(name, show, try);  				
@@ -1257,18 +865,49 @@ void	ft_grademe(void)
         if (i == 90)
         {
             printf("\n\n");
-            printf("%s Exam_42_ZIP passed, congratulations    \n", GREEN);
-            printf("%s Azterketa_42_ZIP gainditu da, zorionak \n", GREEN);
-            printf("%s Exam_42_ZIP superado, felicidades      \n", GREEN);
-	        printf("%s   ╔════════════════════════════════╗   \n", GREEN);
-            printf("%s   ║            :::      ::::::::   ║   \n", GREEN);
-            printf("%s   ║          :+:      :+:    :+:   ║   \n", GREEN);
-            printf("%s   ║        +:+ +:+         +:+     ║   \n", GREEN);
-            printf("%s   ║      +#+  +:+       +#+        ║   \n", GREEN);
-            printf("%s   ║    +#+#+#+#+#+   +#+           ║   \n", GREEN);
-            printf("%s   ║         #+#    #+#             ║   \n", GREEN);
-            printf("%s   ║        ###   ########.fr       ║   \n", GREEN);
-	        printf("%s   ╚════════════════════════════════╝   \n", GREEN);
+            printf("%s     Exam_42_ZIP passed, congratulations       \n", GREEN);
+            printf("%s     Azterketa_42_ZIP gainditu da, zorionak    \n", GREEN);
+            printf("%s     Exam_42_ZIP superat, felicitats           \n", GREEN);
+            printf("%s     Exam_42_ZIP superado, felicidades         \n", GREEN);
+	        printf("%s       ╔════════════════════════════════╗      \n", GREEN);
+            printf("%s       ║            :::      ::::::::   ║      \n", GREEN);
+            printf("%s       ║          :+:      :+:    :+:   ║      \n", GREEN);
+            printf("%s       ║        +:+ +:+         +:+     ║      \n", GREEN);
+            printf("%s       ║      +#+  +:+       +#+        ║      \n", GREEN);
+            printf("%s       ║    +#+#+#+#+#+   +#+           ║      \n", GREEN);
+            printf("%s       ║         #+#    #+#             ║      \n", GREEN);
+            printf("%s       ║        ###   ########.fr       ║      \n", GREEN);
+	        printf("%s       ╚════════════════════════════════╝      \n", GREEN);
+            printf("%s           ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶          \n", YELLOW);
+            printf("%s           ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶          \n", YELLOW);
+            printf("%s      ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶    \n", YELLOW);
+            printf("%s    ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶  \n", YELLOW);
+            printf("%s   ¶¶¶¶      ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶       ¶¶¶¶ \n", YELLOW);
+            printf("%s   ¶¶¶       ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶        ¶¶¶ \n", YELLOW);
+            printf("%s   ¶¶        ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶        ¶¶¶ \n", YELLOW);
+            printf("%s   ¶¶¶     ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶      ¶¶¶ \n", YELLOW);
+            printf("%s   ¶¶¶    ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶    ¶¶¶¶ \n", YELLOW);
+            printf("%s    ¶¶¶   ¶¶¶ ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶ ¶¶¶    ¶¶¶  \n", YELLOW);
+            printf("%s    ¶¶¶¶   ¶¶¶ ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶ ¶¶¶¶  ¶¶¶¶   \n", YELLOW);
+            printf("%s      ¶¶¶¶  ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶ ¶¶¶¶¶    \n", YELLOW);
+            printf("%s       ¶¶¶¶¶¶¶¶ ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶ ¶¶¶¶¶¶¶¶¶     \n", YELLOW);
+            printf("%s         ¶¶¶¶¶¶  ¶¶¶¶¶¶¶¶¶¶¶¶¶¶   ¶¶¶¶¶¶       \n", YELLOW);
+            printf("%s                  ¶¶¶¶¶¶¶¶¶¶¶¶                 \n", YELLOW);
+            printf("%s                    ¶¶¶¶¶¶¶¶                   \n", YELLOW);
+            printf("%s                      ¶¶¶¶                     \n", YELLOW);
+            printf("%s                      ¶¶¶¶                     \n", YELLOW);
+            printf("%s                      ¶¶¶¶                     \n", YELLOW);
+            printf("%s                      ¶¶¶¶                     \n", YELLOW);
+            printf("%s                  ¶¶¶¶¶¶¶¶¶¶¶¶                 \n", YELLOW);
+            printf("%s               ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶              \n", MAGENTA);
+            printf("%s               ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶              \n", MAGENTA);
+            printf("%s               ¶¶¶            ¶¶¶              \n", MAGENTA);
+            printf("%s               ¶¶¶            ¶¶¶              \n", MAGENTA);
+            printf("%s               ¶¶¶            ¶¶¶              \n", MAGENTA);
+            printf("%s               ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶              \n", MAGENTA);
+            printf("%s               ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶              \n", MAGENTA);
+            printf("%s             ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶            \n", MAGENTA);
+            printf("%s            ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶           \n", MAGENTA);
             printf("\n\n\n");   
         }         
     }

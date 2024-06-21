@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_msg.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 14:57:21 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/10 10:24:49 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/20 23:30:22 by inaki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,73 @@ void	ft_failure_check_file(char *name, int show, int try)
 		ft_copy_file(question, subject);
 	if (ft_check_file(rendu) != 0)
 		ft_new_folder(rendu); 
+}
+
+void replaceHomeWithTilde(char *path)
+{
+    char *homeDir = getenv("HOME");
+    if (homeDir && strstr(path, homeDir) == path) {
+        char tempPath[MAX_PATH];
+        snprintf(tempPath, sizeof(tempPath), "~%s", path + strlen(homeDir));
+        strcpy(path, tempPath);
+    }
+}
+
+void    print_msg (const char *str1, const char *sfile)
+{
+	char        *username = getlogin();
+    char        currentPath[MAX_PATH];
+    char        *currentDirPath = getcwd(currentPath, MAX_PATH);
+    char         *mode;
+    int         grade;
+    int         try;
+
+    mode = ctr_txt("control/ctrl_mode.txt", 'G', 'P', 0, "");
+    grade = atoi(ctr_txt("control/ctrl_grade.txt", 'G', 'P', 0, ""));
+    try = atoi(ctr_txt("control/ctrl_try.txt", 'G', 'P', 0, ""));
+    replaceHomeWithTilde(currentDirPath);
+	if (strncmp(str1, "start", 5) == 0)
+    {
+		printf("%s\n Para empezar prueba con cualquiera de estos comandos:\n\n", RED);
+        printf("%s ./grademe start P%s --> MODE PRACTICE\n", CYAN, WHITE);
+        printf("%s ./grademe start R%s --> MODE REAL\n\n", CYAN, WHITE);
+    }
+    if (strncmp(str1, "empezamos", 9) == 0)
+	{
+		printf("%s\n You're connected: %s%s\n", WHITE, GREEN, username); 
+		printf("%s You can log out at any time.", WHITE); 
+		printf("%s If this program tells you you earned points\n", WHITE);
+		printf("%s then they will be counted whatever happens.\n\n", WHITE);
+		printf("%s You are about to start the project %sExam_42_ZIP%s, in", WHITE, GREEN, WHITE);
+        if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+            printf("%s PRACTICE%s mode, at level.\n", MAGENTA, WHITE);
+        else
+            printf("%s REAL%s mode, at level.\n", MAGENTA, WHITE);
+		printf("%s You would have 3hrs to complete this project.\n", WHITE);
+		printf("%s Start Exam_42_ZIP --> ", WHITE);     
+		printf("%s %s\n\n", GREEN, get_date());
+		printf("%s =====================================================================================\n", WHITE);
+		printf("%s Mode:", WHITE);
+        if ((strncmp(mode, "P", 1) == 0) || (strncmp(mode, "p", 1) == 0))
+            printf("%s PRACTICE ZIP", MAGENTA);
+        else
+            printf("%s REAL ZIP", MAGENTA);
+        printf("%s | Current Grade: %s%d%s / 200", WHITE, GREEN, grade, WHITE);
+        printf("%s | Level: %s%d%s / 8\n\n", WHITE, GREEN, grade / 25, WHITE);
+        
+	}
+	if (strncmp(str1, "questionX", 9) == 0)
+	{
+		print_msg ("empezamos", "");
+		printf("%s Assignement: %s%s %sfor %s25%sxp\n\n", WHITE, GREEN, sfile, WHITE, GREEN, WHITE);
+		printf("%s Subject location: %s%s/subjects/%s.txt\n", WHITE, GREEN, currentDirPath, sfile); 
+		printf("%s Exercice location: %s%s/rendu/%s/\n", WHITE, RED, currentDirPath, sfile); 
+		printf("%s Here you %sdon't need%s to use git.\n\n", WHITE, RED, WHITE); 
+		calculate_time_difference(get_date());
+		printf("%s =====================================================================================\n", WHITE);
+		printf("%s You can work on your assignesent.\n", WHITE);
+        if (strncmp(sfile, "ft_", 3) == 0)
+            printf("%s En este caso en la primera comprobación usa \"make\" despues usa \"./grademe\" .\n", YELLOW);
+        printf("%s When you are sure you're done with it, use the \"./grademe\" command to be graded.\n\n\n", WHITE);            
+	}
 }

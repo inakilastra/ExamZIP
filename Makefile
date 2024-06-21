@@ -21,6 +21,8 @@ SRC_FILES += control/lib/ft_files.c
 OBJ_FILES += control/lib/ft_files.o
 SRC_FILES += control/lib/ft_ctr_txt.c
 OBJ_FILES += control/lib/ft_ctr_txt.o
+SRC_FILES += control/lib/ft_date.c
+OBJ_FILES += control/lib/ft_date.o
 
 
 # Verificar si el archivo ft_putstr.c existe y agregarlo a la compilación

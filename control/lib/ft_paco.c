@@ -326,6 +326,29 @@ int	paco_fizzbuzz(int k, int show)
 	free(paco);
 	return (k);
 }
+int	paco_buzzfizz(int k, int show)
+{
+	char	*paco;
+
+	paco = paco_argv0("buzzfizz");
+	if ((strncmp(paco, " 1\n2\n3\nbuzz\n5\n6\nfizz\nbuzz\n9\n10\n11\nbuzz\n13\nfizz\n15\nbuzz\n17\n18\n19\nbuzz\nfizz\n22\n23\nbuzz\n25\n26\n27\nfizzbuzz\n29\n30\n31\nbuzz\n33\n34\nfizz\nbuzz\n37\n38\n39\nbuzz\n41\nfizz\n43\nbuzz\n45\n46\n47\nbuzz\nfizz\n50\n51\nbuzz\n53\n54\n55\nfizzbuzz\n57\n58\n59\nbuzz\n61\n62\nfizz\nbuzz\n65\n66\n67\nbuzz\n69\nfizz\n71\nbuzz\n73\n74\n75\nbuzz\nfizz\n78\n79\nbuzz\n81\n82\n83\nfizzbuzz\n85\n86\n87\nbuzz\n89\n90\nfizz\nbuzz\n93\n94\n95\nbuzz\n97\nfizz\n99\nbuzz", 0) == 0)
+		 && (strlen(paco) == 378))
+	{
+		if (show == 1)
+		{
+			printf("%s ./buzzfizz | cat -e\n", GREEN);
+			printf("%s%s", GREEN, paco);
+		}
+		k++;
+	}
+	else
+	{
+		printf("%s ./buzzfizz | cat -e\n", RED);
+		printf("%s %s %ld\n", RED, paco, strlen(paco));
+	}
+	free(paco);
+	return (k);
+}
 
 int	paco_aff_first_param(int k, int show)
 {
