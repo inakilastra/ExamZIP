@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_msg.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inaki <inaki@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 14:57:21 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/20 23:30:22 by inaki            ###   ########.fr       */
+/*   Updated: 2024/06/26 15:09:39 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,17 +95,20 @@ void    print_msg (const char *str1, const char *sfile)
     char        currentPath[MAX_PATH];
     char        *currentDirPath = getcwd(currentPath, MAX_PATH);
     char         *mode;
+	char         *type;
     int         grade;
     int         try;
 
     mode = ctr_txt("control/ctrl_mode.txt", 'G', 'P', 0, "");
     grade = atoi(ctr_txt("control/ctrl_grade.txt", 'G', 'P', 0, ""));
     try = atoi(ctr_txt("control/ctrl_try.txt", 'G', 'P', 0, ""));
+	type = ctr_txt("control/ctrl_type.txt", 'G', 'P', 0, "");
     replaceHomeWithTilde(currentDirPath);
 	if (strncmp(str1, "start", 5) == 0)
     {
 		printf("%s\n Para empezar prueba con cualquiera de estos comandos:\n\n", RED);
         printf("%s ./grademe start P%s --> MODE PRACTICE\n", CYAN, WHITE);
+		printf("%s ./grademe start T%s --> MODE PRACTICE ALL QUESTIONS\n", CYAN, WHITE);
         printf("%s ./grademe start R%s --> MODE REAL\n\n", CYAN, WHITE);
     }
     if (strncmp(str1, "empezamos", 9) == 0)
@@ -128,9 +131,16 @@ void    print_msg (const char *str1, const char *sfile)
             printf("%s PRACTICE ZIP", MAGENTA);
         else
             printf("%s REAL ZIP", MAGENTA);
-        printf("%s | Current Grade: %s%d%s / 200", WHITE, GREEN, grade, WHITE);
-        printf("%s | Level: %s%d%s / 8\n\n", WHITE, GREEN, grade / 25, WHITE);
-        
+		if ((strncmp(type, "T", 1) == 0) || (strncmp(type, "t", 1) == 0))
+		{
+			printf("%s | Current Grade: %s%d%s / 500", WHITE, GREEN, grade, WHITE);
+			printf("%s | Level: %s%d%s / 20\n\n", WHITE, GREEN, grade / 25, WHITE);
+		}
+		else
+		{
+			printf("%s | Current Grade: %s%d%s / 200", WHITE, GREEN, grade, WHITE);
+        	printf("%s | Level: %s%d%s / 8\n\n", WHITE, GREEN, grade / 25, WHITE);
+		}
 	}
 	if (strncmp(str1, "questionX", 9) == 0)
 	{

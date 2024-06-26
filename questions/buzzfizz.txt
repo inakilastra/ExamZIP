@@ -10,8 +10,8 @@ If the number is both a multiple of 4 and a multiple of 7, it prints 'fizzbuzz' 
 --------------------------------------------------------------------------------
 Escribe un programa que imprima los números del 1 al 100, cada uno separado por un
 nueva línea.
-Si el número es múltiplo de 4, en su lugar imprime 'fizz'.
-Si el número es múltiplo de 7, en su lugar imprime "buzz".
+Si el número es múltiplo de 4, en su lugar imprime 'buzz'.
+Si el número es múltiplo de 7, en su lugar imprime "fizz".
 Si el número es múltiplo de 4 y múltiplo de 7, en su lugar imprime 'buzzfizz'.
 
 Example:

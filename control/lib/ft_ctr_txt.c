@@ -6,7 +6,7 @@
 /*   By: ilastra- <ilastra-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 16:03:41 by ilastra-          #+#    #+#             */
-/*   Updated: 2024/06/20 15:27:58 by ilastra-         ###   ########.fr       */
+/*   Updated: 2024/06/25 09:01:53 by ilastra-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,17 @@ char *ctr_txt(const char *sfile_txt, const char get_write, char mode, int questi
     {
        	if (strcmp(sfile_txt, "control/ctrl_mode.txt") == 0)
         {
-            if (mode == 'P' || mode == 'p')
+            if (mode == 'P' || mode == 'p' || mode == 'T' || mode == 't')
                 line_new = strdup("P");
             else
                 line_new = strdup("R");
+        } 
+        if (strcmp(sfile_txt, "control/ctrl_type.txt") == 0)
+        {
+            if (mode == 'T' || mode == 't')
+                line_new = strdup("T");
+            else
+                line_new = strdup("N");
         }       
         if (strcmp(sfile_txt, "control/ctrl_penal.txt") == 0)
         {

@@ -81,6 +81,7 @@ grademe: $(OBJ_FILES)
 # Regla para limpiar los archivos objeto y el ejecutable
 clean:
 	$(RM) *.o grademe
+	$(RM) $(OBJ_FILES)
 
 # Regla para limpiar solo los archivos objeto después de compilar
 clean_objs:
