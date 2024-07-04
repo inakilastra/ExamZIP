@@ -1,1 +1,29 @@
+# Si pone "!" a este no se le aplica ek Ignore
+# !important.log
+# ignore the file literally named foo[01].txt
+# foo\[01\].txt
+
+# Archivos ocultos del sistema, como es el caso de .DS_Store o Thumbs.db. 
+.DS_store
+Thumbs.db
+
+# Cachés de dependencias. Ejemplo carpetas node_modules o packages.
+node_modules/
+packages/
+
+# Código compilado como, por ejemplo, los archivos .o, .pyc y .class.
+*.o
+*.pyc
+*.class
+
+# Directorios de salida de compilación, como es el caso de /bin, /out o /target.
+
+# Archivos generados en tiempo de ejecución como, por ejemplo, .log, .lock o .tmp.
+*.log
+*.lock
+*.tmp
+
+# Archivos personales de configuración de IDE como, por ejemplo, .idea/workspace.xml.
+
+# Carpeta Visual Studio Code 
 .vscode/
