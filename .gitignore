@@ -15,6 +15,7 @@ packages/
 *.o
 *.pyc
 *.class
+*.out
 
 # Directorios de salida de compilación, como es el caso de /bin, /out o /target.
 
