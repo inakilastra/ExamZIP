@@ -23,7 +23,7 @@
     </ul>
 <li><p>Para evaluar cada ejercicio ejecuta <strong><code>./grademe</code></strong></p></li>
 <li><p>Si el ejercicio es una función "ft_xxx.c" ejecuta <strong><code>make</code></strong></p></li>
-<li><p>Si sospechas que falla la compilación o quieres comprobrar ejecuta <strong><code>make grademe</code></strong></p></li>
+<li><p>Si sospechas que falla la compilación o quieres comprobar ejecuta <strong><code>make grademe</code></strong></p></li>
 <li><p>Para ver la ayuda ejecuta <strong><code>./grademe help</code></strong></p></li>   
 <br />   
 <li><p>Para ver bien los textos el fondo de la terminal tiene que ser negro</p></li>   
